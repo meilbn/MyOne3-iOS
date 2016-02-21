@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "MLBTabBarController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [_window makeKeyAndVisible];
+    _window.backgroundColor = UIColor.whiteColor;
+    _window.rootViewController = [[MLBTabBarController alloc] init];
+    
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : MLBNavigationBarTitleTextColor}];
+    
     return YES;
 }
 

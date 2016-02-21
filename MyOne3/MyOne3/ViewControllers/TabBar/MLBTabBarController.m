@@ -7,12 +7,60 @@
 //
 
 #import "MLBTabBarController.h"
+#import "MLBHomeViewController.h"
+#import "MLBReadViewController.h"
+#import "MLBMusicViewController.h"
+#import "MLBMovieViewController.h"
 
 @interface MLBTabBarController ()
 
 @end
 
 @implementation MLBTabBarController
+
+- (instancetype)init {
+    self = [super init];
+    
+    if (self) {
+        MLBHomeViewController *homeViewController = [[MLBHomeViewController alloc] init];
+        UINavigationController *homeNavigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+        homeNavigationController.title = MLBHomeTitle;
+        
+        MLBReadViewController *readViewController = [[MLBReadViewController alloc] init];
+        UINavigationController *readNavigationController = [[UINavigationController alloc] initWithRootViewController:readViewController];
+        readNavigationController.title = MLBReadTitle;
+        
+        MLBMusicViewController *musicViewController = [[MLBMusicViewController alloc] init];
+        UINavigationController *musicNavigationController = [[UINavigationController alloc] initWithRootViewController:musicViewController];
+        musicNavigationController.title = MLBMusicTitle;
+        
+        MLBMovieViewController *movieViewController = [[MLBMovieViewController alloc] init];
+        UINavigationController *movieNavigationController = [[UINavigationController alloc] initWithRootViewController:movieViewController];
+        movieNavigationController.title = MLBMovieTitle;
+        
+        [self setViewControllers:@[homeNavigationController, readNavigationController, musicNavigationController, movieNavigationController]];
+        [self setupTabBar];
+    }
+    
+    return self;
+}
+
+- (void)setupTabBar {
+    NSArray *tabBarItemImageNames = @[@"tab_home", @"tab_reading", @"tab_music", @"tab_movie"];
+    NSInteger index = 0;
+    
+    for (UIViewController *vc in self.viewControllers) {
+        NSString *normalImageName =  [NSString stringWithFormat:@"%@_normal", [tabBarItemImageNames objectAtIndex:index]];
+        NSString *selectedImageName = [NSString stringWithFormat:@"%@_selected", [tabBarItemImageNames objectAtIndex:index]];
+        UIImage *normalImage = [UIImage imageNamed:normalImageName];
+        UIImage *selectedImage = [UIImage imageNamed:selectedImageName];
+        
+        vc.tabBarItem.image = normalImage;
+        vc.tabBarItem.selectedImage = selectedImage;
+        
+        index++;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,15 +71,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

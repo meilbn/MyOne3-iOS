@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@import UIKit;
+
 @interface MLBUIFactory : NSObject
+
+#pragma mark - UIBUtton
+
++ (UIButton *)buttonWithImageName:(NSString *)imageName highlightImageName:(NSString *)highlightImageName target:(id)target action:(SEL)action;
 
 @end

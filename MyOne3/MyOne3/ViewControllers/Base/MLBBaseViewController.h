@@ -10,4 +10,24 @@
 
 @interface MLBBaseViewController : UIViewController
 
+#pragma mark - HUD
+
+- (void)showHUDWithText:(NSString *)text delay:(NSTimeInterval)delay;
+- (void)showHUDDone;
+- (void)showHUDDoneWithText:(NSString *)text;
+- (void)showHUDErrorWithText : (NSString *)text;
+- (void)showHUDNetError;
+- (void)showHUDServerError;
+- (void)showWithLabelText:(NSString *)showText executing:(SEL)method;
+- (void)showHUDWithText:(NSString *)text;
+- (void)modelTransformFailedWithError:(NSError *)error;
+/**
+ *  隐藏当前显示的提示框
+ */
+- (void)hideHud;
+
+#pragma mark - UI
+
+- (void)addNavigationBarRightItems;
+
 @end
