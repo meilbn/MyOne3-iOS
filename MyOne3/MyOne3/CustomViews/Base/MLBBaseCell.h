@@ -10,4 +10,6 @@
 
 @interface MLBBaseCell : UITableViewCell
 
+@property (nonatomic, copy) NSIndexPath *indexPath;
+
 @end

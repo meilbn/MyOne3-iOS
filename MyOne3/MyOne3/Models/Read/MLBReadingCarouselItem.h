@@ -10,4 +10,11 @@
 
 @interface MLBReadingCarouselItem : MLBBaseModel
 
+@property (nonatomic, copy) NSString *itemId;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *cover;
+@property (nonatomic, copy) NSString *bottomText;
+@property (nonatomic, copy) NSString *bgColor;
+@property (nonatomic, copy) NSString *inputName;
+
 @end

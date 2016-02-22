@@ -8,6 +8,6 @@
 
 #import <Mantle/Mantle.h>
 
-@interface MLBBaseModel : MTLModel
+@interface MLBBaseModel : MTLModel <MTLJSONSerializing>
 
 @end

@@ -10,4 +10,9 @@
 
 @interface MLBReadingQuestion : MLBBaseModel
 
+@property (nonatomic, copy) NSString *questionId;
+@property (nonatomic, copy) NSString *questionTitle;
+@property (nonatomic, copy) NSString *answerTitle;
+@property (nonatomic, copy) NSString *questionMakeTime;
+
 @end

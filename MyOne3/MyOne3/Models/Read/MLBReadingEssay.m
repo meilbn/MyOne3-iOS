@@ -10,4 +10,16 @@
 
 @implementation MLBReadingEssay
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"contentId" : @"content_id",
+             @"title" : @"hp_title",
+             @"makeTime" : @"hp_makettime",
+             @"guideWord" : @"guide_word",
+             @"authors" : @"author"};
+}
+
++ (NSValueTransformer *)authorsJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:[MLBAuthor class]];
+}
+
 @end

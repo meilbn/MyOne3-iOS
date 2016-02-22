@@ -30,4 +30,6 @@
 
 - (void)addNavigationBarRightItems;
 
+- (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData;
+
 @end

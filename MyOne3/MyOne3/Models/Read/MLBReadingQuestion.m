@@ -10,4 +10,11 @@
 
 @implementation MLBReadingQuestion
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"questionId" : @"question_id",
+             @"questionTitle" : @"question_title",
+             @"answerTitle" : @"answer_title",
+             @"questionMakeTime" : @"question_makettime"};
+}
+
 @end

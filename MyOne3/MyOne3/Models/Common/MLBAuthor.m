@@ -10,4 +10,12 @@
 
 @implementation MLBAuthor
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"userId" : @"user_id",
+             @"username" : @"user_name",
+             @"webURL" : @"web_url",
+             @"wbName" : @"wb_name",
+             @"desc" : @"desc"};
+}
+
 @end

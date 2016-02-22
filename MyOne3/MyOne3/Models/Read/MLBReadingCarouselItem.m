@@ -10,4 +10,13 @@
 
 @implementation MLBReadingCarouselItem
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"itemId" : @"id",
+             @"title" : @"title",
+             @"cover" : @"cover",
+             @"bottomText" : @"bottom_text",
+             @"bgColor" : @"bgcolor",
+             @"inputName" : @"input_name"};
+}
+
 @end

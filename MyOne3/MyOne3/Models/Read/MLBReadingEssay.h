@@ -7,7 +7,14 @@
 //
 
 #import "MLBBaseModel.h"
+#import "MLBAuthor.h"
 
 @interface MLBReadingEssay : MLBBaseModel
+
+@property (nonatomic, copy) NSString *contentId;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *makeTime;
+@property (nonatomic, copy) NSString *guideWord;
+@property (nonatomic, copy) NSArray *authors;
 
 @end

@@ -10,4 +10,19 @@
 
 @implementation MLBReadingSerial
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"rid" : @"id",
+             @"serialId" : @"serial_id",
+             @"number" : @"number",
+             @"title" : @"title",
+             @"excerpt" : @"excerpt",
+             @"readNum" : @"read_num",
+             @"makeTime" : @"maketime",
+             @"author" : @"author"};
+}
+
++ (NSValueTransformer *)authorJSONTransformer {
+    return [MTLJSONAdapter dictionaryTransformerWithModelClass:[MLBAuthor class]];
+}
+
 @end

@@ -8,6 +8,7 @@
 
 #import "MLBBaseViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <MJRefresh/MJRefresh.h>
 
 @interface MLBBaseViewController ()
 
@@ -31,9 +32,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = MLBViewControllerBGColor;
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    // 设置标题栏不能覆盖下面 ViewController 的内容
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [self initDatas];
     [self setupViews];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.hidesBottomBarWhenPushed = YES;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (self == [self.navigationController.viewControllers firstObject]) {
+        self.hidesBottomBarWhenPushed = NO;
+    }
 }
 
 #pragma mark - Private Method
@@ -143,6 +160,19 @@
     UIBarButtonItem *playerItem = [[UIBarButtonItem alloc] initWithCustomView:_playerView];
     
     self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
+}
+
+- (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData {
+    if (scrollView.mj_header && scrollView.mj_header.isRefreshing) {
+        [scrollView.mj_header endRefreshing];
+        [scrollView.mj_footer resetNoMoreData];
+    }
+    
+    if (hasMoreData) {
+        [scrollView.mj_footer endRefreshing];
+    } else {
+        [scrollView.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 
 #pragma mark - Action

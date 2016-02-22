@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXPORT NSString *const kMLBReadingBaseViewID;
+
+@class MLBReadingEssay;
+@class MLBReadingSerial;
+@class MLBReadingQuestion;
+
 @interface MLBReadingBaseView : UIView
+
+- (void)configureViewWithReadingEssay:(MLBReadingEssay *)readingEssay readingSerial:(MLBReadingSerial *)readingSerial readingQuestion:(MLBReadingQuestion *)readingQuestion atIndex:(NSInteger)index;
 
 @end

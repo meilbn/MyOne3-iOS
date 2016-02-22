@@ -10,6 +10,16 @@
 
 @implementation MLBBaseCell
 
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+    if (self) {
+        self.contentView.backgroundColor = [UIColor whiteColor];
+    }
+    
+    return self;
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }

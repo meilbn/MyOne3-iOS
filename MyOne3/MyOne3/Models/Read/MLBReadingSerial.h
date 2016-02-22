@@ -7,7 +7,17 @@
 //
 
 #import "MLBBaseModel.h"
+#import "MLBAuthor.h"
 
 @interface MLBReadingSerial : MLBBaseModel
+
+@property (nonatomic, copy) NSString *rid;
+@property (nonatomic, copy) NSString *serialId;
+@property (nonatomic, copy) NSString *number;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *excerpt;
+@property (nonatomic, copy) NSString *readNum;
+@property (nonatomic, copy) NSString *makeTime;
+@property (nonatomic, strong) MLBAuthor *author;
 
 @end

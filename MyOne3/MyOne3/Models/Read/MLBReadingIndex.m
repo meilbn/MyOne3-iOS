@@ -10,4 +10,22 @@
 
 @implementation MLBReadingIndex
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"essay" : @"essay",
+             @"serial" : @"serial",
+             @"question" : @"question"};
+}
+
++ (NSValueTransformer *)essayJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:[MLBReadingEssay class]];
+}
+
++ (NSValueTransformer *)serialJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:[MLBReadingSerial class]];
+}
+
++ (NSValueTransformer *)questionJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:[MLBReadingQuestion class]];
+}
+
 @end

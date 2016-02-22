@@ -8,6 +8,14 @@
 
 #import "MLBBaseCell.h"
 
+FOUNDATION_EXPORT NSString *const kMLBMovieListItemCellID;
+
+@class MLBMovieListItem;
+
 @interface MLBMovieListItemCell : MLBBaseCell
+
++ (CGFloat)cellHight;
+
+- (void)configureCellWithMovieListItem:(MLBMovieListItem *)movieListItem atIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -10,4 +10,8 @@
 
 @implementation MLBBaseModel
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{};
+}
+
 @end

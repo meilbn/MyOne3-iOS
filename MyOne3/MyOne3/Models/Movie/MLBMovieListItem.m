@@ -10,4 +10,17 @@
 
 @implementation MLBMovieListItem
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"itemId" : @"id",
+             @"title" : @"title",
+             @"verse" : @"verse",
+             @"verseEn" : @"verse_en",
+             @"score" : @"score",
+             @"revisedScore" : @"revisedscore",
+             @"releaseTime" : @"releasetime",
+             @"scoreTime" : @"scoretime",
+             @"cover" : @"cover",
+             @"serverTime" : @"servertime"};
+}
+
 @end
