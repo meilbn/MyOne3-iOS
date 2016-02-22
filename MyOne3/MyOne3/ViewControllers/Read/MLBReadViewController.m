@@ -84,7 +84,7 @@
             pagingScrollView.delegate = self;
             pagingScrollView.pageInsets = UIEdgeInsetsZero;
             pagingScrollView.interpageSpacing = 0;
-            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft actionHandler:^(AAPullToRefresh *v) {
+            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft ActionHandler:^(AAPullToRefresh *v) {
                 [weakSelf refreshReadingIndex];
                 [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
             }];
@@ -93,7 +93,7 @@
             pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
             pullToRefreshLeft.imageIcon = [UIImage new];
             
-            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight actionHandler:^(AAPullToRefresh *v) {
+            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight ActionHandler:^(AAPullToRefresh *v) {
                 [weakSelf loadMoreReadingIndex];
                 [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
             }];
