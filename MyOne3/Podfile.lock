@@ -1,5 +1,4 @@
 PODS:
-  - AAPullToRefresh (1.0.2)
   - AFNetworking (3.0.4):
     - AFNetworking/NSURLSession (= 3.0.4)
     - AFNetworking/Reachability (= 3.0.4)
@@ -42,7 +41,6 @@ PODS:
   - YLGIFImage (0.11)
 
 DEPENDENCIES:
-  - AAPullToRefresh
   - AFNetworking
   - CocoaLumberjack
   - GMCPagingScrollView
@@ -59,7 +57,6 @@ DEPENDENCIES:
   - YLGIFImage
 
 SPEC CHECKSUMS:
-  AAPullToRefresh: 9170fe976bad38329656fc852ee84f8095d3718e
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   GMCPagingScrollView: 32285a8e2c0162a4709dfcb4fefb0b9896f87db2

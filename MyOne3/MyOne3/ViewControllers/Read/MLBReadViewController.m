@@ -84,20 +84,22 @@
             pagingScrollView.delegate = self;
             pagingScrollView.pageInsets = UIEdgeInsetsZero;
             pagingScrollView.interpageSpacing = 0;
-            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft ActionHandler:^(AAPullToRefresh *v) {
+            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft actionHandler:^(AAPullToRefresh *v) {
                 [weakSelf refreshReadingIndex];
-//                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
             }];
             pullToRefreshLeft.threshold = 100;
             pullToRefreshLeft.borderColor = MLBAppThemeColor;
             pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
+            pullToRefreshLeft.imageIcon = [UIImage new];
             
-            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight ActionHandler:^(AAPullToRefresh *v) {
+            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight actionHandler:^(AAPullToRefresh *v) {
                 [weakSelf loadMoreReadingIndex];
-//                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
             }];
             pullToRefreshRight.borderColor = MLBAppThemeColor;
             pullToRefreshRight.borderWidth = MLBPullToRefreshBorderWidth;
+            pullToRefreshRight.imageIcon = [UIImage new];
             
             [self.view addSubview:pagingScrollView];
             [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -134,14 +136,20 @@
     _carouselView.imageURLStringsGroup = carouselCovers;
 }
 
+- (NSInteger)numberOfMaxIndex {
+    return MAX(MAX(readingIndex.essay.count, readingIndex.serial.count), readingIndex.question.count);
+}
+
 #pragma mark - Action
 
 - (void)refreshReadingIndex {
-    [pullToRefreshLeft performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:2];
+    // 很奇怪，不写这行代码的话，_pagingScrollView 里面的 scrollview 的 contentOffset.x 会变成和释放刷新时 contentOffset.x 的绝对值差不多，导致第一个 item 看起来像是左移了，论脑洞的重要性
+    [_pagingScrollView setCurrentPageIndex:0 reloadData:NO];
 }
 
 - (void)loadMoreReadingIndex {
-    [pullToRefreshRight performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:2];
+    // 原因同上
+    [_pagingScrollView setCurrentPageIndex:([self numberOfMaxIndex] - 1) reloadData:NO];
 }
 
 #pragma mark - Network Request
@@ -194,8 +202,7 @@
 #pragma mark - GMCPagingScrollViewDataSource
 
 - (NSUInteger)numberOfPagesInPagingScrollView:(GMCPagingScrollView *)pagingScrollView {
-    NSInteger number = MAX(MAX(readingIndex.essay.count, readingIndex.serial.count), readingIndex.question.count);
-    return number;
+    return [self numberOfMaxIndex];
 }
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
@@ -210,7 +217,7 @@
 - (void)pagingScrollViewDidScroll:(GMCPagingScrollView *)pagingScrollView {
     if (_pagingScrollView.isDragging) {
         CGPoint contentOffset = pagingScrollView.scrollView.contentOffset;
-        DDLogDebug(@"contentOffset = %@", NSStringFromCGPoint(contentOffset));
+//        DDLogDebug(@"contentOffset = %@", NSStringFromCGPoint(contentOffset));
         pagingScrollView.scrollView.contentOffset = CGPointMake(contentOffset.x, 0);
     }
 }

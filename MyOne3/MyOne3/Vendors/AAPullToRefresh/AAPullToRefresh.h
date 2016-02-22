@@ -20,6 +20,7 @@ typedef NS_ENUM(NSUInteger, AAPullToRefreshPosition) {
 @property (nonatomic, assign, readonly) AAPullToRefreshPosition position;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, copy) void (^pullToRefreshHandler)(AAPullToRefresh *v);
+@property (nonatomic, assign) BOOL isObserving;
 
 // user customizable.
 @property (nonatomic, assign) BOOL showPullToRefresh;
@@ -27,6 +28,7 @@ typedef NS_ENUM(NSUInteger, AAPullToRefreshPosition) {
 @property (nonatomic, strong) UIImage *imageIcon;
 @property (nonatomic, strong) UIColor *borderColor;
 @property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
 - (id)initWithImage:(UIImage *)image position:(AAPullToRefreshPosition)position;
 - (void)stopIndicatorAnimation;
@@ -36,5 +38,5 @@ typedef NS_ENUM(NSUInteger, AAPullToRefreshPosition) {
 @end
 
 @interface UIScrollView (AAPullToRefresh)
-- (AAPullToRefresh *)addPullToRefreshPosition:(AAPullToRefreshPosition)position ActionHandler:(void (^)(AAPullToRefresh *v))handler;
+- (AAPullToRefresh *)addPullToRefreshPosition:(AAPullToRefreshPosition)position actionHandler:(void (^)(AAPullToRefresh *v))handler;
 @end

@@ -27,6 +27,7 @@
     [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
     
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : MLBNavigationBarTitleTextColor}];
+    [[UINavigationBar appearance] setTintColor:MLBLightGrayTextColor];
     
     return YES;
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		230CC8BD1C7AFDA500EAA09C /* AAPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8BA1C7AFDA500EAA09C /* AAPullToRefresh.m */; };
+		230CC8BE1C7AFDA500EAA09C /* centerIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 230CC8BB1C7AFDA500EAA09C /* centerIcon@2x.png */; };
+		230CC8BF1C7AFDA500EAA09C /* launchpad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 230CC8BC1C7AFDA500EAA09C /* launchpad@2x.png */; };
 		239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F03181C79628100B03AF3 /* MLBUIFactory.m */; };
 		239F03241C7964E700B03AF3 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031C1C7964E700B03AF3 /* 1.gif */; };
 		239F03251C7964E700B03AF3 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031D1C7964E700B03AF3 /* 2.gif */; };
@@ -50,6 +53,10 @@
 
 /* Begin PBXFileReference section */
 		06D7F8D6F9DD66A59F51E1A4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		230CC8B91C7AFDA500EAA09C /* AAPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPullToRefresh.h; sourceTree = "<group>"; };
+		230CC8BA1C7AFDA500EAA09C /* AAPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPullToRefresh.m; sourceTree = "<group>"; };
+		230CC8BB1C7AFDA500EAA09C /* centerIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "centerIcon@2x.png"; sourceTree = "<group>"; };
+		230CC8BC1C7AFDA500EAA09C /* launchpad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchpad@2x.png"; sourceTree = "<group>"; };
 		239F03171C79628100B03AF3 /* MLBUIFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBUIFactory.h; sourceTree = "<group>"; };
 		239F03181C79628100B03AF3 /* MLBUIFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBUIFactory.m; sourceTree = "<group>"; };
 		239F031C1C7964E700B03AF3 /* 1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1.gif; sourceTree = "<group>"; };
@@ -136,6 +143,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		230CC8B81C7AFDA500EAA09C /* AAPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				230CC8B91C7AFDA500EAA09C /* AAPullToRefresh.h */,
+				230CC8BA1C7AFDA500EAA09C /* AAPullToRefresh.m */,
+				230CC8BB1C7AFDA500EAA09C /* centerIcon@2x.png */,
+				230CC8BC1C7AFDA500EAA09C /* launchpad@2x.png */,
+			);
+			path = AAPullToRefresh;
+			sourceTree = "<group>";
+		};
 		239F031A1C7964E700B03AF3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -389,6 +407,7 @@
 		23AA05B11C78BCC70043ACE7 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				230CC8B81C7AFDA500EAA09C /* AAPullToRefresh */,
 			);
 			path = Vendors;
 			sourceTree = "<group>";
@@ -564,6 +583,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				239F03241C7964E700B03AF3 /* 1.gif in Resources */,
+				230CC8BF1C7AFDA500EAA09C /* launchpad@2x.png in Resources */,
 				23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */,
 				23AA05911C78A77C0043ACE7 /* LaunchScreen.storyboard in Resources */,
 				23AA058E1C78A77C0043ACE7 /* Assets.xcassets in Resources */,
@@ -571,6 +591,7 @@
 				239F03281C7964E700B03AF3 /* my_player_action.gif in Resources */,
 				239F03291C7964E700B03AF3 /* my_player_action_white.gif in Resources */,
 				239F03251C7964E700B03AF3 /* 2.gif in Resources */,
+				230CC8BE1C7AFDA500EAA09C /* centerIcon@2x.png in Resources */,
 				239F032B1C7964E700B03AF3 /* my_player_stop_white.gif in Resources */,
 				239F03261C7964E700B03AF3 /* 3.gif in Resources */,
 				239F032A1C7964E700B03AF3 /* my_player_stop.gif in Resources */,
@@ -649,6 +670,7 @@
 				239F033F1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.m in Sources */,
 				239F03351C797C6500B03AF3 /* MLBHTTPRequester.m in Sources */,
 				239F03391C79847E00B03AF3 /* MLBBaseCell.m in Sources */,
+				230CC8BD1C7AFDA500EAA09C /* AAPullToRefresh.m in Sources */,
 				23AA05861C78A77C0043ACE7 /* AppDelegate.m in Sources */,
 				239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */,
 				23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */,

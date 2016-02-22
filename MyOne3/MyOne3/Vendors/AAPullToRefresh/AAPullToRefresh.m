@@ -5,8 +5,15 @@
 
 @implementation UIScrollView (AAPullToRefresh)
 
-- (AAPullToRefresh *)addPullToRefreshPosition:(AAPullToRefreshPosition)position ActionHandler:(void (^)(AAPullToRefresh *v))handler
+- (AAPullToRefresh *)addPullToRefreshPosition:(AAPullToRefreshPosition)position actionHandler:(void (^)(AAPullToRefresh *v))handler
 {
+    // dont dupuricate add.
+    for (UIView *v in self.subviews) {
+        if ([v isKindOfClass:[AAPullToRefresh class]])
+            if (((AAPullToRefresh *)v).position == position)
+                return (AAPullToRefresh *)v;
+    }
+
     AAPullToRefresh *view = [[AAPullToRefresh alloc] initWithImage:[UIImage imageNamed:@"centerIcon"]
                                                           position:position];
     switch (view.position) {
@@ -30,6 +37,7 @@
     view.originalInsetTop = self.contentInset.top;
     view.originalInsetBottom = self.contentInset.bottom;
     view.showPullToRefresh = YES;
+    view.alpha = 0.0;
     [self addSubview:view];
     
     return view;
@@ -89,10 +97,9 @@
 /*-----------------------------------------------------------------*/
 @interface AAPullToRefresh()
 
-@property (nonatomic, assign) BOOL isObserving;
+@property (nonatomic, assign) BOOL isUserAction;
 @property (nonatomic, assign) AAPullToRefreshState state;
 @property (nonatomic, assign, readonly) BOOL isSidePosition;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;  //Loading Indicator
 @property (nonatomic, strong) AAPullToRefreshBackgroundLayer *backgroundLayer;
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
 @property (nonatomic, strong) CALayer *imageLayer;
@@ -119,6 +126,7 @@
     self.borderColor = [UIColor colorWithRed:203/255.0 green:32/255.0 blue:39/255.0 alpha:1];
     self.borderWidth = 2.0f;
     self.threshold = 60.0f;
+    self.isUserAction = NO;
     self.contentMode = UIViewContentModeRedraw;
     self.state = AAPullToRefreshStateNormal;
     if (self.isSidePosition)
@@ -199,8 +207,11 @@
 - (void)resetScrollViewContentInset:(actionHandler)handler
 {
     UIEdgeInsets currentInsets = self.scrollView.contentInset;
-    currentInsets.top = self.originalInsetTop;
-    currentInsets.bottom = self.originalInsetBottom;
+    if (self.position == AAPullToRefreshPositionTop) {
+        currentInsets.top = self.originalInsetTop;
+    } else {
+        currentInsets.bottom = self.originalInsetBottom;
+    }
     [self setScrollViewContentInset:currentInsets handler:handler];
 }
 
@@ -240,6 +251,13 @@
             self.isObserving = NO;
         }
     }
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    if (self.superview && newSuperview == nil)
+        if (self.isObserving)
+            self.showPullToRefresh = NO;
 }
 
 - (BOOL)showPullToRefresh
@@ -356,7 +374,7 @@
     self.center = CGPointMake(centerX, centerY);
     switch (self.state) {
         case AAPullToRefreshStateNormal: //detect action
-            if (!self.scrollView.dragging && !self.scrollView.isZooming && self.prevProgress > 0.99f) {
+            if (self.isUserAction && !self.scrollView.dragging && !self.scrollView.isZooming && self.prevProgress > 0.99f) {
                 [self actionTriggeredState];
             }
             break;
@@ -367,6 +385,7 @@
             break;
     }
     
+    self.isUserAction = (self.scrollView.dragging) ? YES : NO;
 }
 
 - (void)actionTriggeredState
@@ -462,6 +481,17 @@
 {
     _borderColor = borderColor;
     _shapeLayer.strokeColor = _borderColor.CGColor;
+}
+
+- (void)setActivityIndicatorView:(UIActivityIndicatorView *)activityIndicatorView
+{
+    if(_activityIndicatorView)
+        [activityIndicatorView removeFromSuperview];
+    _activityIndicatorView = activityIndicatorView;
+    _activityIndicatorView.hidesWhenStopped = YES;
+    _activityIndicatorView.frame = self.bounds;
+    [self addSubview:_activityIndicatorView];
+    
 }
 
 @end

@@ -32,7 +32,7 @@
 #import <YLGIFImage/YLImageView.h>
 //#import <KMNavigationBarTransition/UIViewController+KMNavigationBarTransition.h>
 #import <GMCPagingScrollView/GMCPagingScrollView.h>
-#import <AAPullToRefresh/AAPullToRefresh.h>
+#import "AAPullToRefresh.h"
 
 #define LOG_LEVEL_DEF ddLogLevel
 #import <CocoaLumberjack/CocoaLumberjack.h>
