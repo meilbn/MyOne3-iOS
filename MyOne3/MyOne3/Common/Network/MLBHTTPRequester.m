@@ -63,6 +63,13 @@
 
 #pragma mark - Public Class Method
 
+#pragma mark - Home Page
+
+// 首页图文列表
++ (void)requestHomeMoreWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:MLBApiHomePageMore success:successBlock fail:failBlock];
+}
+
 #pragma mark - Reading
 
 // 头部轮播列表

@@ -14,6 +14,11 @@ typedef void(^FailBlock)(NSError *error);
 
 @interface MLBHTTPRequester : NSObject
 
+#pragma mark - Home Page
+
+// 首页图文列表
++ (void)requestHomeMoreWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Reading
 
 // 头部轮播列表

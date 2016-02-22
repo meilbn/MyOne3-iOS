@@ -41,6 +41,10 @@
 
 #pragma mark - Path
 
+// 首页图文列表
+#define MLBCacheHomeItemFileName                @"MLBCacheHomeItem"
+#define MLBCacheHomeItemFilePath                [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheHomeItemFileName]
+
 // 阅读轮播列表
 #define MLBCacheReadingCarouselFileName         @"MLBCacheReadingCarousel"
 #define MLBCacheReadingCarouselFilePath         [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheReadingCarouselFileName]
