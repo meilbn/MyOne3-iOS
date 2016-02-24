@@ -133,7 +133,7 @@ NSString *const kMLBReadingBaseCellID = @"MLBReadingBaseCellID";
 
 - (void)configureCellWithReadingSerial:(MLBReadingSerial *)readingSerial {
     _readingTypeView.image = [UIImage imageNamed:@"reading_serial"];
-    _titleLabel.text = readingSerial.title;
+    _titleLabel.text = [NSString stringWithFormat:@"%@( %@ )", readingSerial.title, readingSerial.number];
     _authorLabel.text = readingSerial.author.username;
     _contentLabel.text = readingSerial.excerpt;
 }

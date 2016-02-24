@@ -139,7 +139,6 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@44);
                 make.right.equalTo(_praiseNumLabel.mas_left);
-//                make.centerY.equalTo(_praiseNumLabel);
                 make.top.equalTo(_dateLabel.mas_bottom).offset(-13);
                 make.bottom.equalTo(_userView);
             }];

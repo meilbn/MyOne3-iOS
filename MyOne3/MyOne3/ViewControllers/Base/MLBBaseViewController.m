@@ -9,10 +9,17 @@
 #import "MLBBaseViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <MJRefresh/MJRefresh.h>
+//#import "MLBPopMenuView.h"
+//#import "XHRealTimeBlur.h"
+#import "PopMenu.h"
+#import "MenuButton.h"
 
 @interface MLBBaseViewController ()
 
 @property (strong, nonatomic) YLImageView *playerView;
+//@property (strong, nonatomic) XHRealTimeBlur *realTimeBlur;
+//@property (strong, nonatomic) MLBPopMenuView *popMenuView;
+@property (strong, nonatomic) PopMenu *popMenu;
 
 @end
 
@@ -173,6 +180,35 @@
     } else {
         [scrollView.mj_footer endRefreshingWithNoMoreData];
     }
+}
+
+- (void)showPopMenuViewWithMenuSelectedBlock:(MenuSelectedBlock)block {
+    if (!_popMenu) {
+        NSArray *imgNames = @[@"more_wechat", @"more_moments", @"more_sina", @"more_qq", @"more_link", @"more_collection"];
+        NSArray *titles = @[@"微信好友", @"朋友圈", @"微博", @"QQ", @"复制链接", @"收藏"];
+        NSArray *colors = @[[UIColor colorWithRGBHex:0x70E08D],
+                            [UIColor colorWithRGBHex:0x70E08D],
+                            [UIColor colorWithRGBHex:0xFF8467],
+                            [UIColor colorWithRGBHex:0x49AFD6],
+                            [UIColor colorWithRGBHex:0x659AD9],
+                            [UIColor colorWithRGBHex:0xF6CC41]];
+        NSMutableArray *items = [NSMutableArray arrayWithCapacity:imgNames.count];
+        for (NSInteger i = 0; i < imgNames.count; i++) {
+            MenuItem *item = [[MenuItem alloc] initWithTitle:titles[i] iconName:imgNames[i] glowColor:colors[i] index:i];
+            [items addObject:item];
+        }
+        
+        _popMenu = [[PopMenu alloc] initWithFrame:kKeyWindow.bounds items:items];
+        _popMenu.menuAnimationType = kPopMenuAnimationTypeSina;
+        _popMenu.perRowItemCount = 1;
+        _popMenu.didSelectedItemCompletion = ^(MenuItem *selectedItem) {
+            if (block) {
+                block((MLBPopMenuType)selectedItem.index);
+            }
+        };
+    }
+    
+    [_popMenu showMenuAtView:kKeyWindow];
 }
 
 #pragma mark - Action

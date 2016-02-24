@@ -12,15 +12,21 @@
 		230CC8CB1C7B450500EAA09C /* MLBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8CA1C7B450500EAA09C /* MLBUtilities.m */; };
 		2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2345EAFA1C7B554900F20BDF /* MLBMusicView.m */; };
 		2357A7611C7D72E70036F7DC /* MLBNoneMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */; };
+		239536971C7DA03B00FFA93C /* XHRealTimeBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 239536961C7DA03B00FFA93C /* XHRealTimeBlur.m */; };
+		239536A41C7DA77200FFA93C /* GlowImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2395369D1C7DA77200FFA93C /* GlowImageView.m */; };
+		239536A51C7DA77200FFA93C /* MenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2395369F1C7DA77200FFA93C /* MenuButton.m */; };
+		239536A61C7DA77200FFA93C /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 239536A11C7DA77200FFA93C /* MenuItem.m */; };
+		239536A71C7DA77200FFA93C /* PopMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 239536A31C7DA77200FFA93C /* PopMenu.m */; };
+		239536AF1C7DCF8400FFA93C /* MLBIntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 239536AE1C7DCF8400FFA93C /* MLBIntroduceViewController.m */; };
+		239536B91C7DCFA900FFA93C /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B11C7DCFA900FFA93C /* 1.gif */; };
+		239536BA1C7DCFA900FFA93C /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B21C7DCFA900FFA93C /* 2.gif */; };
+		239536BB1C7DCFA900FFA93C /* 3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B31C7DCFA900FFA93C /* 3.gif */; };
+		239536BC1C7DCFA900FFA93C /* 4.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B41C7DCFA900FFA93C /* 4.gif */; };
+		239536BD1C7DCFA900FFA93C /* my_player_action.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B51C7DCFA900FFA93C /* my_player_action.gif */; };
+		239536BE1C7DCFA900FFA93C /* my_player_action_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B61C7DCFA900FFA93C /* my_player_action_white.gif */; };
+		239536BF1C7DCFA900FFA93C /* my_player_stop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B71C7DCFA900FFA93C /* my_player_stop.gif */; };
+		239536C01C7DCFA900FFA93C /* my_player_stop_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239536B81C7DCFA900FFA93C /* my_player_stop_white.gif */; };
 		239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F03181C79628100B03AF3 /* MLBUIFactory.m */; };
-		239F03241C7964E700B03AF3 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031C1C7964E700B03AF3 /* 1.gif */; };
-		239F03251C7964E700B03AF3 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031D1C7964E700B03AF3 /* 2.gif */; };
-		239F03261C7964E700B03AF3 /* 3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031E1C7964E700B03AF3 /* 3.gif */; };
-		239F03271C7964E700B03AF3 /* 4.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F031F1C7964E700B03AF3 /* 4.gif */; };
-		239F03281C7964E700B03AF3 /* my_player_action.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F03201C7964E700B03AF3 /* my_player_action.gif */; };
-		239F03291C7964E700B03AF3 /* my_player_action_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F03211C7964E700B03AF3 /* my_player_action_white.gif */; };
-		239F032A1C7964E700B03AF3 /* my_player_stop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F03221C7964E700B03AF3 /* my_player_stop.gif */; };
-		239F032B1C7964E700B03AF3 /* my_player_stop_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 239F03231C7964E700B03AF3 /* my_player_stop_white.gif */; };
 		239F032F1C7977E000B03AF3 /* MLBBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F032E1C7977E000B03AF3 /* MLBBaseModel.m */; };
 		239F03321C79790200B03AF3 /* MLBMovieListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F03311C79790200B03AF3 /* MLBMovieListItem.m */; };
 		239F03351C797C6500B03AF3 /* MLBHTTPRequester.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F03341C797C6500B03AF3 /* MLBHTTPRequester.m */; };
@@ -72,16 +78,28 @@
 		2345EAFA1C7B554900F20BDF /* MLBMusicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicView.m; sourceTree = "<group>"; };
 		2357A75F1C7D72E70036F7DC /* MLBNoneMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBNoneMessageCell.h; sourceTree = "<group>"; };
 		2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBNoneMessageCell.m; sourceTree = "<group>"; };
+		239536951C7DA03B00FFA93C /* XHRealTimeBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHRealTimeBlur.h; sourceTree = "<group>"; };
+		239536961C7DA03B00FFA93C /* XHRealTimeBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHRealTimeBlur.m; sourceTree = "<group>"; };
+		2395369C1C7DA77200FFA93C /* GlowImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlowImageView.h; sourceTree = "<group>"; };
+		2395369D1C7DA77200FFA93C /* GlowImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlowImageView.m; sourceTree = "<group>"; };
+		2395369E1C7DA77200FFA93C /* MenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButton.h; sourceTree = "<group>"; };
+		2395369F1C7DA77200FFA93C /* MenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuButton.m; sourceTree = "<group>"; };
+		239536A01C7DA77200FFA93C /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
+		239536A11C7DA77200FFA93C /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
+		239536A21C7DA77200FFA93C /* PopMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopMenu.h; sourceTree = "<group>"; };
+		239536A31C7DA77200FFA93C /* PopMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopMenu.m; sourceTree = "<group>"; };
+		239536AD1C7DCF8400FFA93C /* MLBIntroduceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBIntroduceViewController.h; sourceTree = "<group>"; };
+		239536AE1C7DCF8400FFA93C /* MLBIntroduceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBIntroduceViewController.m; sourceTree = "<group>"; };
+		239536B11C7DCFA900FFA93C /* 1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1.gif; sourceTree = "<group>"; };
+		239536B21C7DCFA900FFA93C /* 2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2.gif; sourceTree = "<group>"; };
+		239536B31C7DCFA900FFA93C /* 3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3.gif; sourceTree = "<group>"; };
+		239536B41C7DCFA900FFA93C /* 4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 4.gif; sourceTree = "<group>"; };
+		239536B51C7DCFA900FFA93C /* my_player_action.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_action.gif; sourceTree = "<group>"; };
+		239536B61C7DCFA900FFA93C /* my_player_action_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_action_white.gif; sourceTree = "<group>"; };
+		239536B71C7DCFA900FFA93C /* my_player_stop.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_stop.gif; sourceTree = "<group>"; };
+		239536B81C7DCFA900FFA93C /* my_player_stop_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_stop_white.gif; sourceTree = "<group>"; };
 		239F03171C79628100B03AF3 /* MLBUIFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBUIFactory.h; sourceTree = "<group>"; };
 		239F03181C79628100B03AF3 /* MLBUIFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBUIFactory.m; sourceTree = "<group>"; };
-		239F031C1C7964E700B03AF3 /* 1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1.gif; sourceTree = "<group>"; };
-		239F031D1C7964E700B03AF3 /* 2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2.gif; sourceTree = "<group>"; };
-		239F031E1C7964E700B03AF3 /* 3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3.gif; sourceTree = "<group>"; };
-		239F031F1C7964E700B03AF3 /* 4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 4.gif; sourceTree = "<group>"; };
-		239F03201C7964E700B03AF3 /* my_player_action.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_action.gif; sourceTree = "<group>"; };
-		239F03211C7964E700B03AF3 /* my_player_action_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_action_white.gif; sourceTree = "<group>"; };
-		239F03221C7964E700B03AF3 /* my_player_stop.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_stop.gif; sourceTree = "<group>"; };
-		239F03231C7964E700B03AF3 /* my_player_stop_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = my_player_stop_white.gif; sourceTree = "<group>"; };
 		239F032C1C7975A500B03AF3 /* MLBApiConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBApiConstants.h; sourceTree = "<group>"; };
 		239F032D1C7977E000B03AF3 /* MLBBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBBaseModel.h; sourceTree = "<group>"; };
 		239F032E1C7977E000B03AF3 /* MLBBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBBaseModel.m; sourceTree = "<group>"; };
@@ -172,28 +190,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		239536941C7DA03B00FFA93C /* XHRealTimeBlur */ = {
+			isa = PBXGroup;
+			children = (
+				239536951C7DA03B00FFA93C /* XHRealTimeBlur.h */,
+				239536961C7DA03B00FFA93C /* XHRealTimeBlur.m */,
+			);
+			path = XHRealTimeBlur;
+			sourceTree = "<group>";
+		};
+		2395369B1C7DA77200FFA93C /* PopMenu */ = {
+			isa = PBXGroup;
+			children = (
+				2395369C1C7DA77200FFA93C /* GlowImageView.h */,
+				2395369D1C7DA77200FFA93C /* GlowImageView.m */,
+				2395369E1C7DA77200FFA93C /* MenuButton.h */,
+				2395369F1C7DA77200FFA93C /* MenuButton.m */,
+				239536A01C7DA77200FFA93C /* MenuItem.h */,
+				239536A11C7DA77200FFA93C /* MenuItem.m */,
+				239536A21C7DA77200FFA93C /* PopMenu.h */,
+				239536A31C7DA77200FFA93C /* PopMenu.m */,
+			);
+			path = PopMenu;
+			sourceTree = "<group>";
+		};
+		239536AC1C7DCF8400FFA93C /* Introduce */ = {
+			isa = PBXGroup;
+			children = (
+				239536AD1C7DCF8400FFA93C /* MLBIntroduceViewController.h */,
+				239536AE1C7DCF8400FFA93C /* MLBIntroduceViewController.m */,
+			);
+			path = Introduce;
+			sourceTree = "<group>";
+		};
+		239536B01C7DCFA900FFA93C /* GIFs */ = {
+			isa = PBXGroup;
+			children = (
+				239536B11C7DCFA900FFA93C /* 1.gif */,
+				239536B21C7DCFA900FFA93C /* 2.gif */,
+				239536B31C7DCFA900FFA93C /* 3.gif */,
+				239536B41C7DCFA900FFA93C /* 4.gif */,
+				239536B51C7DCFA900FFA93C /* my_player_action.gif */,
+				239536B61C7DCFA900FFA93C /* my_player_action_white.gif */,
+				239536B71C7DCFA900FFA93C /* my_player_stop.gif */,
+				239536B81C7DCFA900FFA93C /* my_player_stop_white.gif */,
+			);
+			path = GIFs;
+			sourceTree = "<group>";
+		};
 		239F031A1C7964E700B03AF3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				23AB7F521C79DE8F00EF21EA /* Fonts */,
-				239F031B1C7964E700B03AF3 /* GIF */,
+				239536B01C7DCFA900FFA93C /* GIFs */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		239F031B1C7964E700B03AF3 /* GIF */ = {
-			isa = PBXGroup;
-			children = (
-				239F031C1C7964E700B03AF3 /* 1.gif */,
-				239F031D1C7964E700B03AF3 /* 2.gif */,
-				239F031E1C7964E700B03AF3 /* 3.gif */,
-				239F031F1C7964E700B03AF3 /* 4.gif */,
-				239F03201C7964E700B03AF3 /* my_player_action.gif */,
-				239F03211C7964E700B03AF3 /* my_player_action_white.gif */,
-				239F03221C7964E700B03AF3 /* my_player_stop.gif */,
-				239F03231C7964E700B03AF3 /* my_player_stop_white.gif */,
-			);
-			path = GIF;
 			sourceTree = "<group>";
 		};
 		239F03361C79846E00B03AF3 /* Cells */ = {
@@ -439,6 +490,8 @@
 		23AA05B11C78BCC70043ACE7 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				239536941C7DA03B00FFA93C /* XHRealTimeBlur */,
+				2395369B1C7DA77200FFA93C /* PopMenu */,
 			);
 			path = Vendors;
 			sourceTree = "<group>";
@@ -447,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				23AA05B31C78BCC70043ACE7 /* Base */,
+				239536AC1C7DCF8400FFA93C /* Introduce */,
 				23AA05C21C78BF020043ACE7 /* TabBar */,
 				23AA05B41C78BCC70043ACE7 /* Home */,
 				23AA05B71C78BCC70043ACE7 /* Read */,
@@ -647,17 +701,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				239F03241C7964E700B03AF3 /* 1.gif in Resources */,
+				239536BB1C7DCFA900FFA93C /* 3.gif in Resources */,
+				239536C01C7DCFA900FFA93C /* my_player_stop_white.gif in Resources */,
+				239536BF1C7DCFA900FFA93C /* my_player_stop.gif in Resources */,
+				239536BE1C7DCFA900FFA93C /* my_player_action_white.gif in Resources */,
 				23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */,
+				239536BA1C7DCFA900FFA93C /* 2.gif in Resources */,
 				23AA05911C78A77C0043ACE7 /* LaunchScreen.storyboard in Resources */,
+				239536B91C7DCFA900FFA93C /* 1.gif in Resources */,
 				23AA058E1C78A77C0043ACE7 /* Assets.xcassets in Resources */,
-				239F03271C7964E700B03AF3 /* 4.gif in Resources */,
-				239F03281C7964E700B03AF3 /* my_player_action.gif in Resources */,
-				239F03291C7964E700B03AF3 /* my_player_action_white.gif in Resources */,
-				239F03251C7964E700B03AF3 /* 2.gif in Resources */,
-				239F032B1C7964E700B03AF3 /* my_player_stop_white.gif in Resources */,
-				239F03261C7964E700B03AF3 /* 3.gif in Resources */,
-				239F032A1C7964E700B03AF3 /* my_player_stop.gif in Resources */,
+				239536BC1C7DCFA900FFA93C /* 4.gif in Resources */,
+				239536BD1C7DCFA900FFA93C /* my_player_action.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +770,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				239536971C7DA03B00FFA93C /* XHRealTimeBlur.m in Sources */,
 				239F03321C79790200B03AF3 /* MLBMovieListItem.m in Sources */,
 				239F032F1C7977E000B03AF3 /* MLBBaseModel.m in Sources */,
 				23AB7F651C79F28800EF21EA /* MLBReadingSerial.m in Sources */,
@@ -723,6 +778,7 @@
 				23AA05CB1C78BFC20043ACE7 /* MLBReadViewController.m in Sources */,
 				23C73CCD1C7C944900B9F412 /* MLBCommentCell.m in Sources */,
 				23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */,
+				239536A61C7DA77200FFA93C /* MenuItem.m in Sources */,
 				23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */,
 				23AB7F5E1C79F0B700EF21EA /* MLBReadingEssay.m in Sources */,
 				23AA05C81C78BFB40043ACE7 /* MLBHomeViewController.m in Sources */,
@@ -730,13 +786,16 @@
 				239F033C1C79852300B03AF3 /* MLBMovieListItemCell.m in Sources */,
 				23AA05BA1C78BCC70043ACE7 /* UIColor+MLBUtilities.m in Sources */,
 				2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */,
+				239536A71C7DA77200FFA93C /* PopMenu.m in Sources */,
 				23AB7F6F1C79FA0E00EF21EA /* MLBReadingBaseCell.m in Sources */,
 				23AB7F681C79F3C800EF21EA /* MLBReadingQuestion.m in Sources */,
 				23AB7F6B1C79F73000EF21EA /* MLBReadingBaseView.m in Sources */,
 				23E176381C7C467E0052B2A9 /* MLBCommentList.m in Sources */,
 				23FA09391C7C0C0A0068C97D /* MLBMusicDetails.m in Sources */,
 				23AA05B91C78BCC70043ACE7 /* NSString+MLBUtilities.m in Sources */,
+				239536AF1C7DCF8400FFA93C /* MLBIntroduceViewController.m in Sources */,
 				230CC8CB1C7B450500EAA09C /* MLBUtilities.m in Sources */,
+				239536A41C7DA77200FFA93C /* GlowImageView.m in Sources */,
 				23AA05CE1C78BFD00043ACE7 /* MLBMusicViewController.m in Sources */,
 				239F033F1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.m in Sources */,
 				239F03351C797C6500B03AF3 /* MLBHTTPRequester.m in Sources */,
@@ -744,6 +803,7 @@
 				239F03391C79847E00B03AF3 /* MLBBaseCell.m in Sources */,
 				23AA05861C78A77C0043ACE7 /* AppDelegate.m in Sources */,
 				239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */,
+				239536A51C7DA77200FFA93C /* MenuButton.m in Sources */,
 				23E1763B1C7C471A0052B2A9 /* MLBComment.m in Sources */,
 				23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */,
 				23AB7F5B1C79F04000EF21EA /* MLBReadingIndex.m in Sources */,

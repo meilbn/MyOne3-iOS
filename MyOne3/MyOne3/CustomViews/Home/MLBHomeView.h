@@ -14,6 +14,8 @@ FOUNDATION_EXPORT NSString *const kMLBHomeViewID;
 
 @interface MLBHomeView : UIView
 
+@property (nonatomic, copy) void (^clickedButton)(MLBButtonType type);
+
 - (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index;
 
 @end

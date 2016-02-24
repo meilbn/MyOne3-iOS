@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "MLBIntroduceViewController.h"
 #import "MLBTabBarController.h"
 
 @interface AppDelegate ()
@@ -21,7 +22,6 @@
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
-    _window.rootViewController = [[MLBTabBarController alloc] init];
     
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
@@ -29,7 +29,20 @@
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : MLBNavigationBarTitleTextColor}];
     [[UINavigationBar appearance] setTintColor:MLBLightGrayTextColor];
     
+    NSString *version = [MLBUtilities appCurrentVersion];
+    NSString *build = [MLBUtilities appCurrentBuild];
+    NSString *versionAndBuild = [NSString stringWithFormat:@"%@_%@", version, build];
+    if (![[UserDefaults objectForKey:MLBLastShowIntroduceVersionAndBuild] isEqualToString:versionAndBuild]) {
+        _window.rootViewController = [[MLBIntroduceViewController alloc] init];
+    } else {
+        [self showMainTabBarControllers];
+    }
+    
     return YES;
+}
+
+- (void)showMainTabBarControllers {
+    _window.rootViewController = [[MLBTabBarController alloc] init];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

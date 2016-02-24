@@ -40,6 +40,14 @@ static NSDateFormatter *musicDetailsDateFormatter;
     return [musicDetailsDateFormatter stringFromDate:date];
 }
 
++ (NSString *)appCurrentVersion {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
++ (NSString *)appCurrentBuild {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+}
+
 #pragma mark - Date / 日期
 
 + (NSDate *)dateWithString:(NSString *)string {

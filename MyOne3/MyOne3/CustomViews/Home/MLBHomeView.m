@@ -91,7 +91,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.size.sizeOffset(CGSizeMake(66, 44));
                 make.left.equalTo(_scrollView).offset(8);
-                make.bottom.equalTo(_scrollView).offset(-25);
+                make.bottom.equalTo(self).offset(-25);
             }];
             
             button;
@@ -103,7 +103,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@44);
                 make.right.equalTo(_scrollView).offset(-8);
-                make.bottom.equalTo(_scrollView).offset(-25);
+                make.bottom.equalTo(_diaryButton);
             }];
             
             button;
@@ -115,7 +115,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
             [label mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@44);
                 make.right.equalTo(_moreButton.mas_left);
-                make.bottom.equalTo(_scrollView).offset(-25);
+                make.bottom.equalTo(_diaryButton);
             }];
             
             label;
@@ -127,7 +127,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@44);
                 make.right.equalTo(_likeNumLabel.mas_left);
-                make.bottom.equalTo(_scrollView).offset(-25);
+                make.bottom.equalTo(_diaryButton);
             }];
             
             button;
@@ -269,15 +269,21 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 }
 
 - (void)diaryButtonClicked {
-    
+    if (_clickedButton) {
+        _clickedButton(MLBButtonTypeDiary);
+    }
 }
 
 - (void)likeButtonClicked {
-    
+    if (_clickedButton) {
+        _clickedButton(MLBButtonTypePraise);
+    }
 }
 
 - (void)moreButtonClicked {
-    
+    if (_clickedButton) {
+        _clickedButton(MLBButtonTypeMore);
+    }
 }
 
 #pragma mark - Public Method

@@ -139,6 +139,7 @@
 }
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
+    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
     MLBMusicView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBMusicViewID];
     [view configureViewWithMusicId:dataSource[index] atIndex:index];
     
@@ -152,6 +153,22 @@
         CGPoint contentOffset = pagingScrollView.scrollView.contentOffset;
         pagingScrollView.scrollView.contentOffset = CGPointMake(contentOffset.x, 0);
     }
+}
+
+- (void)pagingScrollViewWillBeginDragging:(GMCPagingScrollView *)pagingScrollView {
+    DDLogDebug(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView layoutPageAtIndex:(NSUInteger)index {
+    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
+}
+
+- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
+    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
+}
+
+- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didEndDisplayingPage:(UIView *)page atIndex:(NSUInteger)index {
+    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
 }
 
 @end

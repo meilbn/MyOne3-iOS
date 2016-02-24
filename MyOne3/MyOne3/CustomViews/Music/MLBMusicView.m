@@ -134,6 +134,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _scrollView = ({
             UIScrollView *scrollView = [UIScrollView new];
+            scrollView.backgroundColor = MLBViewControllerBGColor;
             scrollView.showsVerticalScrollIndicator = NO;
             scrollView.delegate = self;
             [self addSubview:scrollView];
@@ -169,7 +170,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _storyTitleView = ({
             UIView *view = [UIView new];
-            view.backgroundColor = [UIColor whiteColor];
+            view.backgroundColor = MLBViewControllerBGColor;
             [_contentView addSubview:view];
             [view mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_coverView.mas_bottom);
@@ -396,7 +397,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _contentTextView = ({
             YYTextView *textView = [YYTextView new];
-            textView.backgroundColor = [UIColor whiteColor];
+            textView.backgroundColor = MLBViewControllerBGColor;
             textView.textColor = MLBDarkBlackTextColor;
             textView.font = FontWithSize(15);
             textView.editable = NO;
@@ -417,7 +418,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _chargeEditorView = ({
             UIView *view = [UIView new];
-            view.backgroundColor = [UIColor whiteColor];
+            view.backgroundColor = MLBViewControllerBGColor;
             view.clipsToBounds = YES;
             [_contentView addSubview:view];
             [view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -485,6 +486,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _commentsTableView = ({
             UITableView *tableView = [UITableView new];
+            tableView.backgroundColor = [UIColor whiteColor];
             tableView.dataSource = self;
             tableView.delegate = self;
             tableView.scrollEnabled = NO;
@@ -492,6 +494,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
             [tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
             tableView.tableFooterView = [UIView new];
             tableView.separatorInset = UIEdgeInsetsMake(0, 60, 0, 0);
+            tableView.separatorColor = MLBSeparatorColor;
             [_contentView addSubview:tableView];
             [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_chargeEditorView.mas_bottom);
@@ -504,12 +507,14 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         
         _relatedMusicTableView = ({
             UITableView *tableView = [UITableView new];
+            tableView.backgroundColor = [UIColor whiteColor];
             tableView.dataSource = self;
             tableView.delegate = self;
             tableView.scrollEnabled = NO;
             [tableView registerClass:[MLBRelatedMusicCell class] forCellReuseIdentifier:kMLBRelatedMusicCellID];
             tableView.tableFooterView = [UIView new];
             tableView.separatorInset = UIEdgeInsetsMake(0, 65, 0, 0);
+            tableView.separatorColor = MLBSeparatorColor;
             [_contentView addSubview:tableView];
             [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_commentsTableView.mas_bottom).offset(5);

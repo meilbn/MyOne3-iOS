@@ -197,7 +197,9 @@
 }
 
 - (void)moreButtonClicked {
-    
+    [self showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        DDLogDebug(@"menuType = %ld", menuType);
+    }];
 }
 
 #pragma mark - Network Request
@@ -233,6 +235,23 @@
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBHomeView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBHomeViewID];
     [view configureViewWithHomeItem:[self homeItemAtIndex:index] atIndex:index];
+    __weak typeof(self) weakSelf = self;
+    view.clickedButton = ^(MLBButtonType type) {
+        switch (type) {
+            case MLBButtonTypeDiary: {
+                [weakSelf diaryButtonClicked];
+                break;
+            }
+            case MLBButtonTypePraise: {
+                [weakSelf likeButtonClicked];
+                break;
+            }
+            case MLBButtonTypeMore: {
+                [weakSelf moreButtonClicked];
+                break;
+            }
+        }
+    };
     
     return view;
 }
@@ -247,7 +266,6 @@
 }
 
 - (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
-    DDLogDebug(@"index = %ld", index);
     [self updateLikeNumLabelTextWithItemIndex:index];
 }
 

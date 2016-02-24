@@ -60,4 +60,8 @@
 #define MLBCacheMovieListFileName               @"MLBCacheMovieList"
 #define MLBCacheMovieListFilePath               [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheMovieListFileName]
 
+#pragma mark - NSUserDefault
+
+#define MLBLastShowIntroduceVersionAndBuild     @"MLBLastShowIntroduceVersionAndBuild"
+
 #endif /* Constants_h */

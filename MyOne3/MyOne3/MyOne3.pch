@@ -44,4 +44,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #import "MLBUtilities.h"
 #import "MLBHTTPRequester.h"
 
+#pragma mark - NSEnum
+
+typedef NS_ENUM(NSUInteger, MLBButtonType) {
+    MLBButtonTypeDiary,
+    MLBButtonTypePraise,
+    MLBButtonTypeMore,
+};
+
 #endif /* MyOne3_pch */
