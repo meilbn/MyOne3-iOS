@@ -27,10 +27,12 @@
 #define MLBViewControllerBGColor                [UIColor colorWithRed:250 / 255.0 green:252 / 255.0 blue:255 / 255.0 alpha:1]// #FAFCFF
 #define MLBScoreTextColor                       [UIColor colorWithRed:240 / 255.0 green:89 / 255.0 blue:93 / 255.0 alpha:1]// #F0595D
 #define MLBLightBlackTextColor                  [UIColor colorWithWhite:90 / 255.0 alpha:1]// #5A5A5A
+#define MLBDarkBlackTextColor                   [UIColor colorWithWhite:51 / 255.0 alpha:1]// #333333
 #define MLBDarkGrayTextColor                    [UIColor colorWithWhite:173 / 255.0 alpha:1]// #ADADAD
 #define MLBGrayTextColor                        [UIColor colorWithWhite:177 / 255.0 alpha:1]// #B1B1B1
 #define MLBLightGrayTextColor                   [UIColor colorWithWhite:198 / 255.0 alpha:1]// #C6C6C6
 #define MLBSeparatorColor                       [UIColor colorWithWhite:229 / 255.0 alpha:1]// #E5E5E5
+#define MLBShadowColor                          [UIColor colorWithWhite:102 / 255.0 alpha:1]// #666666
 
 #pragma mark - Digital
 
@@ -41,19 +43,21 @@
 
 #pragma mark - Path
 
+#define MLBCacheFilesFolderName                 @"CacheFiles"
+
 // 首页图文列表
 #define MLBCacheHomeItemFileName                @"MLBCacheHomeItem"
-#define MLBCacheHomeItemFilePath                [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheHomeItemFileName]
+#define MLBCacheHomeItemFilePath                [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheHomeItemFileName]
 
 // 阅读轮播列表
 #define MLBCacheReadingCarouselFileName         @"MLBCacheReadingCarousel"
-#define MLBCacheReadingCarouselFilePath         [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheReadingCarouselFileName]
+#define MLBCacheReadingCarouselFilePath         [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadingCarouselFileName]
 // 阅读文章索引列表
 #define MLBCacheReadingIndexFileName            @"MLBCacheReadingIndex"
-#define MLBCacheReadingIndexFilePath            [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheReadingIndexFileName]
+#define MLBCacheReadingIndexFilePath            [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadingIndexFileName]
 
 // 电影列表
 #define MLBCacheMovieListFileName               @"MLBCacheMovieList"
-#define MLBCacheMovieListFilePath               [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheMovieListFileName]
+#define MLBCacheMovieListFilePath               [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheMovieListFileName]
 
 #endif /* Constants_h */

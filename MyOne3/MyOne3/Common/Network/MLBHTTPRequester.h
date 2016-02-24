@@ -27,6 +27,20 @@ typedef void(^FailBlock)(NSError *error);
 // 文章列表
 + (void)requestReadingIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+#pragma mark - Music
+
+// 音乐 ID 列表
++ (void)requestMusicIdListWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 音乐详情
++ (void)requestMusicDetailsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 音乐详情评论点赞数降序排序列表
++ (void)requestMusicDetailsPraiseCommentsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 音乐详情相似歌曲列表
++ (void)requestMusicDetailsRelatedMusicsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Movie
 
 // 获取电影列表

@@ -12,9 +12,15 @@
 
 @interface MLBUIFactory : NSObject
 
+#pragma mark - UIView
+
++ (UIView *)separatorLine;
+
 #pragma mark - UIBUtton
 
 + (UIButton *)buttonWithImageName:(NSString *)imageName highlightImageName:(NSString *)highlightImageName target:(id)target action:(SEL)action;
+
++ (UIButton *)buttonWithImageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName target:(id)target action:(SEL)action;
 
 #pragma mark - MJRefresh
 

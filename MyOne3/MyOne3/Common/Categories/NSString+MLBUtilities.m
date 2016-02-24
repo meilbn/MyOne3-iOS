@@ -83,4 +83,14 @@
     return ceil(rect.size.height);
 }
 
+- (NSAttributedString *)htmlAttributedStringForMusicDetails {
+    NSDictionary *attributes = @{NSFontAttributeName : FontWithSize(15),
+                                 NSForegroundColorAttributeName : MLBDarkBlackTextColor};
+    
+    return [[NSAttributedString alloc] initWithData:[self dataUsingEncoding:NSUnicodeStringEncoding]
+                                            options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
+                                 documentAttributes:&attributes
+                                              error:nil];
+}
+
 @end

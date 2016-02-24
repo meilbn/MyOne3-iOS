@@ -40,6 +40,8 @@ PODS:
   - TPKeyboardAvoiding (1.2.11)
   - UITableView+FDTemplateLayoutCell (1.4)
   - YLGIFImage (0.11)
+  - YYImage (0.9.3)
+  - YYText (0.9.19)
 
 DEPENDENCIES:
   - AAPullToRefresh
@@ -57,6 +59,8 @@ DEPENDENCIES:
   - TPKeyboardAvoiding
   - UITableView+FDTemplateLayoutCell
   - YLGIFImage
+  - YYImage
+  - YYText
 
 SPEC CHECKSUMS:
   AAPullToRefresh: 9170fe976bad38329656fc852ee84f8095d3718e
@@ -74,5 +78,7 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: e5ce146b313de063957bfa75a13f1e9b0ff18ab7
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
+  YYImage: f831ce12f2bf5ce35137f6079a4b9cb4e91eb0ef
+  YYText: b823b71b99b526c4a81029ecb59f3d8172ed5c9a
 
 COCOAPODS: 0.39.0

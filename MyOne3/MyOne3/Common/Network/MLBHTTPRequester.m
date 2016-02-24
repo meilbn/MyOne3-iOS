@@ -33,7 +33,7 @@
 
 + (void)postWithApi:(NSString *)api success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     AFHTTPSessionManager *manager = [MLBHTTPRequester AFHTTPSessionManager];
-//    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [manager POST:[MLBHTTPRequester urlWithApi:api] parameters:nil constructingBodyWithBlock:NULL progress:NULL success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
             successBlock(responseObject);
@@ -48,7 +48,7 @@
 
 + (void)getWithURI:(NSString *)api success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     AFHTTPSessionManager *manager = [MLBHTTPRequester AFHTTPSessionManager];
-//    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [manager GET:[MLBHTTPRequester urlWithApi:api] parameters:nil progress:NULL success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
             successBlock(responseObject);
@@ -80,6 +80,27 @@
 // 文章列表
 + (void)requestReadingIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:MLBApiReadingIndex success:successBlock fail:failBlock];
+}
+
+#pragma mark - Music
+
++ (void)requestMusicIdListWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:MLBApiMusicIdList success:successBlock fail:failBlock];
+}
+
+// 音乐详情
++ (void)requestMusicDetailsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicDetailsById, musicId] success:successBlock fail:failBlock];
+}
+
+// 音乐详情评论点赞数降序排序列表
++ (void)requestMusicDetailsPraiseCommentsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicDetailsCommentsById, musicId] success:successBlock fail:failBlock];
+}
+
+// 音乐详情相似歌曲列表
++ (void)requestMusicDetailsRelatedMusicsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicDetailsRelatedMusicsById, musicId] success:successBlock fail:failBlock];
 }
 
 #pragma mark - Movie

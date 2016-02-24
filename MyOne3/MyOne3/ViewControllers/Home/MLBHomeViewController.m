@@ -90,6 +90,7 @@
             [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self.view);
             }];
+            pagingScrollView.hidden = YES;
             
             pagingScrollView;
         });
@@ -168,6 +169,7 @@
 
 - (void)setDataSource:(NSArray *)dataSource {
     _dataSource = dataSource;
+    _pagingScrollView.hidden = NO;
     [_pagingScrollView reloadData];
     if (dataSource.count > 0) {
         [self updateLikeNumLabelTextWithItemIndex:0];

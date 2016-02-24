@@ -9,7 +9,8 @@
 #import "MLBUtilities.h"
 
 static NSDateFormatter *myOneDateFormatter;
-static NSDateFormatter *loneDateFormatter;
+static NSDateFormatter *longDateFormatter;
+static NSDateFormatter *musicDetailsDateFormatter;
 
 @implementation MLBUtilities
 
@@ -27,14 +28,28 @@ static NSDateFormatter *loneDateFormatter;
     return [myOneDateFormatter stringFromDate:date];
 }
 
-+ (NSDate *)dateWithString:(NSString *)string {
-    if (!loneDateFormatter) {
-        loneDateFormatter = [NSDateFormatter new];
-        loneDateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        loneDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
++ (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString {
+    if (!musicDetailsDateFormatter) {
+        musicDetailsDateFormatter = [NSDateFormatter new];
+        musicDetailsDateFormatter.dateFormat = @"MMM dd,yyyy";
+        musicDetailsDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
     }
     
-    return [loneDateFormatter dateFromString:string];
+    NSDate *date = [MLBUtilities dateWithString:normalDateString];
+    
+    return [musicDetailsDateFormatter stringFromDate:date];
+}
+
+#pragma mark - Date / 日期
+
++ (NSDate *)dateWithString:(NSString *)string {
+    if (!longDateFormatter) {
+        longDateFormatter = [NSDateFormatter new];
+        longDateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        longDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    }
+    
+    return [longDateFormatter dateFromString:string];
 }
 
 @end

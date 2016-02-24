@@ -106,6 +106,7 @@
                 make.top.equalTo(_carouselView.mas_bottom);
                 make.left.bottom.right.equalTo(self.view);
             }];
+            pagingScrollView.hidden = YES;
             
             pagingScrollView;
         });
@@ -122,6 +123,7 @@
     id cacheReadingIndex = [NSKeyedUnarchiver unarchiveObjectWithFile:MLBCacheReadingIndexFilePath];
     if (cacheReadingIndex) {
         readingIndex = cacheReadingIndex;
+        _pagingScrollView.hidden = NO;
         [_pagingScrollView reloadData];
     }
 }
@@ -183,6 +185,7 @@
             NSError *error;
             readingIndex = [MTLJSONAdapter modelOfClass:[MLBReadingIndex class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
+                _pagingScrollView.hidden = NO;
                 [_pagingScrollView reloadData];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

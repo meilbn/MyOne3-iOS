@@ -31,4 +31,6 @@
 // 文字高度
 - (CGFloat)mlb_heightWithFont:(UIFont *)font width:(CGFloat)width;
 
+- (NSAttributedString *)htmlAttributedStringForMusicDetails;
+
 @end

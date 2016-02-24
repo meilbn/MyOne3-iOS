@@ -40,6 +40,8 @@
         
         [self setViewControllers:@[homeNavigationController, readNavigationController, musicNavigationController, movieNavigationController]];
         [self setupTabBar];
+        
+        [self createCacheFilesFolder];
     }
     
     return self;
@@ -70,6 +72,17 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)createCacheFilesFolder {
+    NSString *cacheFilesFolderPath = [NSString stringWithFormat:@"%@/%@", DocumentsDirectory, MLBCacheFilesFolderName];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    BOOL isDirExist = [fileManager fileExistsAtPath:cacheFilesFolderPath isDirectory:&isDir];
+    
+    if(!(isDirExist && isDir)) {
+        [fileManager createDirectoryAtPath:cacheFilesFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
 }
 
 @end

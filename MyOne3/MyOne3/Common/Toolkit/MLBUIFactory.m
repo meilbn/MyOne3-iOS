@@ -11,6 +11,15 @@
 
 @implementation MLBUIFactory
 
+#pragma mark - UIView
+
++ (UIView *)separatorLine {
+    UIView *view = [UIView new];
+    view.backgroundColor = MLBSeparatorColor;
+    
+    return view;
+}
+
 #pragma mark - UIBUtton
 
 + (UIButton *)buttonWithImageName:(NSString *)imageName highlightImageName:(NSString *)highlightImageName target:(id)target action:(SEL)action {
@@ -24,6 +33,15 @@
     }
     
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
+}
+
++ (UIButton *)buttonWithImageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName target:(id)target action:(SEL)action {
+    UIButton *button = [MLBUIFactory buttonWithImageName:imageName highlightImageName:nil target:target action:action];
+    if (IsStringNotEmpty(selectedImageName)) {
+        [button setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateSelected];
+    }
     
     return button;
 }

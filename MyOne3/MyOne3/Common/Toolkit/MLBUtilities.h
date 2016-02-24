@@ -14,6 +14,8 @@
 
 + (NSString *)stringDateFormatWithddMMMyyyyEEEByNormalDateString:(NSString *)normalDateString;
 
++ (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString;
+
 #pragma mark - Date / 日期
 
 + (NSDate *)dateWithString:(NSString *)string;
