@@ -29,6 +29,11 @@
 
 #pragma mark - Lifecycle
 
+- (void)dealloc {
+    pullToRefreshLeft.showPullToRefresh = NO;
+    pullToRefreshRight.showPullToRefresh = NO;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -39,6 +44,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     
     [self initDatas];
     [self setupViews];
@@ -53,99 +59,101 @@
 }
 
 - (void)setupViews {
+    if (_pagingScrollView) {
+        return;
+    }
+    
     UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_home_title"]];
     self.navigationItem.titleView = titleView;
     
     [self addNavigationBarRightItems];
     
-    if (!_pagingScrollView) {
-        __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
+    
+    _pagingScrollView = ({
+        GMCPagingScrollView *pagingScrollView = [GMCPagingScrollView new];
+        pagingScrollView.backgroundColor = MLBViewControllerBGColor;
+        [pagingScrollView registerClass:[MLBHomeView class] forReuseIdentifier:kMLBHomeViewID];
+        pagingScrollView.dataSource = self;
+        pagingScrollView.delegate = self;
+        pagingScrollView.pageInsets = UIEdgeInsetsZero;
+        pagingScrollView.interpageSpacing = 0;
+        pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft actionHandler:^(AAPullToRefresh *v) {
+            [weakSelf refreshHomeMore];
+            [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+        }];
+        pullToRefreshLeft.threshold = 100;
+        pullToRefreshLeft.borderColor = MLBAppThemeColor;
+        pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
+        pullToRefreshLeft.imageIcon = [UIImage new];
         
-        _pagingScrollView = ({
-            GMCPagingScrollView *pagingScrollView = [GMCPagingScrollView new];
-            pagingScrollView.backgroundColor = MLBViewControllerBGColor;
-            [pagingScrollView registerClass:[MLBHomeView class] forReuseIdentifier:kMLBHomeViewID];
-            pagingScrollView.dataSource = self;
-            pagingScrollView.delegate = self;
-            pagingScrollView.pageInsets = UIEdgeInsetsZero;
-            pagingScrollView.interpageSpacing = 0;
-            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft ActionHandler:^(AAPullToRefresh *v) {
-                [weakSelf refreshHomeMore];
-                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
-            }];
-            pullToRefreshLeft.threshold = 100;
-            pullToRefreshLeft.borderColor = MLBAppThemeColor;
-            pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
-            pullToRefreshLeft.imageIcon = [UIImage new];
-            
-            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight ActionHandler:^(AAPullToRefresh *v) {
-                [weakSelf showPreviousList];
-                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
-            }];
-            pullToRefreshRight.borderColor = MLBAppThemeColor;
-            pullToRefreshRight.borderWidth = MLBPullToRefreshBorderWidth;
-            pullToRefreshRight.imageIcon = [UIImage new];
-            
-            [self.view addSubview:pagingScrollView];
-            [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self.view);
-            }];
-            pagingScrollView.hidden = YES;
-            
-            pagingScrollView;
-        });
+        pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight actionHandler:^(AAPullToRefresh *v) {
+            [weakSelf showPreviousList];
+            [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+        }];
+        pullToRefreshRight.borderColor = MLBAppThemeColor;
+        pullToRefreshRight.borderWidth = MLBPullToRefreshBorderWidth;
+        pullToRefreshRight.imageIcon = [UIImage new];
         
-        _diaryButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:@"diary_normal" highlightImageName:nil target:self action:@selector(diaryButtonClicked)];
-            [_pagingScrollView insertSubview:button atIndex:0];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.size.sizeOffset(CGSizeMake(66, 44));
-                make.left.equalTo(_pagingScrollView).offset(8);
-                make.bottom.equalTo(_pagingScrollView).offset(-25);
-            }];
-            
-            button;
-        });
+        [self.view addSubview:pagingScrollView];
+        [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        pagingScrollView.hidden = YES;
         
-        _moreButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:@"more_normal" highlightImageName:@"more_highlighted" target:self action:@selector(moreButtonClicked)];
-            [_pagingScrollView insertSubview:button atIndex:1];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_pagingScrollView).offset(-8);
-                make.bottom.equalTo(_pagingScrollView).offset(-25);
-            }];
-            
-            button;
-        });
+        pagingScrollView;
+    });
+    
+    _diaryButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"diary_normal" highlightImageName:nil target:self action:@selector(diaryButtonClicked)];
+        [_pagingScrollView insertSubview:button atIndex:0];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.sizeOffset(CGSizeMake(66, 44));
+            make.left.equalTo(_pagingScrollView).offset(8);
+            make.bottom.equalTo(_pagingScrollView).offset(-73);
+        }];
         
-        _likeNumLabel = ({
-            UILabel *label = [UILabel new];
-            label.textColor = MLBDarkGrayTextColor;
-            label.font = FontWithSize(11);
-            [_pagingScrollView insertSubview:label atIndex:2];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_moreButton.mas_left);
-                make.bottom.equalTo(_pagingScrollView).offset(-25);
-            }];
-            
-            label;
-        });
+        button;
+    });
+    
+    _moreButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"more_normal" highlightImageName:@"more_highlighted" target:self action:@selector(moreButtonClicked)];
+        [_pagingScrollView insertSubview:button atIndex:1];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_pagingScrollView).offset(-8);
+            make.bottom.equalTo(_diaryButton);
+        }];
         
-        _likeButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
-            [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
-            [_pagingScrollView insertSubview:button atIndex:3];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_likeNumLabel.mas_left);
-                make.bottom.equalTo(_pagingScrollView).offset(-25);
-            }];
-            
-            button;
-        });
-    }
+        button;
+    });
+    
+    _likeNumLabel = ({
+        UILabel *label = [UILabel new];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(11);
+        [_pagingScrollView insertSubview:label atIndex:2];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_moreButton.mas_left);
+            make.bottom.equalTo(_diaryButton);
+        }];
+        
+        label;
+    });
+    
+    _likeButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
+        [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        [_pagingScrollView insertSubview:button atIndex:3];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_likeNumLabel.mas_left);
+            make.bottom.equalTo(_diaryButton);
+        }];
+        
+        button;
+    });
 }
 
 - (void)loadCache {
@@ -171,6 +179,8 @@
     _dataSource = dataSource;
     _pagingScrollView.hidden = NO;
     [_pagingScrollView reloadData];
+    // 防止加载出来前用户滑动而跳转到了最后一个
+    [_pagingScrollView setCurrentPageIndex:0];
     if (dataSource.count > 0) {
         [self updateLikeNumLabelTextWithItemIndex:0];
     }
@@ -189,7 +199,7 @@
 }
 
 - (void)diaryButtonClicked {
-    
+    [self presentLoginOptsViewController];
 }
 
 - (void)likeButtonClicked {
@@ -234,24 +244,24 @@
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBHomeView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBHomeViewID];
-    [view configureViewWithHomeItem:[self homeItemAtIndex:index] atIndex:index];
-    __weak typeof(self) weakSelf = self;
-    view.clickedButton = ^(MLBButtonType type) {
-        switch (type) {
-            case MLBButtonTypeDiary: {
-                [weakSelf diaryButtonClicked];
-                break;
-            }
-            case MLBButtonTypePraise: {
-                [weakSelf likeButtonClicked];
-                break;
-            }
-            case MLBButtonTypeMore: {
-                [weakSelf moreButtonClicked];
-                break;
-            }
-        }
-    };
+    [view configureViewWithHomeItem:[self homeItemAtIndex:index] atIndex:index inViewController:self];
+//    __weak typeof(self) weakSelf = self;
+//    view.clickedButton = ^(MLBActionType type) {
+//        switch (type) {
+//            case MLBActionTypeDiary: {
+//                [weakSelf diaryButtonClicked];
+//                break;
+//            }
+//            case MLBActionTypePraise: {
+//                [weakSelf likeButtonClicked];
+//                break;
+//            }
+//            case MLBActionTypeMore: {
+//                [weakSelf moreButtonClicked];
+//                break;
+//            }
+//        }
+//    };
     
     return view;
 }

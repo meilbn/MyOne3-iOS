@@ -52,7 +52,7 @@
         [self addSubview:self.iconImageView];
         
         _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(48, 0, 1, 48)];
-        _separatorLine.backgroundColor = [UIColor clearColor];
+        _separatorLine.backgroundColor = [UIColor colorWithWhite:0 alpha:0.05];
         [self addSubview:_separatorLine];
     }
     

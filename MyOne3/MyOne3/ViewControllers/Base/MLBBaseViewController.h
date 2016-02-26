@@ -21,6 +21,8 @@ typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 
 @interface MLBBaseViewController : UIViewController
 
+@property (nonatomic, assign) BOOL hideNavigationBar;
+
 #pragma mark - HUD
 
 - (void)showHUDWithText:(NSString *)text delay:(NSTimeInterval)delay;
@@ -44,5 +46,11 @@ typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 - (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData;
 
 - (void)showPopMenuViewWithMenuSelectedBlock:(MenuSelectedBlock)block;
+
+#pragma mark - Action
+
+- (void)presentLoginOptsViewController;
+
+- (void)blowUpImage:(UIImage *)image referenceRect:(CGRect)referenceRect referenceView:(UIView *)referenceView;
 
 @end

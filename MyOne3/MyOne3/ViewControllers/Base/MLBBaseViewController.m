@@ -9,16 +9,13 @@
 #import "MLBBaseViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <MJRefresh/MJRefresh.h>
-//#import "MLBPopMenuView.h"
-//#import "XHRealTimeBlur.h"
 #import "PopMenu.h"
 #import "MenuButton.h"
+#import "MLBLiginOptsViewController.h"
 
 @interface MLBBaseViewController ()
 
 @property (strong, nonatomic) YLImageView *playerView;
-//@property (strong, nonatomic) XHRealTimeBlur *realTimeBlur;
-//@property (strong, nonatomic) MLBPopMenuView *popMenuView;
 @property (strong, nonatomic) PopMenu *popMenu;
 
 @end
@@ -40,17 +37,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = MLBViewControllerBGColor;
-    self.automaticallyAdjustsScrollViewInsets = YES;
     // 设置标题栏不能覆盖下面 ViewController 的内容
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    self.navigationController.navigationBar.hidden = _hideNavigationBar;
     
     [self initDatas];
     [self setupViews];
 }
 
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    self.navigationController.navigationBar.hidden = _hideNavigationBar;
+//}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.hidesBottomBarWhenPushed = YES;
+    self.navigationController.navigationBar.hidden = _hideNavigationBar;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -215,6 +219,26 @@
 
 - (void)plantButtonClicked {
     
+}
+
+- (void)presentLoginOptsViewController {
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[MLBLiginOptsViewController alloc] init]];
+//    nav.navigationBar.hidden = YES;
+    [self presentViewController:nav animated:YES completion:NULL];
+}
+
+- (void)blowUpImage:(UIImage *)image referenceRect:(CGRect)referenceRect referenceView:(UIView *)referenceView {
+    // Create image info
+    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
+    imageInfo.image = image;
+    imageInfo.referenceRect = referenceRect;
+    imageInfo.referenceView = referenceView;
+    
+    // Setup view controller
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc] initWithImageInfo:imageInfo mode:JTSImageViewControllerMode_Image backgroundStyle:JTSImageViewControllerBackgroundOption_Blurred];
+    
+    // Present the view controller.
+    [imageViewer showFromViewController:kKeyWindow.rootViewController transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
 
 @end

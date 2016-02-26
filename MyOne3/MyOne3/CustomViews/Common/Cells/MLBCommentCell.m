@@ -63,148 +63,150 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
 }
 
 - (void)setupViews {
-    if (!_userView) {
-        _userView = ({
-            UIView *view = [UIView new];
-            view.backgroundColor = [UIColor whiteColor];
-            [self.contentView addSubview:view];
-            [view mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.top.right.equalTo(self.contentView);
-            }];
-            
-            view;
-        });
-        
-        _userAvatarView = ({
-            UIImageView *imageView = [UIImageView new];
-            imageView.backgroundColor = [UIColor whiteColor];
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
-            imageView.layer.cornerRadius = 18;
-            imageView.clipsToBounds = YES;
-            [_userView addSubview:imageView];
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@36);
-                make.left.top.equalTo(_userView).offset(12);
-            }];
-            
-            imageView;
-        });
-        
-        _usernameLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBAppThemeColor;
-            label.font = FontWithSize(12);
-            [_userView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(_userAvatarView.mas_right).offset(12);
-                make.centerY.equalTo(_userAvatarView);
-            }];
-            
-            label;
-        });
-        
-        _dateLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = [UIColor colorWithWhite:184 / 255.0 alpha:1];// #B8B8B8
-            label.font = FontWithSize(12);
-            [_userView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_userAvatarView);
-                make.right.equalTo(_userView).offset(-12);
-            }];
-            
-            label;
-        });
-        
-        _praiseNumLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = _dateLabel.textColor;
-            label.font = FontWithSize(12);
-            [_userView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_dateLabel.mas_bottom);
-                make.right.equalTo(_dateLabel);
-            }];
-            
-            label;
-        });
-        
-        _praiseButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
-            [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
-            [_userView addSubview:button];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_praiseNumLabel.mas_left);
-                make.top.equalTo(_dateLabel.mas_bottom).offset(-13);
-                make.bottom.equalTo(_userView);
-            }];
-            
-            button;
-        });
-        
-        _scoreLabel = ({
-            UILabel *label = [UILabel new];
-            label.textColor = MLBScoreTextColor;
-            label.font = ScoreFontWithSize(20);
-            [_userView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_praiseButton);
-                make.right.equalTo(_praiseButton.mas_left).offset(-20);
-            }];
-            
-            label;
-        });
-        
-        _officialPlotView = ({
-            UIImageView *imageView = [UIImageView new];
-            imageView.image = [UIImage imageNamed:@"officalPlot"];
-            [_userView addSubview:imageView];
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.size.sizeOffset(CGSizeMake(55, 49));
-                make.centerY.equalTo(_usernameLabel);
-                make.left.equalTo(_usernameLabel.mas_right).offset(8);
-            }];
-            imageView.hidden = YES;
-            
-            imageView;
-        });
-        
-        _replyContentLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor colorWithWhite:242 / 255.0 alpha:1];// #F2F2F2
-            label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
-            label.font = FontWithSize(11);
-            label.numberOfLines = 0;
-            [self.contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_userView.mas_bottom);
-                make.left.equalTo(self.contentView).offset(60);
-                make.right.equalTo(self.contentView).offset(-12);
-            }];
-            
-            label;
-        });
-        
-        _contentLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = [UIColor blackColor];
-            label.font = FontWithSize(13);
-            label.numberOfLines = 0;
-            [self.contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_replyContentLabel.mas_bottom);
-                make.left.right.equalTo(_replyContentLabel);
-                make.bottom.equalTo(self.contentView).offset(-4);
-            }];
-            
-            label;
-        });
+    if (_userView) {
+        return;
     }
+    
+    _userView = ({
+        UIView *view = [UIView new];
+        view.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.right.equalTo(self.contentView);
+        }];
+        
+        view;
+    });
+    
+    _userAvatarView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.layer.cornerRadius = 18;
+        imageView.clipsToBounds = YES;
+        [_userView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@36);
+            make.left.top.equalTo(_userView).offset(12);
+        }];
+        
+        imageView;
+    });
+    
+    _usernameLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBAppThemeColor;
+        label.font = FontWithSize(12);
+        [_userView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_userAvatarView.mas_right).offset(12);
+            make.centerY.equalTo(_userAvatarView);
+        }];
+        
+        label;
+    });
+    
+    _dateLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = [UIColor colorWithWhite:184 / 255.0 alpha:1];// #B8B8B8
+        label.font = FontWithSize(12);
+        [_userView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_userAvatarView);
+            make.right.equalTo(_userView).offset(-12);
+        }];
+        
+        label;
+    });
+    
+    _praiseNumLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = _dateLabel.textColor;
+        label.font = FontWithSize(12);
+        [_userView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_dateLabel.mas_bottom);
+            make.right.equalTo(_dateLabel);
+        }];
+        
+        label;
+    });
+    
+    _praiseButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
+        [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        [_userView addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_praiseNumLabel.mas_left);
+            make.top.equalTo(_dateLabel.mas_bottom).offset(-12);
+            make.bottom.equalTo(_userView);
+        }];
+        
+        button;
+    });
+    
+    _scoreLabel = ({
+        UILabel *label = [UILabel new];
+        label.textColor = MLBScoreTextColor;
+        label.font = ScoreFontWithSize(20);
+        [_userView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_praiseButton);
+            make.right.equalTo(_praiseButton.mas_left).offset(-20);
+        }];
+        
+        label;
+    });
+    
+    _officialPlotView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.image = [UIImage imageNamed:@"officalPlot"];
+        [_userView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.sizeOffset(CGSizeMake(55, 49));
+            make.centerY.equalTo(_usernameLabel);
+            make.left.equalTo(_usernameLabel.mas_right).offset(8);
+        }];
+        imageView.hidden = YES;
+        
+        imageView;
+    });
+    
+    _replyContentLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor colorWithWhite:242 / 255.0 alpha:1];// #F2F2F2
+        label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+        label.font = FontWithSize(11);
+        label.numberOfLines = 0;
+        [self.contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_userView.mas_bottom);
+            make.left.equalTo(self.contentView).offset(60);
+            make.right.equalTo(self.contentView).offset(-12);
+        }];
+        
+        label;
+    });
+    
+    _contentLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = [UIColor blackColor];
+        label.font = FontWithSize(13);
+        label.numberOfLines = 0;
+        [self.contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_replyContentLabel.mas_bottom);
+            make.left.right.equalTo(_replyContentLabel);
+            make.bottom.equalTo(self.contentView).offset(-8);
+        }];
+        
+        label;
+    });
 }
 
 #pragma mark - Action

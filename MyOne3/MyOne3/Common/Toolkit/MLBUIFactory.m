@@ -46,6 +46,21 @@
     return button;
 }
 
++ (UIButton *)buttonWithBackgroundImageName:(NSString *)imageName highlightImageName:(NSString *)highlightImageName target:(id)target action:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    if (IsStringNotEmpty(imageName)) {
+        [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    }
+    
+    if (IsStringNotEmpty(highlightImageName)) {
+        [button setBackgroundImage:[UIImage imageNamed:highlightImageName] forState:UIControlStateHighlighted];
+    }
+    
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
+}
+
 #pragma mark - MJRefresh
 
 + (void)addMJRefreshTo:(UIScrollView *)scrollView target:(id)target refreshAction:(SEL)refreshAction loadMoreAction:(SEL)loadMoreAction {

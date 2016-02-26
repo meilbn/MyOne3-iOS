@@ -23,6 +23,7 @@
 #import "UIColor+MLBUtilities.h"
 #import "UIView+Frame.h"
 #import "UIImageView+MLBSDImageLoader.h"
+#import "UIImage+Common.h"
 
 #pragma mark - Framework
 
@@ -30,13 +31,15 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <YLGIFImage/YLGIFImage.h>
 #import <YLGIFImage/YLImageView.h>
-//#import <KMNavigationBarTransition/UIViewController+KMNavigationBarTransition.h>
+#import <KMNavigationBarTransition/UIViewController+KMNavigationBarTransition.h>
 #import <GMCPagingScrollView/GMCPagingScrollView.h>
-#import <AAPullToRefresh/AAPullToRefresh.h>
+#import "AAPullToRefresh.h"
 
 #define LOG_LEVEL_DEF ddLogLevel
 #import <CocoaLumberjack/CocoaLumberjack.h>
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
+
+#import <JTSImageViewController/JTSImageViewController.h>
 
 #pragma mark - Other
 
@@ -46,10 +49,20 @@ static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 #pragma mark - NSEnum
 
-typedef NS_ENUM(NSUInteger, MLBButtonType) {
-    MLBButtonTypeDiary,
-    MLBButtonTypePraise,
-    MLBButtonTypeMore,
+typedef NS_ENUM(NSUInteger, MLBActionType) {
+    MLBActionTypeDiary,
+    MLBActionTypePraise,
+    MLBActionTypeMore,
 };
+
+typedef NS_ENUM(NSUInteger, MLBReadType) {
+    MLBReadTypeEssay,
+    MLBReadTypeSerial,
+    MLBReadTypeQuestion,
+};
+
+#pragma mark - Block
+
+typedef void(^CommonActionBlock)(void);
 
 #endif /* MyOne3_pch */

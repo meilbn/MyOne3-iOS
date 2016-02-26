@@ -50,11 +50,11 @@
 #define MLBCacheHomeItemFilePath                [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheHomeItemFileName]
 
 // 阅读轮播列表
-#define MLBCacheReadingCarouselFileName         @"MLBCacheReadingCarousel"
-#define MLBCacheReadingCarouselFilePath         [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadingCarouselFileName]
+#define MLBCacheReadCarouselFileName            @"MLBCacheReadCarousel"
+#define MLBCacheReadCarouselFilePath            [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadCarouselFileName]
 // 阅读文章索引列表
-#define MLBCacheReadingIndexFileName            @"MLBCacheReadingIndex"
-#define MLBCacheReadingIndexFilePath            [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadingIndexFileName]
+#define MLBCacheReadIndexFileName               @"MLBCacheReadIndex"
+#define MLBCacheReadIndexFilePath               [NSString stringWithFormat:@"%@/%@/%@", DocumentsDirectory, MLBCacheFilesFolderName, MLBCacheReadIndexFileName]
 
 // 电影列表
 #define MLBCacheMovieListFileName               @"MLBCacheMovieList"

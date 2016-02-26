@@ -8,6 +8,7 @@
 
 #import "MLBHomeView.h"
 #import "MLBHomeItem.h"
+#import "MLBBaseViewController.h"
 
 NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 
@@ -32,9 +33,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 
 @end
 
-@implementation MLBHomeView {
-    NSInteger viewIndex;
-}
+@implementation MLBHomeView
 
 #pragma mark - LifeCycle
 
@@ -71,225 +70,248 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 #pragma mark - Private Method
 
 - (void)setupViews {
-    if (!_scrollView) {
-        self.backgroundColor = [UIColor clearColor];
+    if (_scrollView) {
+        return;
+    }
+    
+    self.backgroundColor = [UIColor clearColor];
+    
+    _scrollView = ({
+        UIScrollView *scrollView = [UIScrollView new];
+        scrollView.showsVerticalScrollIndicator = NO;
+        [self addSubview:scrollView];
+        [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
         
-        _scrollView = ({
-            UIScrollView *scrollView = [UIScrollView new];
-            scrollView.showsVerticalScrollIndicator = NO;
-            [self addSubview:scrollView];
-            [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
-            }];
-            
-            scrollView;
-        });
+        scrollView;
+    });
+    
+    _diaryButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(diaryButtonClicked)];
+        [_scrollView addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.sizeOffset(CGSizeMake(66, 44));
+            make.left.equalTo(_scrollView).offset(8);
+            make.bottom.equalTo(self).offset(-73);
+        }];
         
-        _diaryButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(diaryButtonClicked)];
-            [_scrollView addSubview:button];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.size.sizeOffset(CGSizeMake(66, 44));
-                make.left.equalTo(_scrollView).offset(8);
-                make.bottom.equalTo(self).offset(-25);
-            }];
-            
-            button;
-        });
+        button;
+    });
+    
+    _moreButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(moreButtonClicked)];
+        [_scrollView addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_scrollView).offset(-8);
+            make.bottom.equalTo(_diaryButton);
+        }];
         
-        _moreButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(moreButtonClicked)];
-            [_scrollView addSubview:button];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_scrollView).offset(-8);
-                make.bottom.equalTo(_diaryButton);
-            }];
-            
-            button;
-        });
+        button;
+    });
+    
+    _likeNumLabel = ({
+        UILabel *label = [UILabel new];
+        [_scrollView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_moreButton.mas_left);
+            make.bottom.equalTo(_diaryButton);
+        }];
         
-        _likeNumLabel = ({
-            UILabel *label = [UILabel new];
-            [_scrollView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_moreButton.mas_left);
-                make.bottom.equalTo(_diaryButton);
-            }];
-            
-            label;
-        });
+        label;
+    });
+    
+    _likeButton = ({
+        UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(likeButtonClicked)];
+        [_scrollView addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(_likeNumLabel.mas_left);
+            make.bottom.equalTo(_diaryButton);
+        }];
         
-        _likeButton = ({
-            UIButton *button = [MLBUIFactory buttonWithImageName:nil highlightImageName:nil target:self action:@selector(likeButtonClicked)];
-            [_scrollView addSubview:button];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_likeNumLabel.mas_left);
-                make.bottom.equalTo(_diaryButton);
-            }];
-            
-            button;
-        });
+        button;
+    });
+    
+    _contentView = ({
+        UIView *view = [UIView new];
+        view.backgroundColor = [UIColor whiteColor];
+        view.layer.shadowColor = MLBShadowColor.CGColor;// #666666
+        view.layer.shadowRadius = 2;
+        view.layer.shadowOffset = CGSizeZero;
+        view.layer.shadowOpacity = 0.5;
+        view.layer.cornerRadius = 5;
+        [_scrollView addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_scrollView).insets(UIEdgeInsetsMake(76, 12, 184, 12));
+            make.width.equalTo(@(SCREEN_WIDTH - 24));
+        }];
         
-        _contentView = ({
-            UIView *view = [UIView new];
-            view.backgroundColor = [UIColor whiteColor];
-            view.layer.shadowColor = MLBShadowColor.CGColor;// #666666
-            view.layer.shadowRadius = 2;
-            view.layer.shadowOffset = CGSizeZero;
-            view.layer.shadowOpacity = 0.5;
-            view.layer.cornerRadius = 5;
-            [_scrollView addSubview:view];
-            [view mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_scrollView).insets(UIEdgeInsetsMake(12, 12, 135, 12));
-                make.width.equalTo(@(SCREEN_WIDTH - 24));
-            }];
-            
-            view;
-        });
+        view;
+    });
+    
+    _coverView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.clipsToBounds = YES;
+        imageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coverTapped)];
+        [imageView addGestureRecognizer:tap];
+        [_contentView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.right.equalTo(_contentView).insets(UIEdgeInsetsMake(6, 6, 0, 6));
+            make.height.equalTo(imageView.mas_width).multipliedBy(0.75);
+        }];
         
-        _coverView = ({
-            UIImageView *imageView = [UIImageView new];
-            imageView.backgroundColor = [UIColor whiteColor];
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [_contentView addSubview:imageView];
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.top.right.equalTo(_contentView).insets(UIEdgeInsetsMake(6, 6, 0, 6));
-                make.height.equalTo(imageView.mas_width).multipliedBy(0.75);
-            }];
-            
-            imageView;
-        });
+        imageView;
+    });
+    
+    _titleLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBGrayTextColor;
+        label.font = FontWithSize(10);
+        label.textAlignment = NSTextAlignmentRight;
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_coverView.mas_bottom).offset(8);
+            make.left.right.equalTo(_coverView);
+        }];
         
-        _titleLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBGrayTextColor;
-            label.font = FontWithSize(10);
-            label.textAlignment = NSTextAlignmentRight;
-            [_contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_coverView.mas_bottom).offset(8);
-                make.left.right.equalTo(_coverView);
-            }];
-            
-            label;
-        });
+        label;
+    });
+    
+    _weatherView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_contentView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@24);
+            make.top.equalTo(_titleLabel.mas_bottom).offset(30);
+            make.left.equalTo(_coverView);
+        }];
         
-        _weatherView = ({
-            UIImageView *imageView = [UIImageView new];
-            imageView.backgroundColor = [UIColor whiteColor];
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [_contentView addSubview:imageView];
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@24);
-                make.top.equalTo(_titleLabel.mas_bottom).offset(30);
-                make.left.equalTo(_coverView);
-            }];
-            
-            imageView;
-        });
+        imageView;
+    });
+    
+    _temperatureLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(24);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(_weatherView);
+            make.left.equalTo(_weatherView.mas_right).offset(10);
+        }];
         
-        _temperatureLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBDarkGrayTextColor;
-            label.font = FontWithSize(24);
-            [_contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.bottom.equalTo(_weatherView);
-                make.left.equalTo(_weatherView.mas_right).offset(10);
-            }];
-            
-            label;
-        });
+        label;
+    });
+    
+    _locationLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(12);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_temperatureLabel.mas_right);
+            make.bottom.equalTo(_temperatureLabel);
+        }];
         
-        _locationLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBDarkGrayTextColor;
-            label.font = FontWithSize(12);
-            [_contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(_temperatureLabel.mas_right);
-                make.bottom.equalTo(_temperatureLabel);
-            }];
-            
-            label;
-        });
+        label;
+    });
+    
+    _dateLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(12);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.greaterThanOrEqualTo(_locationLabel.mas_right);
+            make.right.equalTo(_coverView);
+            make.bottom.equalTo(_locationLabel);
+        }];
         
-        _dateLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBDarkGrayTextColor;
-            label.font = FontWithSize(12);
-            [_contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.greaterThanOrEqualTo(_locationLabel.mas_right);
-                make.right.equalTo(_coverView);
-                make.bottom.equalTo(_locationLabel);
-            }];
-            
-            label;
-        });
+        label;
+    });
+    
+    _contentTextView = ({
+        UITextView *textView = [UITextView new];
+        textView.backgroundColor = [UIColor whiteColor];
+        textView.textColor = MLBLightBlackTextColor;
+        textView.font = FontWithSize(14);
+        textView.editable = NO;
+        [_contentView addSubview:textView];
+        [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_dateLabel.mas_bottom).offset(10);
+            make.left.right.equalTo(_coverView);
+            _textViewHeightConstraint = make.height.equalTo(@0);
+        }];
         
-        _contentTextView = ({
-            UITextView *textView = [UITextView new];
-            textView.backgroundColor = [UIColor whiteColor];
-            textView.textColor = MLBLightBlackTextColor;
-            textView.font = FontWithSize(14);
-            textView.editable = NO;
-            [_contentView addSubview:textView];
-            [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_dateLabel.mas_bottom).offset(10);
-                make.left.right.equalTo(_coverView);
-                _textViewHeightConstraint = make.height.equalTo(@0);
-            }];
-            
-            textView;
-        });
+        textView;
+    });
+    
+    _volLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBLightGrayTextColor;
+        label.font = FontWithSize(11);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_contentTextView.mas_bottom).offset(30);
+            make.right.equalTo(_contentTextView);
+            make.bottom.equalTo(_contentView).offset(-12);
+        }];
         
-        _volLabel = ({
-            UILabel *label = [UILabel new];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = MLBLightGrayTextColor;
-            label.font = FontWithSize(11);
-            [_contentView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_contentTextView.mas_bottom).offset(30);
-                make.right.equalTo(_contentTextView);
-                make.bottom.equalTo(_contentView).offset(-12);
-            }];
-            
-            label;
-        });
+        label;
+    });
+}
+
+#pragma mark - Action
+
+- (void)coverTapped {
+    if (self.parentViewController) {
+        [self.parentViewController blowUpImage:_coverView.image referenceRect:_coverView.frame referenceView:_coverView.superview];
     }
 }
 
 - (void)diaryButtonClicked {
     if (_clickedButton) {
-        _clickedButton(MLBButtonTypeDiary);
+        _clickedButton(MLBActionTypeDiary);
     }
 }
 
 - (void)likeButtonClicked {
     if (_clickedButton) {
-        _clickedButton(MLBButtonTypePraise);
+        _clickedButton(MLBActionTypePraise);
     }
 }
 
 - (void)moreButtonClicked {
     if (_clickedButton) {
-        _clickedButton(MLBButtonTypeMore);
+        _clickedButton(MLBActionTypeMore);
+    } else if (self.parentViewController) {
+        [self.parentViewController showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+            DDLogDebug(@"menuType = %ld", menuType);
+        }];
     }
 }
 
 #pragma mark - Public Method
 
 - (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index {
-    viewIndex = index;
+    [self configureViewWithHomeItem:homeItem atIndex:index inViewController:nil];
+}
+
+- (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController {
+    self.viewIndex = index;
+    self.parentViewController = parentViewController;
     [_coverView mlb_sd_setImageWithURL:homeItem.imageURL placeholderImageName:@"home_cover_placeholder"];
     _titleLabel.text = homeItem.authorName;
     _weatherView.image = [UIImage imageNamed:@"light_rain"];

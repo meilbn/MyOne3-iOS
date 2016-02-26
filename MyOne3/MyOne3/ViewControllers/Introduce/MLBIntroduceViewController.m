@@ -60,67 +60,68 @@
 }
 
 - (void)setupViews {
-    if (!_scrollView) {
-        _scrollView = ({
-            UIScrollView *scrollView = [UIScrollView new];
-            scrollView.backgroundColor = MLBViewControllerBGColor;
-            scrollView.pagingEnabled = YES;
-            scrollView.showsVerticalScrollIndicator = NO;
-            scrollView.showsHorizontalScrollIndicator = NO;
-            scrollView.contentSize = CGSizeMake(SCREEN_WIDTH * gifNames.count, 0);
-            scrollView.delegate = self;
-            [self.view addSubview:scrollView];
-            [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self.view);
-            }];
-            
-            scrollView;
-        });
-        
-        _yyImageView0 = [YYAnimatedImageView new];
-        _yyImageView1 = [YYAnimatedImageView new];
-        _yyImageView2 = [YYAnimatedImageView new];
-        _yyImageView3 = [YYAnimatedImageView new];
-        yyImageViews = @[_yyImageView0, _yyImageView1, _yyImageView2, _yyImageView3];
-        
-        for (NSInteger i = 0; i < gifNames.count; i++) {
-            YYAnimatedImageView *imageView = yyImageViews[i];
-            imageView.autoPlayAnimatedImage = NO;
-            imageView.frame = CGRectMake(i * SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [_scrollView addSubview:imageView];
-        }
-        
-        _pageControl = ({
-            UIPageControl *pageControl = [UIPageControl new];
-            pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"6D7B90" andAlpha:0.78];
-            pageControl.currentPageIndicatorTintColor = [UIColor colorWithRGBHex:0x6D7B90];
-            pageControl.numberOfPages = gifNames.count;
-            [pageControl addTarget:self action:@selector(pageControlDidChanged) forControlEvents:UIControlEventValueChanged];
-            [self.view addSubview:pageControl];
-            [pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.view);
-                make.bottom.equalTo(self.view).offset(-100);
-            }];
-            
-            pageControl;
-        });
-        
-        _entryButton = ({
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [button setBackgroundImage:[UIImage imageNamed:@"skip"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(entry) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:button];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.size.sizeOffset(CGSizeMake(134, 46));
-                make.center.equalTo(_pageControl);
-            }];
-            
-            button;
-        });
-        
-        _entryButton.alpha = 0;
+    if (_scrollView) {
+        return;
     }
+    
+    _scrollView = ({
+        UIScrollView *scrollView = [UIScrollView new];
+        scrollView.backgroundColor = MLBViewControllerBGColor;
+        scrollView.pagingEnabled = YES;
+        scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH * gifNames.count, 0);
+        scrollView.delegate = self;
+        [self.view addSubview:scrollView];
+        [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        
+        scrollView;
+    });
+    
+    _yyImageView0 = [YYAnimatedImageView new];
+    _yyImageView1 = [YYAnimatedImageView new];
+    _yyImageView2 = [YYAnimatedImageView new];
+    _yyImageView3 = [YYAnimatedImageView new];
+    yyImageViews = @[_yyImageView0, _yyImageView1, _yyImageView2, _yyImageView3];
+    
+    for (NSInteger i = 0; i < gifNames.count; i++) {
+        YYAnimatedImageView *imageView = yyImageViews[i];
+        imageView.autoPlayAnimatedImage = NO;
+        imageView.frame = CGRectMake(i * SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_scrollView addSubview:imageView];
+    }
+    
+    _pageControl = ({
+        UIPageControl *pageControl = [UIPageControl new];
+        pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"6D7B90" andAlpha:0.78];
+        pageControl.currentPageIndicatorTintColor = [UIColor colorWithRGBHex:0x6D7B90];
+        pageControl.numberOfPages = gifNames.count;
+        [pageControl addTarget:self action:@selector(pageControlDidChanged) forControlEvents:UIControlEventValueChanged];
+        [self.view addSubview:pageControl];
+        [pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view);
+            make.bottom.equalTo(self.view).offset(-100);
+        }];
+        
+        pageControl;
+    });
+    
+    _entryButton = ({
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setBackgroundImage:[UIImage imageNamed:@"skip"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(entry) forControlEvents:UIControlEventTouchUpInside];
+        button.alpha = 0;
+        [self.view addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.sizeOffset(CGSizeMake(134, 46));
+            make.center.equalTo(_pageControl);
+        }];
+        
+        button;
+    });
 }
 
 - (void)playCurrentAnimation {

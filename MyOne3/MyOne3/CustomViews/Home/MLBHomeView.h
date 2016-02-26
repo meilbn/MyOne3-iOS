@@ -6,16 +6,18 @@
 //  Copyright © 2016 meilbn. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "MLBBaseView.h"
 
 FOUNDATION_EXPORT NSString *const kMLBHomeViewID;
 
 @class MLBHomeItem;
 
-@interface MLBHomeView : UIView
+@interface MLBHomeView : MLBBaseView
 
-@property (nonatomic, copy) void (^clickedButton)(MLBButtonType type);
+@property (nonatomic, copy) void (^clickedButton)(MLBActionType type);
 
 - (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index;
+
+- (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController;
 
 @end

@@ -12,6 +12,7 @@
 		230CC8CB1C7B450500EAA09C /* MLBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8CA1C7B450500EAA09C /* MLBUtilities.m */; };
 		2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2345EAFA1C7B554900F20BDF /* MLBMusicView.m */; };
 		2357A7611C7D72E70036F7DC /* MLBNoneMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */; };
+		238557FB1C80507200848919 /* AAPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 238557FA1C80507200848919 /* AAPullToRefresh.m */; };
 		239536971C7DA03B00FFA93C /* XHRealTimeBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 239536961C7DA03B00FFA93C /* XHRealTimeBlur.m */; };
 		239536A41C7DA77200FFA93C /* GlowImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2395369D1C7DA77200FFA93C /* GlowImageView.m */; };
 		239536A51C7DA77200FFA93C /* MenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2395369F1C7DA77200FFA93C /* MenuButton.m */; };
@@ -48,14 +49,25 @@
 		23AA05CE1C78BFD00043ACE7 /* MLBMusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AA05CD1C78BFD00043ACE7 /* MLBMusicViewController.m */; };
 		23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AA05D01C78BFE50043ACE7 /* MLBMovieViewController.m */; };
 		23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23AB7F531C79DE8F00EF21EA /* Bradley Hand Bold.ttf */; };
-		23AB7F581C79EB1C00EF21EA /* MLBReadingCarouselItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F571C79EB1C00EF21EA /* MLBReadingCarouselItem.m */; };
-		23AB7F5B1C79F04000EF21EA /* MLBReadingIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F5A1C79F04000EF21EA /* MLBReadingIndex.m */; };
-		23AB7F5E1C79F0B700EF21EA /* MLBReadingEssay.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F5D1C79F0B700EF21EA /* MLBReadingEssay.m */; };
 		23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F611C79F12B00EF21EA /* MLBAuthor.m */; };
-		23AB7F651C79F28800EF21EA /* MLBReadingSerial.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F641C79F28800EF21EA /* MLBReadingSerial.m */; };
-		23AB7F681C79F3C800EF21EA /* MLBReadingQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F671C79F3C800EF21EA /* MLBReadingQuestion.m */; };
-		23AB7F6B1C79F73000EF21EA /* MLBReadingBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F6A1C79F73000EF21EA /* MLBReadingBaseView.m */; };
-		23AB7F6F1C79FA0E00EF21EA /* MLBReadingBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F6E1C79FA0E00EF21EA /* MLBReadingBaseCell.m */; };
+		23AD5FB81C7FEDE200D80701 /* MLBReadDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */; };
+		23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBA1C7FEDF300D80701 /* MLBReadCarouselItem.m */; };
+		23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBC1C7FEDF300D80701 /* MLBReadEssay.m */; };
+		23AD5FC51C7FEDF300D80701 /* MLBReadIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBE1C7FEDF300D80701 /* MLBReadIndex.m */; };
+		23AD5FC61C7FEDF300D80701 /* MLBReadQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FC01C7FEDF300D80701 /* MLBReadQuestion.m */; };
+		23AD5FC71C7FEDF300D80701 /* MLBReadSerial.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FC21C7FEDF300D80701 /* MLBReadSerial.m */; };
+		23AD5FCD1C7FEE9500D80701 /* MLBReadBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FCA1C7FEE9500D80701 /* MLBReadBaseCell.m */; };
+		23AD5FCE1C7FEE9500D80701 /* MLBReadBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FCC1C7FEE9500D80701 /* MLBReadBaseView.m */; };
+		23AD5FD11C7FF87200D80701 /* MLBReadDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FD01C7FF87200D80701 /* MLBReadDetailsView.m */; };
+		23AD5FD41C7FFBD000D80701 /* MLBChargeEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FD31C7FFBD000D80701 /* MLBChargeEditorView.m */; };
+		23AD5FDA1C80000500D80701 /* MZSelectableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FD71C80000500D80701 /* MZSelectableLabel.m */; };
+		23AD5FDB1C80000500D80701 /* UIColor+Equalable.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FD91C80000500D80701 /* UIColor+Equalable.m */; };
+		23AD5FDE1C8027CD00D80701 /* MLBReadEssayDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FDD1C8027CD00D80701 /* MLBReadEssayDetails.m */; };
+		23B585451C7EF81200B325AF /* MLBBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B585441C7EF81200B325AF /* MLBBaseView.m */; };
+		23BFAC7E1C8088670014A977 /* MLBReadSerialDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BFAC7D1C8088670014A977 /* MLBReadSerialDetails.m */; };
+		23BFAC811C808C590014A977 /* MLBReadQuestionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BFAC801C808C590014A977 /* MLBReadQuestionDetails.m */; };
+		23BFAC841C809F4D0014A977 /* MLBCommentsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BFAC831C809F4D0014A977 /* MLBCommentsFooterView.m */; };
+		23BFAC871C809FD20014A977 /* MLBCommentsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BFAC861C809FD20014A977 /* MLBCommentsHeaderView.m */; };
 		23C73CCD1C7C944900B9F412 /* MLBCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C73CCC1C7C944900B9F412 /* MLBCommentCell.m */; };
 		23C73CD11C7CA40500B9F412 /* MLBRelatedMusicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C73CD01C7CA40500B9F412 /* MLBRelatedMusicCell.m */; };
 		23E176381C7C467E0052B2A9 /* MLBCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E176371C7C467E0052B2A9 /* MLBCommentList.m */; };
@@ -63,6 +75,9 @@
 		23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E1763D1C7C47CA0052B2A9 /* MLBUser.m */; };
 		23E176411C7C4A6E0052B2A9 /* MLBRelatedMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E176401C7C4A6E0052B2A9 /* MLBRelatedMusic.m */; };
 		23FA09391C7C0C0A0068C97D /* MLBMusicDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FA09381C7C0C0A0068C97D /* MLBMusicDetails.m */; };
+		23FC0B711C7E9A310019A16E /* MLBLiginOptsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FC0B701C7E9A310019A16E /* MLBLiginOptsViewController.m */; };
+		23FC0B751C7EABDF0019A16E /* UIImage+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FC0B741C7EABDF0019A16E /* UIImage+Common.m */; };
+		23FC0B781C7EBFD00019A16E /* MLBPoilcyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FC0B771C7EBFD00019A16E /* MLBPoilcyViewController.m */; };
 		FBEEFD0C7290C70F09C3741C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE35E8E8B042DD82FB5F3253 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +93,8 @@
 		2345EAFA1C7B554900F20BDF /* MLBMusicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicView.m; sourceTree = "<group>"; };
 		2357A75F1C7D72E70036F7DC /* MLBNoneMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBNoneMessageCell.h; sourceTree = "<group>"; };
 		2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBNoneMessageCell.m; sourceTree = "<group>"; };
+		238557F91C80507200848919 /* AAPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPullToRefresh.h; sourceTree = "<group>"; };
+		238557FA1C80507200848919 /* AAPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPullToRefresh.m; sourceTree = "<group>"; };
 		239536951C7DA03B00FFA93C /* XHRealTimeBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHRealTimeBlur.h; sourceTree = "<group>"; };
 		239536961C7DA03B00FFA93C /* XHRealTimeBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHRealTimeBlur.m; sourceTree = "<group>"; };
 		2395369C1C7DA77200FFA93C /* GlowImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlowImageView.h; sourceTree = "<group>"; };
@@ -144,22 +161,44 @@
 		23AA05D01C78BFE50043ACE7 /* MLBMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMovieViewController.m; sourceTree = "<group>"; };
 		23AA05D21C78C4880043ACE7 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		23AB7F531C79DE8F00EF21EA /* Bradley Hand Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bradley Hand Bold.ttf"; sourceTree = "<group>"; };
-		23AB7F561C79EB1C00EF21EA /* MLBReadingCarouselItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingCarouselItem.h; sourceTree = "<group>"; };
-		23AB7F571C79EB1C00EF21EA /* MLBReadingCarouselItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingCarouselItem.m; sourceTree = "<group>"; };
-		23AB7F591C79F04000EF21EA /* MLBReadingIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingIndex.h; sourceTree = "<group>"; };
-		23AB7F5A1C79F04000EF21EA /* MLBReadingIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingIndex.m; sourceTree = "<group>"; };
-		23AB7F5C1C79F0B700EF21EA /* MLBReadingEssay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingEssay.h; sourceTree = "<group>"; };
-		23AB7F5D1C79F0B700EF21EA /* MLBReadingEssay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingEssay.m; sourceTree = "<group>"; };
 		23AB7F601C79F12B00EF21EA /* MLBAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBAuthor.h; sourceTree = "<group>"; };
 		23AB7F611C79F12B00EF21EA /* MLBAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBAuthor.m; sourceTree = "<group>"; };
-		23AB7F631C79F28800EF21EA /* MLBReadingSerial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingSerial.h; sourceTree = "<group>"; };
-		23AB7F641C79F28800EF21EA /* MLBReadingSerial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingSerial.m; sourceTree = "<group>"; };
-		23AB7F661C79F3C800EF21EA /* MLBReadingQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingQuestion.h; sourceTree = "<group>"; };
-		23AB7F671C79F3C800EF21EA /* MLBReadingQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingQuestion.m; sourceTree = "<group>"; };
-		23AB7F691C79F73000EF21EA /* MLBReadingBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingBaseView.h; sourceTree = "<group>"; };
-		23AB7F6A1C79F73000EF21EA /* MLBReadingBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingBaseView.m; sourceTree = "<group>"; };
-		23AB7F6D1C79FA0E00EF21EA /* MLBReadingBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadingBaseCell.h; sourceTree = "<group>"; };
-		23AB7F6E1C79FA0E00EF21EA /* MLBReadingBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadingBaseCell.m; sourceTree = "<group>"; };
+		23AD5FB61C7FEDE200D80701 /* MLBReadDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadDetailsViewController.h; sourceTree = "<group>"; };
+		23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadDetailsViewController.m; sourceTree = "<group>"; };
+		23AD5FB91C7FEDF300D80701 /* MLBReadCarouselItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadCarouselItem.h; sourceTree = "<group>"; };
+		23AD5FBA1C7FEDF300D80701 /* MLBReadCarouselItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadCarouselItem.m; sourceTree = "<group>"; };
+		23AD5FBB1C7FEDF300D80701 /* MLBReadEssay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadEssay.h; sourceTree = "<group>"; };
+		23AD5FBC1C7FEDF300D80701 /* MLBReadEssay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadEssay.m; sourceTree = "<group>"; };
+		23AD5FBD1C7FEDF300D80701 /* MLBReadIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadIndex.h; sourceTree = "<group>"; };
+		23AD5FBE1C7FEDF300D80701 /* MLBReadIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadIndex.m; sourceTree = "<group>"; };
+		23AD5FBF1C7FEDF300D80701 /* MLBReadQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadQuestion.h; sourceTree = "<group>"; };
+		23AD5FC01C7FEDF300D80701 /* MLBReadQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadQuestion.m; sourceTree = "<group>"; };
+		23AD5FC11C7FEDF300D80701 /* MLBReadSerial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadSerial.h; sourceTree = "<group>"; };
+		23AD5FC21C7FEDF300D80701 /* MLBReadSerial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadSerial.m; sourceTree = "<group>"; };
+		23AD5FC91C7FEE9500D80701 /* MLBReadBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadBaseCell.h; sourceTree = "<group>"; };
+		23AD5FCA1C7FEE9500D80701 /* MLBReadBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadBaseCell.m; sourceTree = "<group>"; };
+		23AD5FCB1C7FEE9500D80701 /* MLBReadBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadBaseView.h; sourceTree = "<group>"; };
+		23AD5FCC1C7FEE9500D80701 /* MLBReadBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadBaseView.m; sourceTree = "<group>"; };
+		23AD5FCF1C7FF87200D80701 /* MLBReadDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadDetailsView.h; sourceTree = "<group>"; };
+		23AD5FD01C7FF87200D80701 /* MLBReadDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadDetailsView.m; sourceTree = "<group>"; };
+		23AD5FD21C7FFBD000D80701 /* MLBChargeEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBChargeEditorView.h; sourceTree = "<group>"; };
+		23AD5FD31C7FFBD000D80701 /* MLBChargeEditorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBChargeEditorView.m; sourceTree = "<group>"; };
+		23AD5FD61C80000500D80701 /* MZSelectableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZSelectableLabel.h; sourceTree = "<group>"; };
+		23AD5FD71C80000500D80701 /* MZSelectableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZSelectableLabel.m; sourceTree = "<group>"; };
+		23AD5FD81C80000500D80701 /* UIColor+Equalable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Equalable.h"; sourceTree = "<group>"; };
+		23AD5FD91C80000500D80701 /* UIColor+Equalable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Equalable.m"; sourceTree = "<group>"; };
+		23AD5FDC1C8027CD00D80701 /* MLBReadEssayDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadEssayDetails.h; sourceTree = "<group>"; };
+		23AD5FDD1C8027CD00D80701 /* MLBReadEssayDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadEssayDetails.m; sourceTree = "<group>"; };
+		23B585431C7EF81200B325AF /* MLBBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBBaseView.h; sourceTree = "<group>"; };
+		23B585441C7EF81200B325AF /* MLBBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBBaseView.m; sourceTree = "<group>"; };
+		23BFAC7C1C8088670014A977 /* MLBReadSerialDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadSerialDetails.h; sourceTree = "<group>"; };
+		23BFAC7D1C8088670014A977 /* MLBReadSerialDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadSerialDetails.m; sourceTree = "<group>"; };
+		23BFAC7F1C808C590014A977 /* MLBReadQuestionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadQuestionDetails.h; sourceTree = "<group>"; };
+		23BFAC801C808C590014A977 /* MLBReadQuestionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadQuestionDetails.m; sourceTree = "<group>"; };
+		23BFAC821C809F4D0014A977 /* MLBCommentsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBCommentsFooterView.h; sourceTree = "<group>"; };
+		23BFAC831C809F4D0014A977 /* MLBCommentsFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentsFooterView.m; sourceTree = "<group>"; };
+		23BFAC851C809FD20014A977 /* MLBCommentsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBCommentsHeaderView.h; sourceTree = "<group>"; };
+		23BFAC861C809FD20014A977 /* MLBCommentsHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentsHeaderView.m; sourceTree = "<group>"; };
 		23C73CCB1C7C944900B9F412 /* MLBCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBCommentCell.h; sourceTree = "<group>"; };
 		23C73CCC1C7C944900B9F412 /* MLBCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentCell.m; sourceTree = "<group>"; };
 		23C73CCF1C7CA40500B9F412 /* MLBRelatedMusicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBRelatedMusicCell.h; sourceTree = "<group>"; };
@@ -174,6 +213,12 @@
 		23E176401C7C4A6E0052B2A9 /* MLBRelatedMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBRelatedMusic.m; sourceTree = "<group>"; };
 		23FA09371C7C0C0A0068C97D /* MLBMusicDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMusicDetails.h; sourceTree = "<group>"; };
 		23FA09381C7C0C0A0068C97D /* MLBMusicDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicDetails.m; sourceTree = "<group>"; };
+		23FC0B6F1C7E9A310019A16E /* MLBLiginOptsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBLiginOptsViewController.h; sourceTree = "<group>"; };
+		23FC0B701C7E9A310019A16E /* MLBLiginOptsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBLiginOptsViewController.m; sourceTree = "<group>"; };
+		23FC0B731C7EABDF0019A16E /* UIImage+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Common.h"; sourceTree = "<group>"; };
+		23FC0B741C7EABDF0019A16E /* UIImage+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Common.m"; sourceTree = "<group>"; };
+		23FC0B761C7EBFD00019A16E /* MLBPoilcyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBPoilcyViewController.h; sourceTree = "<group>"; };
+		23FC0B771C7EBFD00019A16E /* MLBPoilcyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBPoilcyViewController.m; sourceTree = "<group>"; };
 		AE35E8E8B042DD82FB5F3253 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD56C7CB2A277632076FF04B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +235,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		238557F81C80507200848919 /* AAPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				238557F91C80507200848919 /* AAPullToRefresh.h */,
+				238557FA1C80507200848919 /* AAPullToRefresh.m */,
+			);
+			path = AAPullToRefresh;
+			sourceTree = "<group>";
+		};
 		239536941C7DA03B00FFA93C /* XHRealTimeBlur */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +370,8 @@
 		23AA059A1C78BCC70043ACE7 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				23FC0B731C7EABDF0019A16E /* UIImage+Common.h */,
+				23FC0B741C7EABDF0019A16E /* UIImage+Common.m */,
 				23AA05BF1C78BE390043ACE7 /* UIView+Frame.h */,
 				23AA05C01C78BE390043ACE7 /* UIView+Frame.m */,
 				23AA059B1C78BCC70043ACE7 /* MTLModel+MANullableScalar.h */,
@@ -378,6 +434,8 @@
 			children = (
 				239F03371C79847E00B03AF3 /* MLBBaseCell.h */,
 				239F03381C79847E00B03AF3 /* MLBBaseCell.m */,
+				23B585431C7EF81200B325AF /* MLBBaseView.h */,
+				23B585441C7EF81200B325AF /* MLBBaseView.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -412,9 +470,11 @@
 		23AA05AA1C78BCC70043ACE7 /* Read */ = {
 			isa = PBXGroup;
 			children = (
-				23AB7F6C1C79F9EE00EF21EA /* Cells */,
-				23AB7F691C79F73000EF21EA /* MLBReadingBaseView.h */,
-				23AB7F6A1C79F73000EF21EA /* MLBReadingBaseView.m */,
+				23AD5FC81C7FEE9500D80701 /* Cells */,
+				23AD5FCB1C7FEE9500D80701 /* MLBReadBaseView.h */,
+				23AD5FCC1C7FEE9500D80701 /* MLBReadBaseView.m */,
+				23AD5FCF1C7FF87200D80701 /* MLBReadDetailsView.h */,
+				23AD5FD01C7FF87200D80701 /* MLBReadDetailsView.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -473,16 +533,22 @@
 		23AA05B01C78BCC70043ACE7 /* Read */ = {
 			isa = PBXGroup;
 			children = (
-				23AB7F561C79EB1C00EF21EA /* MLBReadingCarouselItem.h */,
-				23AB7F571C79EB1C00EF21EA /* MLBReadingCarouselItem.m */,
-				23AB7F591C79F04000EF21EA /* MLBReadingIndex.h */,
-				23AB7F5A1C79F04000EF21EA /* MLBReadingIndex.m */,
-				23AB7F5C1C79F0B700EF21EA /* MLBReadingEssay.h */,
-				23AB7F5D1C79F0B700EF21EA /* MLBReadingEssay.m */,
-				23AB7F631C79F28800EF21EA /* MLBReadingSerial.h */,
-				23AB7F641C79F28800EF21EA /* MLBReadingSerial.m */,
-				23AB7F661C79F3C800EF21EA /* MLBReadingQuestion.h */,
-				23AB7F671C79F3C800EF21EA /* MLBReadingQuestion.m */,
+				23AD5FB91C7FEDF300D80701 /* MLBReadCarouselItem.h */,
+				23AD5FBA1C7FEDF300D80701 /* MLBReadCarouselItem.m */,
+				23AD5FBD1C7FEDF300D80701 /* MLBReadIndex.h */,
+				23AD5FBE1C7FEDF300D80701 /* MLBReadIndex.m */,
+				23AD5FBB1C7FEDF300D80701 /* MLBReadEssay.h */,
+				23AD5FBC1C7FEDF300D80701 /* MLBReadEssay.m */,
+				23AD5FDC1C8027CD00D80701 /* MLBReadEssayDetails.h */,
+				23AD5FDD1C8027CD00D80701 /* MLBReadEssayDetails.m */,
+				23AD5FC11C7FEDF300D80701 /* MLBReadSerial.h */,
+				23AD5FC21C7FEDF300D80701 /* MLBReadSerial.m */,
+				23BFAC7C1C8088670014A977 /* MLBReadSerialDetails.h */,
+				23BFAC7D1C8088670014A977 /* MLBReadSerialDetails.m */,
+				23AD5FBF1C7FEDF300D80701 /* MLBReadQuestion.h */,
+				23AD5FC01C7FEDF300D80701 /* MLBReadQuestion.m */,
+				23BFAC7F1C808C590014A977 /* MLBReadQuestionDetails.h */,
+				23BFAC801C808C590014A977 /* MLBReadQuestionDetails.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -490,6 +556,8 @@
 		23AA05B11C78BCC70043ACE7 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				238557F81C80507200848919 /* AAPullToRefresh */,
+				23AD5FD51C80000500D80701 /* MZSelectableLabel */,
 				239536941C7DA03B00FFA93C /* XHRealTimeBlur */,
 				2395369B1C7DA77200FFA93C /* PopMenu */,
 			);
@@ -502,6 +570,7 @@
 				23AA05B31C78BCC70043ACE7 /* Base */,
 				239536AC1C7DCF8400FFA93C /* Introduce */,
 				23AA05C21C78BF020043ACE7 /* TabBar */,
+				23FC0B6E1C7E9A0B0019A16E /* LoginRegister */,
 				23AA05B41C78BCC70043ACE7 /* Home */,
 				23AA05B71C78BCC70043ACE7 /* Read */,
 				23AA05B61C78BCC70043ACE7 /* Music */,
@@ -551,6 +620,8 @@
 			children = (
 				23AA05C91C78BFC20043ACE7 /* MLBReadViewController.h */,
 				23AA05CA1C78BFC20043ACE7 /* MLBReadViewController.m */,
+				23AD5FB61C7FEDE200D80701 /* MLBReadDetailsViewController.h */,
+				23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -587,19 +658,36 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		23AB7F6C1C79F9EE00EF21EA /* Cells */ = {
+		23AD5FC81C7FEE9500D80701 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				23AB7F6D1C79FA0E00EF21EA /* MLBReadingBaseCell.h */,
-				23AB7F6E1C79FA0E00EF21EA /* MLBReadingBaseCell.m */,
+				23AD5FC91C7FEE9500D80701 /* MLBReadBaseCell.h */,
+				23AD5FCA1C7FEE9500D80701 /* MLBReadBaseCell.m */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		23AD5FD51C80000500D80701 /* MZSelectableLabel */ = {
+			isa = PBXGroup;
+			children = (
+				23AD5FD61C80000500D80701 /* MZSelectableLabel.h */,
+				23AD5FD71C80000500D80701 /* MZSelectableLabel.m */,
+				23AD5FD81C80000500D80701 /* UIColor+Equalable.h */,
+				23AD5FD91C80000500D80701 /* UIColor+Equalable.m */,
+			);
+			path = MZSelectableLabel;
 			sourceTree = "<group>";
 		};
 		23C73CC91C7C93B700B9F412 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				23C73CCA1C7C93B700B9F412 /* Cells */,
+				23AD5FD21C7FFBD000D80701 /* MLBChargeEditorView.h */,
+				23AD5FD31C7FFBD000D80701 /* MLBChargeEditorView.m */,
+				23BFAC851C809FD20014A977 /* MLBCommentsHeaderView.h */,
+				23BFAC861C809FD20014A977 /* MLBCommentsHeaderView.m */,
+				23BFAC821C809F4D0014A977 /* MLBCommentsFooterView.h */,
+				23BFAC831C809F4D0014A977 /* MLBCommentsFooterView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -622,6 +710,17 @@
 				23C73CD01C7CA40500B9F412 /* MLBRelatedMusicCell.m */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		23FC0B6E1C7E9A0B0019A16E /* LoginRegister */ = {
+			isa = PBXGroup;
+			children = (
+				23FC0B6F1C7E9A310019A16E /* MLBLiginOptsViewController.h */,
+				23FC0B701C7E9A310019A16E /* MLBLiginOptsViewController.m */,
+				23FC0B761C7EBFD00019A16E /* MLBPoilcyViewController.h */,
+				23FC0B771C7EBFD00019A16E /* MLBPoilcyViewController.m */,
+			);
+			path = LoginRegister;
 			sourceTree = "<group>";
 		};
 		2A2917239ECE56534122759F /* Frameworks */ = {
@@ -773,47 +872,62 @@
 				239536971C7DA03B00FFA93C /* XHRealTimeBlur.m in Sources */,
 				239F03321C79790200B03AF3 /* MLBMovieListItem.m in Sources */,
 				239F032F1C7977E000B03AF3 /* MLBBaseModel.m in Sources */,
-				23AB7F651C79F28800EF21EA /* MLBReadingSerial.m in Sources */,
 				23C73CD11C7CA40500B9F412 /* MLBRelatedMusicCell.m in Sources */,
+				23AD5FDA1C80000500D80701 /* MZSelectableLabel.m in Sources */,
 				23AA05CB1C78BFC20043ACE7 /* MLBReadViewController.m in Sources */,
 				23C73CCD1C7C944900B9F412 /* MLBCommentCell.m in Sources */,
 				23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */,
 				239536A61C7DA77200FFA93C /* MenuItem.m in Sources */,
 				23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */,
-				23AB7F5E1C79F0B700EF21EA /* MLBReadingEssay.m in Sources */,
+				23AD5FD11C7FF87200D80701 /* MLBReadDetailsView.m in Sources */,
 				23AA05C81C78BFB40043ACE7 /* MLBHomeViewController.m in Sources */,
 				230CC8C51C7B30FC00EAA09C /* MLBHomeItem.m in Sources */,
+				23AD5FCD1C7FEE9500D80701 /* MLBReadBaseCell.m in Sources */,
 				239F033C1C79852300B03AF3 /* MLBMovieListItemCell.m in Sources */,
 				23AA05BA1C78BCC70043ACE7 /* UIColor+MLBUtilities.m in Sources */,
 				2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */,
+				23FC0B711C7E9A310019A16E /* MLBLiginOptsViewController.m in Sources */,
+				23BFAC811C808C590014A977 /* MLBReadQuestionDetails.m in Sources */,
 				239536A71C7DA77200FFA93C /* PopMenu.m in Sources */,
-				23AB7F6F1C79FA0E00EF21EA /* MLBReadingBaseCell.m in Sources */,
-				23AB7F681C79F3C800EF21EA /* MLBReadingQuestion.m in Sources */,
-				23AB7F6B1C79F73000EF21EA /* MLBReadingBaseView.m in Sources */,
+				23BFAC841C809F4D0014A977 /* MLBCommentsFooterView.m in Sources */,
+				23AD5FC61C7FEDF300D80701 /* MLBReadQuestion.m in Sources */,
+				23AD5FD41C7FFBD000D80701 /* MLBChargeEditorView.m in Sources */,
 				23E176381C7C467E0052B2A9 /* MLBCommentList.m in Sources */,
 				23FA09391C7C0C0A0068C97D /* MLBMusicDetails.m in Sources */,
+				23AD5FDE1C8027CD00D80701 /* MLBReadEssayDetails.m in Sources */,
 				23AA05B91C78BCC70043ACE7 /* NSString+MLBUtilities.m in Sources */,
 				239536AF1C7DCF8400FFA93C /* MLBIntroduceViewController.m in Sources */,
 				230CC8CB1C7B450500EAA09C /* MLBUtilities.m in Sources */,
+				23B585451C7EF81200B325AF /* MLBBaseView.m in Sources */,
+				23AD5FC51C7FEDF300D80701 /* MLBReadIndex.m in Sources */,
 				239536A41C7DA77200FFA93C /* GlowImageView.m in Sources */,
 				23AA05CE1C78BFD00043ACE7 /* MLBMusicViewController.m in Sources */,
+				23AD5FB81C7FEDE200D80701 /* MLBReadDetailsViewController.m in Sources */,
 				239F033F1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.m in Sources */,
 				239F03351C797C6500B03AF3 /* MLBHTTPRequester.m in Sources */,
+				23FC0B781C7EBFD00019A16E /* MLBPoilcyViewController.m in Sources */,
 				230CC8C81C7B33D300EAA09C /* MLBHomeView.m in Sources */,
+				23FC0B751C7EABDF0019A16E /* UIImage+Common.m in Sources */,
 				239F03391C79847E00B03AF3 /* MLBBaseCell.m in Sources */,
+				23AD5FC71C7FEDF300D80701 /* MLBReadSerial.m in Sources */,
 				23AA05861C78A77C0043ACE7 /* AppDelegate.m in Sources */,
+				23BFAC7E1C8088670014A977 /* MLBReadSerialDetails.m in Sources */,
 				239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */,
 				239536A51C7DA77200FFA93C /* MenuButton.m in Sources */,
 				23E1763B1C7C471A0052B2A9 /* MLBComment.m in Sources */,
+				23AD5FCE1C7FEE9500D80701 /* MLBReadBaseView.m in Sources */,
 				23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */,
-				23AB7F5B1C79F04000EF21EA /* MLBReadingIndex.m in Sources */,
+				238557FB1C80507200848919 /* AAPullToRefresh.m in Sources */,
+				23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */,
 				23E176411C7C4A6E0052B2A9 /* MLBRelatedMusic.m in Sources */,
 				23AA05C51C78BF2F0043ACE7 /* MLBTabBarController.m in Sources */,
 				23AA05C11C78BE390043ACE7 /* UIView+Frame.m in Sources */,
 				23AA05BD1C78BD0D0043ACE7 /* MLBBaseViewController.m in Sources */,
-				23AB7F581C79EB1C00EF21EA /* MLBReadingCarouselItem.m in Sources */,
 				23AA05831C78A77C0043ACE7 /* main.m in Sources */,
+				23BFAC871C809FD20014A977 /* MLBCommentsHeaderView.m in Sources */,
 				23AA05B81C78BCC70043ACE7 /* MTLModel+MANullableScalar.m in Sources */,
+				23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */,
+				23AD5FDB1C80000500D80701 /* UIColor+Equalable.m in Sources */,
 				2357A7611C7D72E70036F7DC /* MLBNoneMessageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

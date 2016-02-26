@@ -7,7 +7,6 @@
 //
 
 #import "MLBHTTPRequester.h"
-#import "MLBApiConstants.h"
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 
@@ -63,6 +62,16 @@
 
 #pragma mark - Public Class Method
 
+#pragma mark - Common
+
++ (void)requestCommentsWithType:(NSString *)type itemId:(NSString *)itemId offset:(NSInteger)offset success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetComments, MLBApiEssay, itemId, [@(offset) stringValue]] success:successBlock fail:failBlock];
+}
+
++ (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetReadDetails, type, itemId] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Home Page
 
 // 首页图文列表
@@ -70,16 +79,31 @@
     [MLBHTTPRequester getWithURI:MLBApiHomePageMore success:successBlock fail:failBlock];
 }
 
-#pragma mark - Reading
+#pragma mark - Read
 
 // 头部轮播列表
-+ (void)requestReadingCarouselWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
++ (void)requestReadCarouselWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:MLBApiReadingCarousel success:successBlock fail:failBlock];
 }
 
 // 文章列表
-+ (void)requestReadingIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
++ (void)requestReadIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:MLBApiReadingIndex success:successBlock fail:failBlock];
+}
+
+// 短篇文章详情
++ (void)requestEssayDetailsById:(NSString *)essayId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiEssayDetailsById, essayId] success:successBlock fail:failBlock];
+}
+
+// 短篇文章评论列表
++ (void)requestEssayCommentsById:(NSString *)essayId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester requestCommentsWithType:MLBApiEssay itemId:essayId offset:0 success:successBlock fail:failBlock];
+}
+
+// 短篇文章相关列表
++ (void)requestEssayRelatedsById:(NSString *)essayId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, MLBApiEssay, essayId] success:successBlock fail:failBlock];
 }
 
 #pragma mark - Music
@@ -95,12 +119,12 @@
 
 // 音乐详情评论点赞数降序排序列表
 + (void)requestMusicDetailsPraiseCommentsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
-    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicDetailsCommentsById, musicId] success:successBlock fail:failBlock];
+    [MLBHTTPRequester requestCommentsWithType:MLBApiMusic itemId:musicId offset:0 success:successBlock fail:failBlock];
 }
 
 // 音乐详情相似歌曲列表
 + (void)requestMusicDetailsRelatedMusicsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
-    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicDetailsRelatedMusicsById, musicId] success:successBlock fail:failBlock];
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, MLBApiMusic, musicId] success:successBlock fail:failBlock];
 }
 
 #pragma mark - Movie

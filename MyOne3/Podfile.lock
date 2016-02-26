@@ -1,5 +1,4 @@
 PODS:
-  - AAPullToRefresh (1.0.2)
   - AFNetworking (3.0.4):
     - AFNetworking/NSURLSession (= 3.0.4)
     - AFNetworking/Reachability (= 3.0.4)
@@ -24,6 +23,7 @@ PODS:
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
   - GMCPagingScrollView (1.0.3)
+  - JTSImageViewController (1.5.1)
   - KMNavigationBarTransition (0.0.4)
   - Mantle (2.0.6):
     - Mantle/extobjc (= 2.0.6)
@@ -45,10 +45,10 @@ PODS:
   - YYText (0.9.19)
 
 DEPENDENCIES:
-  - AAPullToRefresh
   - AFNetworking
   - CocoaLumberjack
   - GMCPagingScrollView
+  - JTSImageViewController
   - KMNavigationBarTransition
   - Mantle
   - Masonry
@@ -65,10 +65,10 @@ DEPENDENCIES:
   - YYText
 
 SPEC CHECKSUMS:
-  AAPullToRefresh: 9170fe976bad38329656fc852ee84f8095d3718e
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   GMCPagingScrollView: 32285a8e2c0162a4709dfcb4fefb0b9896f87db2
+  JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   KMNavigationBarTransition: f121665408fb74fc2cf40541b06a8b578d69fc2d
   Mantle: 299966b00759634931699f69cb6a30b9239b944d
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2

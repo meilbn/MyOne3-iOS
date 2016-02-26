@@ -53,21 +53,23 @@ NSString *const kMLBNoneMessageCellID = @"MLBNoneMessageCellID";
 }
 
 - (void)setupViews {
-    if (!_hintView) {
-        self.contentView.backgroundColor = [UIColor whiteColor];
-        
-        _hintView = ({
-            UIImageView *imageView = [UIImageView new];
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            imageView.image = [UIImage imageNamed:@"sofa_image"];
-            [self.contentView addSubview:imageView];
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self.contentView);
-            }];
-            
-            imageView;
-        });
+    if (_hintView) {
+        return;
     }
+    
+    self.contentView.backgroundColor = [UIColor whiteColor];
+    
+    _hintView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.image = [UIImage imageNamed:@"sofa_image"];
+        [self.contentView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+        
+        imageView;
+    });
 }
 
 @end

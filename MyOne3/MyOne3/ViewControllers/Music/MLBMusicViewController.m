@@ -24,6 +24,11 @@
 
 #pragma mark - Lifecycle
 
+- (void)dealloc {
+    pullToRefreshLeft.showPullToRefresh = NO;
+    pullToRefreshRight.showPullToRefresh = NO;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -48,6 +53,10 @@
 }
 
 - (void)setupViews {
+    if (_pagingScrollView) {
+        return;
+    }
+    
     [self addNavigationBarRightItems];
     
     UIButton *librariesButton = [MLBUIFactory buttonWithImageName:@"nav_music_libraries_normal" highlightImageName:@"nav_music_libraries_highlighted" target:self action:@selector(librariesButtonClicked)];
@@ -55,43 +64,41 @@
     UIBarButtonItem *librariesItem = [[UIBarButtonItem alloc] initWithCustomView:librariesButton];
     self.navigationItem.leftBarButtonItem = librariesItem;
     
-    if (!_pagingScrollView) {
-        __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
+    
+    _pagingScrollView = ({
+        GMCPagingScrollView *pagingScrollView = [GMCPagingScrollView new];
+        pagingScrollView.backgroundColor = MLBViewControllerBGColor;
+        [pagingScrollView registerClass:[MLBMusicView class] forReuseIdentifier:kMLBMusicViewID];
+        pagingScrollView.dataSource = self;
+        pagingScrollView.delegate = self;
+        pagingScrollView.pageInsets = UIEdgeInsetsZero;
+        pagingScrollView.interpageSpacing = 0;
+        pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft actionHandler:^(AAPullToRefresh *v) {
+            [weakSelf refreshHomeMore];
+            [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+        }];
+        pullToRefreshLeft.threshold = 100;
+        pullToRefreshLeft.borderColor = MLBAppThemeColor;
+        pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
+        pullToRefreshLeft.imageIcon = [UIImage new];
         
-        _pagingScrollView = ({
-            GMCPagingScrollView *pagingScrollView = [GMCPagingScrollView new];
-            pagingScrollView.backgroundColor = MLBViewControllerBGColor;
-            [pagingScrollView registerClass:[MLBMusicView class] forReuseIdentifier:kMLBMusicViewID];
-            pagingScrollView.dataSource = self;
-            pagingScrollView.delegate = self;
-            pagingScrollView.pageInsets = UIEdgeInsetsZero;
-            pagingScrollView.interpageSpacing = 0;
-            pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft ActionHandler:^(AAPullToRefresh *v) {
-                [weakSelf refreshHomeMore];
-                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
-            }];
-            pullToRefreshLeft.threshold = 100;
-            pullToRefreshLeft.borderColor = MLBAppThemeColor;
-            pullToRefreshLeft.borderWidth = MLBPullToRefreshBorderWidth;
-            pullToRefreshLeft.imageIcon = [UIImage new];
-            
-            pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight ActionHandler:^(AAPullToRefresh *v) {
-                [weakSelf showPreviousList];
-                [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
-            }];
-            pullToRefreshRight.borderColor = MLBAppThemeColor;
-            pullToRefreshRight.borderWidth = MLBPullToRefreshBorderWidth;
-            pullToRefreshRight.imageIcon = [UIImage new];
-            
-            [self.view addSubview:pagingScrollView];
-            [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self.view);
-            }];
-            pagingScrollView.hidden = YES;
-            
-            pagingScrollView;
-        });
-    }
+        pullToRefreshRight = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionRight actionHandler:^(AAPullToRefresh *v) {
+            [weakSelf showPreviousList];
+            [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
+        }];
+        pullToRefreshRight.borderColor = MLBAppThemeColor;
+        pullToRefreshRight.borderWidth = MLBPullToRefreshBorderWidth;
+        pullToRefreshRight.imageIcon = [UIImage new];
+        
+        [self.view addSubview:pagingScrollView];
+        [pagingScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        pagingScrollView.hidden = YES;
+        
+        pagingScrollView;
+    });
 }
 
 #pragma mark - Action
@@ -120,6 +127,8 @@
                 if (dataSource.count > 0) {
                     _pagingScrollView.hidden = NO;
                     [_pagingScrollView reloadData];
+                    // 防止加载出来前用户滑动而跳转到了最后一个
+                    [_pagingScrollView setCurrentPageIndex:0];
                 }
             } else {
                 [self showHUDErrorWithText:@"获取数据失败"];
@@ -139,9 +148,11 @@
 }
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
-    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
     MLBMusicView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBMusicViewID];
-    [view configureViewWithMusicId:dataSource[index] atIndex:index];
+    [view prepareForReuse];
+    if (index == 0) {
+        [view configureViewWithMusicId:dataSource[index] atIndex:index inViewController:self];
+    }
     
     return view;
 }
@@ -155,20 +166,11 @@
     }
 }
 
-- (void)pagingScrollViewWillBeginDragging:(GMCPagingScrollView *)pagingScrollView {
-    DDLogDebug(@"%@", NSStringFromSelector(_cmd));
-}
-
-- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView layoutPageAtIndex:(NSUInteger)index {
-    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
-}
-
 - (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
-    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
-}
-
-- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didEndDisplayingPage:(UIView *)page atIndex:(NSUInteger)index {
-    DDLogDebug(@"%@, index = %ld", NSStringFromSelector(_cmd), index);
+    if (index != 0 && (!pagingScrollView.scrollView.isTracking || !pagingScrollView.scrollView.isDecelerating)) {
+        MLBMusicView *view = [pagingScrollView pageAtIndex:index];
+        [view configureViewWithMusicId:dataSource[index] atIndex:index inViewController:self];
+    }
 }
 
 @end
