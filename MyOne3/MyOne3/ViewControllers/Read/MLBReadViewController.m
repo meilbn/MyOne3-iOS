@@ -12,6 +12,7 @@
 #import "MLBReadIndex.h"
 #import "MLBReadBaseView.h"
 #import "MLBReadDetailsViewController.h"
+#import "MLBTopTenArticalViewController.h"
 
 @interface MLBReadViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate> {
     AAPullToRefresh *pullToRefreshLeft;
@@ -68,10 +69,15 @@
     
     [self addNavigationBarRightItems];
     
+    __weak typeof(self) weakSelf = self;
+    
     _carouselView = ({
         SDCycleScrollView *cycleScrollView = [SDCycleScrollView new];
         cycleScrollView.backgroundColor = [UIColor colorWithWhite:170 / 255.0 alpha:1];// #AAAAAA
         cycleScrollView.autoScrollTimeInterval = 5;
+        cycleScrollView.clickItemOperationBlock = ^(NSInteger currentIndex) {
+            [weakSelf showTopTenArticalWithIndex:currentIndex];
+        };
         [self.view addSubview:cycleScrollView];
         [cycleScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.right.equalTo(self.view);
@@ -80,8 +86,6 @@
         
         cycleScrollView;
     });
-    
-    __weak typeof(self) weakSelf = self;
     
     _pagingScrollView = ({
         GMCPagingScrollView *pagingScrollView = [GMCPagingScrollView new];
@@ -149,6 +153,12 @@
 }
 
 #pragma mark - Action
+
+- (void)showTopTenArticalWithIndex:(NSInteger)index {
+    MLBTopTenArticalViewController *topTenArticalViewController = [[MLBTopTenArticalViewController alloc] init];
+    topTenArticalViewController.carouselItem = carousels[index];
+    [self presentViewController:topTenArticalViewController animated:NO completion:NULL];
+}
 
 - (void)refreshReadIndex {
     // 很奇怪，不写这行代码的话，_pagingScrollView 里面的 scrollview 的 contentOffset.x 会变成和释放刷新时 contentOffset.x 的绝对值差不多，导致第一个 item 看起来像是左移了，论脑洞的重要性

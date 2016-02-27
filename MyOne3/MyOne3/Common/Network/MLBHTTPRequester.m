@@ -90,6 +90,10 @@
     [MLBHTTPRequester getWithURI:MLBApiReadingCarousel success:successBlock fail:failBlock];
 }
 
++ (void)requestReadCarouselDetailsById:(NSString *)carouselId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:@"%@/%@", MLBApiReadingCarousel, carouselId] success:successBlock fail:failBlock];
+}
+
 // 文章列表
 + (void)requestReadIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:MLBApiReadingIndex success:successBlock fail:failBlock];

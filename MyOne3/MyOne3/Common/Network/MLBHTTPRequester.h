@@ -33,6 +33,9 @@ typedef void(^FailBlock)(NSError *error);
 // 头部轮播列表
 + (void)requestReadCarouselWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+// 头部轮播详情
++ (void)requestReadCarouselDetailsById:(NSString *)carouselId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 // 文章列表
 + (void)requestReadIndexWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
