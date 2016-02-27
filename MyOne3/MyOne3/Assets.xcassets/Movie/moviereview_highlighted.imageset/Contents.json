@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "reading_essay.png",
+      "filename" : "moviereview_highlighted.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "reading_essay@2x.png",
+      "filename" : "moviereview_highlighted@2x.png",
       "scale" : "2x"
     },
     {

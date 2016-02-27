@@ -21,6 +21,9 @@
 #import "MLBReadSerialDetails.h"
 #import "MLBReadQuestion.h"
 #import "MLBReadQuestionDetails.h"
+#import "MLBCommonHeaderView.h"
+#import "MLBCommonFooterView.h"
+#import "MLBReadBaseCell.h"
 
 #define kMLBReadDetailsEditorViewMaxHeight       68
 
@@ -44,7 +47,11 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 @property (strong, nonatomic) YYTextView *contentTextView;
 @property (strong, nonatomic) MLBChargeEditorView *editorView;
 @property (strong, nonatomic) UITableView *commentsTableView;
+@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
+@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
 @property (strong, nonatomic) UITableView *relatedsTableView;
+@property (strong, nonatomic) MLBCommonHeaderView *relatedsHeaderView;
+@property (strong, nonatomic) MLBCommonFooterView *relatedsFooterView;
 
 @property (strong, nonatomic) MASConstraint *questionViewTopConstraint;
 @property (strong, nonatomic) MASConstraint *contentTextViewHeightConstraint;
@@ -61,6 +68,8 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     MLBBaseModel *readModel;
     MLBCommentList *commentList;
     NSMutableArray *commentRowsHeight;
+    NSArray *relatedList;
+    NSMutableArray *relatedRowsHeight;
 }
 
 #pragma mark - LifeCycle
@@ -104,6 +113,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 
 - (void)initDatas {
     commentRowsHeight = @[].mutableCopy;
+    relatedRowsHeight = @[].mutableCopy;
 }
 
 - (void)setupViews {
@@ -362,9 +372,9 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.scrollEnabled = NO;
-//            [tableView registerClass:[MLBRelatedMusicCell class] forCellReuseIdentifier:kMLBRelatedMusicCellID];
+        [tableView registerClass:[MLBReadBaseCell class] forCellReuseIdentifier:kMLBReadBaseCellID];
         tableView.tableFooterView = [UIView new];
-        tableView.separatorInset = UIEdgeInsetsMake(0, 65, 0, 0);
+        tableView.separatorInset = UIEdgeInsetsMake(0, 54, 0, 6);
         tableView.separatorColor = MLBSeparatorColor;
         [_contentView addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -435,6 +445,10 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     return (viewType == MLBReadTypeEssay ? ((MLBReadEssay *)readModel).contentId : (viewType == MLBReadTypeSerial ? ((MLBReadSerial *)readModel).contentId : ((MLBReadQuestion *)readModel).questionId));
 }
 
+- (Class)modelClass {
+    return (viewType == MLBReadTypeEssay ? [MLBReadEssay class] : (viewType == MLBReadTypeSerial ? [MLBReadSerial class] : [MLBReadQuestion class]));
+}
+
 - (void)updateViews {
     NSString *chargeEditor = @"";
     NSInteger praiseNum = 0;
@@ -495,7 +509,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)updateCommentsTableView {
-    CGFloat tableViewHeight = 44 + 44;// headerView + footerView
+    CGFloat tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight];// headerView + footerView
     if (commentList.comments.count > 0) {
         [commentRowsHeight removeAllObjects];
         for (MLBComment *comment in commentList.comments) {
@@ -511,6 +525,41 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
     _commentsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
     [_commentsTableView reloadData];
+}
+
+- (void)updateRelatedsTableView {
+    CGFloat tableViewHeight = 0;
+    if (relatedList.count > 0) {
+        tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow];// headerView + footerView
+        [relatedRowsHeight removeAllObjects];
+        for (MLBBaseModel *model in relatedList) {
+            CGFloat cellHeight = [_relatedsTableView fd_heightForCellWithIdentifier:kMLBReadBaseCellID configuration:^(MLBReadBaseCell *cell) {
+                [self configureRelatedCell:cell withModel:model];
+            }];
+            [relatedRowsHeight addObject:@(ceil(cellHeight))];
+            tableViewHeight += ceil(cellHeight);
+        }
+    }
+    
+    _relatedsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
+    [_relatedsTableView reloadData];
+}
+
+- (void)configureRelatedCell:(MLBReadBaseCell *)cell withModel:(MLBBaseModel *)model {
+    switch (viewType) {
+        case MLBReadTypeEssay: {
+            [cell configureCellWithreadEssay:(MLBReadEssay *)model];
+            break;
+        }
+        case MLBReadTypeSerial: {
+            [cell configureCellWithreadSerial:(MLBReadSerial *)model];
+            break;
+        }
+        case MLBReadTypeQuestion: {
+            [cell configureCellWithreadQuestion:(MLBReadQuestion *)model];
+            break;
+        }
+    }
 }
 
 #pragma mark - Action
@@ -579,7 +628,22 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)requestRelateds {
-    
+    [MLBHTTPRequester requestRelatedsWithType:[self readType] itemId:[self contentId] success:^(id responseObject) {
+        if ([responseObject[@"res"] integerValue] == 0) {
+            NSError *error;
+            NSArray *relateds = [MTLJSONAdapter modelsOfClass:[self modelClass] fromJSONArray:responseObject[@"data"] error:&error];
+            if (!error) {
+                relatedList = relateds;
+                [self updateRelatedsTableView];
+            } else {
+                // callback
+            }
+        } else {
+            // callback
+        }
+    } fail:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - Public Method
@@ -623,7 +687,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     if (tableView == _commentsTableView) {
         return commentList.comments.count;
     } else if (tableView == _relatedsTableView) {
-//        return relatedMusics.count;
+        return relatedList.count;
     }
     
     return 0;
@@ -637,7 +701,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
             return [tableView dequeueReusableCellWithIdentifier:kMLBNoneMessageCellID];
         }
     } else if (tableView == _relatedsTableView) {
-//        return [tableView dequeueReusableCellWithIdentifier:kMLBRelatedMusicCellID forIndexPath:indexPath];
+        return [tableView dequeueReusableCellWithIdentifier:kMLBReadBaseCellID forIndexPath:indexPath];
     }
     
     return nil;
@@ -646,20 +710,14 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        return 44;
-    } else if (tableView == _relatedsTableView) {
-        return 44;
-    }
-    
-    return 0;
+    return [MLBCommonHeaderView headerViewHeight];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (tableView == _commentsTableView) {
-        return 44;
+        return [MLBCommonFooterView footerViewHeight];
     } else if (tableView == _relatedsTableView) {
-        return 5;
+        return [MLBCommonFooterView footerViewHeightForShadow];
     }
     
     return 0;
@@ -673,10 +731,48 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
             return [MLBNoneMessageCell cellHeight];
         }
     } else if (tableView == _relatedsTableView) {
-//        return [MLBRelatedMusicCell cellHeight];
+        return [relatedRowsHeight[indexPath.row] floatValue];
     }
     
     return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (tableView == _commentsTableView) {
+        if (!_commentsHeaderView) {
+            _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeComment];
+        }
+        
+        return _commentsHeaderView;
+    } else if (tableView == _relatedsTableView) {
+        if (!_relatedsHeaderView) {
+            _relatedsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedRec];
+        }
+        
+        return _relatedsHeaderView;
+    }
+    
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (tableView == _commentsTableView) {
+        if (!_commentsFooterView) {
+            _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
+        }
+        
+        [_commentsFooterView configureViewWithCount:commentList.count];
+        
+        return _commentsFooterView;
+    } else if (tableView == _relatedsTableView) {
+        if (!_relatedsFooterView) {
+            _relatedsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
+        }
+        
+        return _relatedsFooterView;
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -685,7 +781,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
             [(MLBCommentCell *)cell configureCellForMusicWithComment:commentList.comments[indexPath.row] atIndexPath:indexPath];
         }
     } else if (tableView == _relatedsTableView) {
-//        [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:relatedMusics[indexPath.row] atIndexPath:indexPath];
+        [self configureRelatedCell:(MLBReadBaseCell *)cell withModel:relatedList[indexPath.row]];
     }
 }
 

@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "reading_serial.png",
+      "filename" : "read_essay.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "reading_serial@2x.png",
+      "filename" : "read_essay@2x.png",
       "scale" : "2x"
     },
     {

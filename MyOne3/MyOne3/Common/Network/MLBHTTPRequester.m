@@ -72,6 +72,10 @@
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetReadDetails, type, itemId] success:successBlock fail:failBlock];
 }
 
++ (void)requestRelatedsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, type, itemId] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Home Page
 
 // 首页图文列表

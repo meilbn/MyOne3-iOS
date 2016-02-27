@@ -16,6 +16,8 @@
 #import "MLBRelatedMusicCell.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 #import "MLBBaseViewController.h"
+#import "MLBCommonHeaderView.h"
+#import "MLBCommonFooterView.h"
 
 NSString *const kMLBMusicViewID = @"MLBMusicViewID";
 
@@ -54,14 +56,12 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 @property (strong, nonatomic) UILabel *likeNumLabel;
 @property (strong, nonatomic) UIButton *moreButton;
 @property (strong, nonatomic) UITableView *commentsTableView;
-@property (strong, nonatomic) UIButton *addNewCommentButton;
 @property (strong, nonatomic) UILabel *commentsCountLabel;
-@property (strong, nonatomic) UIView *commentsTableHeaderView;
-@property (strong, nonatomic) UIView *commentsTableFooterView;
+@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
+@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
 @property (strong, nonatomic) UITableView *relatedMusicTableView;
-@property (strong, nonatomic) UIButton *relatedMusicControlButton;
-@property (strong, nonatomic) UIView *relatedMusicTableHeaderView;
-@property (strong, nonatomic) UIView *relatedMusicTableFooterView;
+@property (strong, nonatomic) MLBCommonHeaderView *relatedMusicHeaderView;
+@property (strong, nonatomic) MLBCommonFooterView *relatedMusicFooterView;
 
 @property (strong, nonatomic) MASConstraint *authorViewTopConstraint;
 @property (strong, nonatomic) MASConstraint *contentTextViewHeightConstraint;
@@ -540,8 +540,8 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)resetMusicListControlButtonWithPlaying:(BOOL)playing {
-    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_normal" : @"music_list_play_normal"] forState:UIControlStateNormal];
-    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_highlighted" : @"music_list_play_highlighted"] forState:UIControlStateHighlighted];
+//    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_normal" : @"music_list_play_normal"] forState:UIControlStateNormal];
+//    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_highlighted" : @"music_list_play_highlighted"] forState:UIControlStateHighlighted];
 }
 
 - (void)updateViews {
@@ -640,7 +640,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)updateCommentsTableView {
-    CGFloat tableViewHeight = 44 + 44;// headerView + footerView
+    CGFloat tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight];// headerView + footerView
     if (commentList.comments.count > 0) {
         [commentRowsHeight removeAllObjects];
         for (MLBComment *comment in commentList.comments) {
@@ -659,7 +659,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)updateRelatedMusicsTableView {
-    NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * relatedMusics.count + 44 + 5);
+    NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * relatedMusics.count + [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow]);
     _relatedMusicTableViewHeightConstraint.equalTo(@(relatedMusics.count > 0 ? tableViewHeight : 0));
     [_relatedMusicTableView reloadData];
 }
@@ -849,20 +849,14 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        return 44;
-    } else if (tableView == _relatedMusicTableView) {
-        return 44;
-    }
-    
-    return 0;
+    return [MLBCommonHeaderView headerViewHeight];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (tableView == _commentsTableView) {
-        return 44;
+        return [MLBCommonFooterView footerViewHeight];
     } else if (tableView == _relatedMusicTableView) {
-        return 5;
+        return [MLBCommonFooterView footerViewHeightForShadow];
     }
     
     return 0;
@@ -884,89 +878,17 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (tableView == _commentsTableView) {
-        if (!_commentsTableHeaderView) {
-            _commentsTableHeaderView = [UIView new];
-            _commentsTableHeaderView.backgroundColor = MLBViewControllerBGColor;
-            _commentsTableHeaderView.clipsToBounds = YES;
-            
-            UIView *bgView = [UIView new];
-            bgView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
-            bgView.layer.shadowColor = MLBShadowColor.CGColor;
-            bgView.layer.shadowOffset = CGSizeZero;
-            bgView.layer.shadowRadius = 2;
-            bgView.layer.shadowOpacity = 0.1;
-            [_commentsTableHeaderView addSubview:bgView];
-            [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_commentsTableHeaderView).insets(UIEdgeInsetsMake(3, 0, -3, 0));
-            }];
-            
-            UIView *lineView = [MLBUIFactory separatorLine];
-            lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
-            [bgView addSubview:lineView];
-            [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@0.5);
-                make.left.top.right.equalTo(bgView);
-            }];
-            
-            UILabel *label = [UILabel new];
-            label.text = @"评论列表";
-            label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #F7F7F7
-            label.font = FontWithSize(12);
-            [_commentsTableHeaderView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_commentsTableHeaderView).insets(UIEdgeInsetsMake(0, 12, 0, 0));
-            }];
-            
-            _addNewCommentButton = [MLBUIFactory buttonWithImageName:@"review_normal" highlightImageName:@"review_highlighted" target:self action:@selector(addNewComment)];
-            [_commentsTableHeaderView addSubview:_addNewCommentButton];
-            [_addNewCommentButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_commentsTableHeaderView).offset(-8);
-                make.centerY.equalTo(_commentsTableHeaderView);
-            }];
+        if (!_commentsHeaderView) {
+            _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeComment];
         }
         
-        return _commentsTableHeaderView;
+        return _commentsHeaderView;
     } else if (tableView == _relatedMusicTableView) {
-        if (!_relatedMusicTableHeaderView) {
-            _relatedMusicTableHeaderView = [UIView new];
-            _relatedMusicTableHeaderView.backgroundColor = MLBViewControllerBGColor;
-            _relatedMusicTableHeaderView.clipsToBounds = YES;
-            
-            UIView *bgView = [UIView new];
-            bgView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
-            [_relatedMusicTableHeaderView addSubview:bgView];
-            [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_relatedMusicTableHeaderView).insets(UIEdgeInsetsMake(3, 0, -3, 0));
-            }];
-            
-            UIView *lineView = [MLBUIFactory separatorLine];
-            lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
-            [bgView addSubview:lineView];
-            [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@0.5);
-                make.left.top.right.equalTo(bgView);
-            }];
-            
-            UILabel *label = [UILabel new];
-            label.text = @"相似歌曲";
-            label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #F7F7F7
-            label.font = FontWithSize(12);
-            [_relatedMusicTableHeaderView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_relatedMusicTableHeaderView).insets(UIEdgeInsetsMake(0, 12, 0, 0));
-            }];
-            
-            _relatedMusicControlButton = [MLBUIFactory buttonWithImageName:@"music_list_play_normal" highlightImageName:@"music_list_play_highlighted" target:self action:@selector(controlRelatedMusicPlay)];
-            [_relatedMusicTableHeaderView addSubview:_relatedMusicControlButton];
-            [_relatedMusicControlButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.right.equalTo(_relatedMusicTableHeaderView).offset(-8);
-                make.centerY.equalTo(_relatedMusicTableHeaderView);
-            }];
+        if (!_relatedMusicHeaderView) {
+            _relatedMusicHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedMusic];
         }
         
-        return _relatedMusicTableHeaderView;
+        return _relatedMusicHeaderView;
     }
     
     return nil;
@@ -974,83 +896,19 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (tableView == _commentsTableView) {
-        if (!_commentsTableFooterView) {
-            _commentsTableFooterView = [UIView new];
-            _commentsTableFooterView.backgroundColor = MLBViewControllerBGColor;
-            _commentsTableFooterView.clipsToBounds = YES;
-            
-            UIView *shaowView = [UIView new];
-            shaowView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
-            shaowView.layer.shadowColor = MLBShadowColor.CGColor;
-            shaowView.layer.shadowOpacity = 0.3;
-            shaowView.layer.shadowRadius = 2;
-            shaowView.layer.shadowOffset = CGSizeZero;
-            [_commentsTableFooterView addSubview:shaowView];
-            [shaowView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(_commentsTableFooterView).insets(UIEdgeInsetsMake(-3, 0, 3, 0));
-            }];
-            
-            UIView *lineView = [MLBUIFactory separatorLine];
-            lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
-            [shaowView addSubview:lineView];
-            [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@0.5);
-                make.left.bottom.right.equalTo(shaowView);
-            }];
-            
-            _commentsCountLabel = [UILabel new];
-            _commentsCountLabel.textColor = MLBDarkGrayTextColor;
-            _commentsCountLabel.font = FontWithSize(11);
-            [_commentsTableFooterView addSubview:_commentsCountLabel];
-            [_commentsCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.top.bottom.equalTo(_commentsTableFooterView).insets(UIEdgeInsetsMake(0, 12, 0, 0));
-            }];
-            
-            UIButton *allCommentsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [allCommentsButton setTitle:@"全部评论" forState: UIControlStateNormal];
-            [allCommentsButton setTitleColor:MLBAppThemeColor forState:UIControlStateNormal];
-            allCommentsButton.titleLabel.font = FontWithSize(12);
-            [allCommentsButton addTarget:self action:@selector(allComments) forControlEvents:UIControlEventTouchUpInside];
-            [_commentsTableFooterView addSubview:allCommentsButton];
-            [allCommentsButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.size.sizeOffset(CGSizeMake(80, 40));
-                make.centerY.equalTo(_commentsTableFooterView);
-                make.right.equalTo(_commentsTableFooterView);
-                make.left.greaterThanOrEqualTo(_commentsCountLabel.mas_right).offset(8);
-            }];
+        if (!_commentsFooterView) {
+            _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
         }
         
-        _commentsCountLabel.text = [NSString stringWithFormat:@"共%ld条评论", commentList.count];
+        [_commentsFooterView configureViewWithCount:commentList.count];
         
-        return _commentsTableFooterView;
+        return _commentsFooterView;
     } else if (tableView == _relatedMusicTableView) {
-        if (!_relatedMusicTableFooterView) {
-            _relatedMusicTableFooterView = [UIView new];
-            _relatedMusicTableFooterView.backgroundColor = MLBViewControllerBGColor;
-            _relatedMusicTableFooterView.clipsToBounds = YES;
-            
-            UIView *shaowView = [UIView new];
-            shaowView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
-            shaowView.layer.shadowColor = MLBShadowColor.CGColor;
-            shaowView.layer.shadowOpacity = 0.3;
-            shaowView.layer.shadowRadius = 2;
-            shaowView.layer.shadowOffset = CGSizeZero;
-            [_relatedMusicTableFooterView addSubview:shaowView];
-            [shaowView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@2);
-                make.left.top.right.equalTo(_relatedMusicTableFooterView).insets(UIEdgeInsetsMake(-1, 0, 0, 0));
-            }];
-            
-            UIView *lineView = [MLBUIFactory separatorLine];
-            lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
-            [shaowView addSubview:lineView];
-            [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@0.5);
-                make.left.bottom.right.equalTo(shaowView);
-            }];
+        if (!_relatedMusicFooterView) {
+            _relatedMusicFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
         }
         
-        return _relatedMusicTableFooterView;
+        return _relatedMusicFooterView;
     }
     
     return nil;

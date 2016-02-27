@@ -23,6 +23,9 @@
 // 获取相关列表
 #define MLBApiGetRelateds                       @"/related/%@/%@"
 
+// 获取相关列表
+#define MLBApiGetRelateds                       @"/related/%@/%@"
+
 #pragma mark - Home Page
 
 // 首页图文列表

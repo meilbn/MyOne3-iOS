@@ -21,6 +21,8 @@ typedef void(^FailBlock)(NSError *error);
 
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
++ (void)requestRelatedsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Home Page
 
 // 首页图文列表
