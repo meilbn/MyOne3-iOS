@@ -87,7 +87,7 @@ NSString *const kMLBRelatedMusicCellID = @"MLBRelatedMusicCellID";
         label.font = FontWithSize(16);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_albumView);
+            make.top.equalTo(_albumView).offset(3);
             make.left.equalTo(_albumView.mas_right).offset(6);
         }];
         

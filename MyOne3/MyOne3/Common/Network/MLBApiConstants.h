@@ -18,7 +18,8 @@
 #define MLBApiGetReadDetails                    @"/%@/%@"
 
 // 获取评论列表
-#define MLBApiGetComments                       @"/comment/praise/%@/%@/%@"
+#define MLBApiGetPraiseComments                 @"/comment/praise/%@/%@/%@"
+#define MLBApiGetTimeComments                   @"/comment/time/%@/%@/%@"
 
 // 获取相关列表
 #define MLBApiGetRelateds                       @"/related/%@/%@"
@@ -61,8 +62,16 @@
 
 #pragma mark - Movie
 
+// 电影
+#define MLBApiMovie                             @"movie"
 // 电影列表
 #define MLBApiMovieList                         @"/movie/list/%ld"
+// 电影详情
+#define MLBApiMovieDetails                      @"/movie/detail/%@"
+// 电影故事
+#define MLBApiMovieStories                      @"/movie/%@/story/%@/%@"
+// 电影短评
+#define MLBApiMovieReviews                      @"/movie/%@/review/%@/%@"
 
 
 #endif /* MLBApiConstants_h */

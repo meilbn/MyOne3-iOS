@@ -16,8 +16,7 @@
 #import "MLBRelatedMusicCell.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 #import "MLBBaseViewController.h"
-#import "MLBCommonHeaderView.h"
-#import "MLBCommonFooterView.h"
+#import "MLBCommentListViewController.h"
 
 NSString *const kMLBMusicViewID = @"MLBMusicViewID";
 
@@ -55,10 +54,11 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 @property (strong, nonatomic) UIButton *likeButton;
 @property (strong, nonatomic) UILabel *likeNumLabel;
 @property (strong, nonatomic) UIButton *moreButton;
-@property (strong, nonatomic) UITableView *commentsTableView;
-@property (strong, nonatomic) UILabel *commentsCountLabel;
-@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
-@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
+//@property (strong, nonatomic) UITableView *commentsTableView;
+//@property (strong, nonatomic) UILabel *commentsCountLabel;
+//@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
+//@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
+@property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
 @property (strong, nonatomic) UITableView *relatedMusicTableView;
 @property (strong, nonatomic) MLBCommonHeaderView *relatedMusicHeaderView;
 @property (strong, nonatomic) MLBCommonFooterView *relatedMusicFooterView;
@@ -489,26 +489,38 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         label;
     });
     
-    _commentsTableView = ({
-        UITableView *tableView = [UITableView new];
-        tableView.backgroundColor = [UIColor whiteColor];
-        tableView.dataSource = self;
-        tableView.delegate = self;
-        tableView.scrollEnabled = NO;
-        [tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
-        [tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
-        tableView.tableFooterView = [UIView new];
-        tableView.separatorInset = UIEdgeInsetsMake(0, 60, 0, 0);
-        tableView.separatorColor = MLBSeparatorColor;
-        [_contentView addSubview:tableView];
-        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_chargeEditorView.mas_bottom);
-            make.left.right.equalTo(_contentView);
-            _commentsTableViewHeightConstraint = make.height.equalTo(@0);
-        }];
-        
-        tableView;
-    });
+//    _commentsTableView = ({
+//        UITableView *tableView = [UITableView new];
+//        tableView.backgroundColor = [UIColor whiteColor];
+//        tableView.dataSource = self;
+//        tableView.delegate = self;
+//        tableView.scrollEnabled = NO;
+//        [tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
+//        [tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
+//        tableView.tableFooterView = [UIView new];
+//        tableView.separatorInset = UIEdgeInsetsMake(0, 60, 0, 0);
+//        tableView.separatorColor = MLBSeparatorColor;
+//        [_contentView addSubview:tableView];
+//        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(_chargeEditorView.mas_bottom);
+//            make.left.right.equalTo(_contentView);
+//            _commentsTableViewHeightConstraint = make.height.equalTo(@0);
+//        }];
+//        
+//        tableView;
+//    });
+    
+    __weak typeof(self) weakSelf = self;
+    _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeMusicComments headerViewType:MLBHeaderViewTypeComment footerViewType:MLBFooterViewTypeComment];
+    _commentListViewController.finishedCalculateHeight = ^(CGFloat height) {
+        weakSelf.commentsTableViewHeightConstraint.equalTo(@(height));
+    };
+    [_contentView addSubview:_commentListViewController.tableView];
+    [_commentListViewController.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_chargeEditorView.mas_bottom);
+        make.left.right.equalTo(_contentView);
+        _commentsTableViewHeightConstraint = make.height.equalTo(@0);
+    }];
     
     _relatedMusicTableView = ({
         UITableView *tableView = [UITableView new];
@@ -522,7 +534,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         tableView.separatorColor = MLBSeparatorColor;
         [_contentView addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_commentsTableView.mas_bottom).offset(5);
+            make.top.equalTo(_commentListViewController.tableView.mas_bottom).offset(5);
             make.left.right.equalTo(_contentView);
             make.bottom.equalTo(_contentView).offset(-12);
             _relatedMusicTableViewHeightConstraint = make.height.equalTo(@0);
@@ -639,24 +651,24 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
     }
 }
 
-- (void)updateCommentsTableView {
-    CGFloat tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight];// headerView + footerView
-    if (commentList.comments.count > 0) {
-        [commentRowsHeight removeAllObjects];
-        for (MLBComment *comment in commentList.comments) {
-            CGFloat cellHeight = [_commentsTableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
-                [cell configureCellForMusicWithComment:comment atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            }];
-            [commentRowsHeight addObject:@(ceil(cellHeight))];
-            tableViewHeight += ceil(cellHeight);
-        }
-    } else {
-        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
-    }
-    
-    _commentsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-    [_commentsTableView reloadData];
-}
+//- (void)updateCommentsTableView {
+//    CGFloat tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight];// headerView + footerView
+//    if (commentList.comments.count > 0) {
+//        [commentRowsHeight removeAllObjects];
+//        for (MLBComment *comment in commentList.comments) {
+//            CGFloat cellHeight = [_commentsTableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
+//                [cell configureCellForCommonWithComment:comment atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//            }];
+//            [commentRowsHeight addObject:@(ceil(cellHeight))];
+//            tableViewHeight += ceil(cellHeight);
+//        }
+//    } else {
+//        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
+//    }
+//    
+//    _commentsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
+//    [_commentsTableView reloadData];
+//}
 
 - (void)updateRelatedMusicsTableView {
     NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * relatedMusics.count + [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow]);
@@ -743,7 +755,11 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
     self.parentViewController = parentViewController;
     //    [self prepareForReuse];
     [self requestMusicDetails];
-    [self requestMusicPraiseComments];
+//    [self requestMusicPraiseComments];
+    [_commentListViewController configureViewForMusicDetailsWithItemId:_musicId];
+    [self.parentViewController addChildViewController:_commentListViewController];
+    [_commentListViewController requestDatas];
+    
     [self requestMusicRelatedMusics];
     preparedForReuse = NO;
 }
@@ -770,24 +786,24 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 // 获取的是点赞最多的5条评论
-- (void)requestMusicPraiseComments {
-    [MLBHTTPRequester requestMusicDetailsPraiseCommentsById:_musicId success:^(id responseObject) {
-        if ([responseObject[@"res"] integerValue] == 0) {
-            NSError *error;
-            MLBCommentList *comments = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
-            if (!error) {
-                commentList = comments;
-                [self updateCommentsTableView];
-            } else {
-                // callback
-            }
-        } else {
-            // callback
-        }
-    } fail:^(NSError *error) {
-        // callback
-    }];
-}
+//- (void)requestMusicPraiseComments {
+//    [MLBHTTPRequester requestMusicDetailsPraiseCommentsById:_musicId success:^(id responseObject) {
+//        if ([responseObject[@"res"] integerValue] == 0) {
+//            NSError *error;
+//            MLBCommentList *comments = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
+//            if (!error) {
+//                commentList = comments;
+//                [self updateCommentsTableView];
+//            } else {
+//                // callback
+//            }
+//        } else {
+//            // callback
+//        }
+//    } fail:^(NSError *error) {
+//        // callback
+//    }];
+//}
 
 // 看返回结果应该最多是3首
 - (void)requestMusicRelatedMusics {
@@ -823,27 +839,27 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        return commentList.comments.count;
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        return commentList.comments.count;
+//    } else if (tableView == _relatedMusicTableView) {
         return relatedMusics.count;
-    }
-    
-    return 0;
+//    }
+//    
+//    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _commentsTableView) {
-        if (commentList.comments.count > 0) {
-            return [tableView dequeueReusableCellWithIdentifier:kMLBCommentCellID forIndexPath:indexPath];
-        } else {
-            return [tableView dequeueReusableCellWithIdentifier:kMLBNoneMessageCellID];
-        }
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        if (commentList.comments.count > 0) {
+//            return [tableView dequeueReusableCellWithIdentifier:kMLBCommentCellID forIndexPath:indexPath];
+//        } else {
+//            return [tableView dequeueReusableCellWithIdentifier:kMLBNoneMessageCellID];
+//        }
+//    } else if (tableView == _relatedMusicTableView) {
         return [tableView dequeueReusableCellWithIdentifier:kMLBRelatedMusicCellID forIndexPath:indexPath];
-    }
-    
-    return nil;
+//    }
+//    
+//    return nil;
 }
 
 #pragma mark UITableViewDelegate
@@ -853,75 +869,75 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        return [MLBCommonFooterView footerViewHeight];
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        return [MLBCommonFooterView footerViewHeight];
+//    } else if (tableView == _relatedMusicTableView) {
         return [MLBCommonFooterView footerViewHeightForShadow];
-    }
-    
-    return 0;
+//    }
+//    
+//    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _commentsTableView) {
-        if (commentList.comments.count > 0) {
-            return [commentRowsHeight[indexPath.row] floatValue];
-        } else {
-            return [MLBNoneMessageCell cellHeight];
-        }
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        if (commentList.comments.count > 0) {
+//            return [commentRowsHeight[indexPath.row] floatValue];
+//        } else {
+//            return [MLBNoneMessageCell cellHeight];
+//        }
+//    } else if (tableView == _relatedMusicTableView) {
         return [MLBRelatedMusicCell cellHeight];
-    }
-    
-    return 0;
+//    }
+//    
+//    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        if (!_commentsHeaderView) {
-            _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeComment];
-        }
-        
-        return _commentsHeaderView;
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        if (!_commentsHeaderView) {
+//            _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeComment];
+//        }
+//        
+//        return _commentsHeaderView;
+//    } else if (tableView == _relatedMusicTableView) {
         if (!_relatedMusicHeaderView) {
             _relatedMusicHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedMusic];
         }
         
         return _relatedMusicHeaderView;
-    }
-    
-    return nil;
+//    }
+//    
+//    return nil;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (tableView == _commentsTableView) {
-        if (!_commentsFooterView) {
-            _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
-        }
-        
-        [_commentsFooterView configureViewWithCount:commentList.count];
-        
-        return _commentsFooterView;
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        if (!_commentsFooterView) {
+//            _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
+//        }
+//        
+//        [_commentsFooterView configureViewWithCount:commentList.count];
+//        
+//        return _commentsFooterView;
+//    } else if (tableView == _relatedMusicTableView) {
         if (!_relatedMusicFooterView) {
             _relatedMusicFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
         }
         
         return _relatedMusicFooterView;
-    }
-    
-    return nil;
+//    }
+//    
+//    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _commentsTableView) {
-        if (commentList.comments.count > 0) {
-            [(MLBCommentCell *)cell configureCellForMusicWithComment:commentList.comments[indexPath.row] atIndexPath:indexPath];
-        }
-    } else if (tableView == _relatedMusicTableView) {
+//    if (tableView == _commentsTableView) {
+//        if (commentList.comments.count > 0) {
+//            [(MLBCommentCell *)cell configureCellForCommonWithComment:commentList.comments[indexPath.row] atIndexPath:indexPath];
+//        }
+//    } else if (tableView == _relatedMusicTableView) {
         [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:relatedMusics[indexPath.row] atIndexPath:indexPath];
-    }
+//    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

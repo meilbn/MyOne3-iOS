@@ -7,6 +7,7 @@
 //
 
 #import "MLBHTTPRequester.h"
+#import "MLBApiConstants.h"
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 
@@ -62,10 +63,43 @@
 
 #pragma mark - Public Class Method
 
+#pragma mark - get Api String
+
++ (NSString *)apiStringForReadDetailsWithReadType:(MLBReadType)readType {
+    if (readType == MLBReadTypeSerial) {
+        return MLBApiSerialContent;
+    } else {
+        return [MLBHTTPRequester apiStringForReadWithReadType:readType];
+    }
+}
+
++ (NSString *)apiStringForReadWithReadType:(MLBReadType)readType {
+    switch (readType) {
+        case MLBReadTypeEssay:
+            return MLBApiEssay;
+        case MLBReadTypeSerial:
+            return MLBApiSerial;
+        case MLBReadTypeQuestion:
+            return MLBApiQuestion;
+    }
+}
+
++ (NSString *)apiStringForMusic {
+    return MLBApiMusic;
+}
+
++ (NSString *)apiStringForMovie {
+    return MLBApiMovie;
+}
+
 #pragma mark - Common
 
-+ (void)requestCommentsWithType:(NSString *)type itemId:(NSString *)itemId offset:(NSInteger)offset success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
-    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetComments, MLBApiEssay, itemId, [@(offset) stringValue]] success:successBlock fail:failBlock];
++ (void)requestPraiseCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetPraiseComments, type, itemId, firstItemId] success:successBlock fail:failBlock];
+}
+
++ (void)requestTimeCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetTimeComments, type, itemId, firstItemId] success:successBlock fail:failBlock];
 }
 
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
@@ -106,7 +140,7 @@
 
 // 短篇文章评论列表
 + (void)requestEssayCommentsById:(NSString *)essayId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
-    [MLBHTTPRequester requestCommentsWithType:MLBApiEssay itemId:essayId offset:0 success:successBlock fail:failBlock];
+    [MLBHTTPRequester requestPraiseCommentsWithType:MLBApiEssay itemId:essayId firstItemId:0 success:successBlock fail:failBlock];
 }
 
 // 短篇文章相关列表
@@ -127,7 +161,7 @@
 
 // 音乐详情评论点赞数降序排序列表
 + (void)requestMusicDetailsPraiseCommentsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
-    [MLBHTTPRequester requestCommentsWithType:MLBApiMusic itemId:musicId offset:0 success:successBlock fail:failBlock];
+    [MLBHTTPRequester requestPraiseCommentsWithType:MLBApiMusic itemId:musicId firstItemId:0 success:successBlock fail:failBlock];
 }
 
 // 音乐详情相似歌曲列表
@@ -140,6 +174,34 @@
 // 获取电影列表
 + (void)requestMovieListWithOffer:(NSInteger)offset success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieList, offset] success:successBlock fail:failBlock];
+}
+
+// 获取电影详情
++ (void)requestMovieDetailsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieDetails, movieId] success:successBlock fail:failBlock];
+}
+
+// 获取电影故事列表
++ (void)requestMovieDetailsMovieStoriesById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieStories, movieId, @"1", @"0"] success:successBlock fail:failBlock];
+}
+
++ (void)requestMovieStoriesById:(NSString *)movieId firstItemId:(NSString *)firstItemId forDetails:(BOOL)forDetails success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieStories, movieId, forDetails ? @"1" : @"0", firstItemId] success:successBlock fail:failBlock];
+}
+
+// 获取电影短评列表
++ (void)requestMovieDetailsMovieReviewsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieReviews, movieId, @"1", @"0"] success:successBlock fail:failBlock];
+}
+
++ (void)requestMovieReviewsById:(NSString *)movieId firstItemId:(NSString *)firstItemId forDetails:(BOOL)forDetails success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMovieReviews, movieId, forDetails ? @"1" : @"0", firstItemId] success:successBlock fail:failBlock];
+}
+
+// 获取电影评论列表
++ (void)requestMovieDetailsPraiseCommentsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetPraiseComments, MLBApiMovie, movieId, @"0"] success:successBlock fail:failBlock];
 }
 
 @end

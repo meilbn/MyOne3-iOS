@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, MLBFooterViewType) {
+    MLBFooterViewTypeNone,// 无
     MLBFooterViewTypeComment,// 评论
     MLBFooterViewTypeMovieStory,// 电影故事
     MLBFooterViewTypeMovieReview,// 评审团短评
@@ -16,6 +17,8 @@ typedef NS_ENUM(NSUInteger, MLBFooterViewType) {
 };
 
 @interface MLBCommonFooterView : UIView
+
+@property (nonatomic, copy) void (^showAllItems)();
 
 + (CGFloat)footerViewHeight;
 

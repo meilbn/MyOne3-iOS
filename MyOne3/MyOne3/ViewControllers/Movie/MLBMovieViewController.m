@@ -10,6 +10,7 @@
 #import <MJRefresh/MJRefresh.h>
 #import "MLBMovieListItem.h"
 #import "MLBMovieListItemCell.h"
+#import "MLBMovieDetailsViewController.h"
 
 @interface MLBMovieViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -150,6 +151,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    MLBMovieDetailsViewController *movieDetailsViewController = [[MLBMovieDetailsViewController alloc] init];
+    movieDetailsViewController.movieListItem = dataSource[indexPath.section];
+    [self.navigationController pushViewController:movieDetailsViewController animated:YES];
 }
 
 @end

@@ -46,7 +46,7 @@
 #pragma mark - Private Method
 
 - (void)setupViews {
-    if (_shadowView) {
+    if (viewType == MLBFooterViewTypeNone || _shadowView) {
         return;
     }
     
@@ -83,6 +83,8 @@
     }
     
     switch (viewType) {
+        case MLBFooterViewTypeNone:
+            break;
         case MLBFooterViewTypeComment: {
             leftFormatText = @"共%ld条评论";
             allButtonTitle = @"全部评论";
@@ -111,8 +113,10 @@
         make.left.top.bottom.equalTo(self).insets(UIEdgeInsetsMake(0, 12, 0, 0));
     }];
     
+    [self configureViewWithCount:0];
+    
     _allButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_allButton setTitle:@"全部评论" forState: UIControlStateNormal];
+    [_allButton setTitle:allButtonTitle forState: UIControlStateNormal];
     [_allButton setTitleColor:MLBAppThemeColor forState:UIControlStateNormal];
     _allButton.titleLabel.font = FontWithSize(12);
     [_allButton addTarget:self action:@selector(allButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -128,13 +132,15 @@
 #pragma mark - Action
 
 - (void)allButtonClicked {
-    DDLogDebug(@"common footer view %@", NSStringFromSelector(_cmd));
+    if (_showAllItems) {
+        _showAllItems();
+    }
 }
 
 #pragma mark - Public Method
 
 - (void)configureViewWithCount:(NSInteger)count {
-    if (viewType < MLBFooterViewTypeShadow) {
+    if (viewType > MLBFooterViewTypeNone && viewType < MLBFooterViewTypeShadow) {
         _countLabel.text = [NSString stringWithFormat:leftFormatText, count];
     }
 }

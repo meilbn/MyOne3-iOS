@@ -10,10 +10,16 @@
 
 FOUNDATION_EXPORT NSString *const kMLBCommentCellID;
 
+@class MLBMovieStory;
+@class MLBMovieReview;
 @class MLBComment;
 
 @interface MLBCommentCell : MLBBaseCell
 
-- (void)configureCellForMusicWithComment:(MLBComment *)comment atIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCellForMovieWithStory:(MLBMovieStory *)story atIndexPath:(NSIndexPath *)indexPath;
+
+- (void)configureCellForMovieWithReview:(MLBMovieReview *)review atIndexPath:(NSIndexPath *)indexPath;
+
+- (void)configureCellForCommonWithComment:(MLBComment *)comment atIndexPath:(NSIndexPath *)indexPath;
 
 @end

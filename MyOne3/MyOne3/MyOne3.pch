@@ -41,12 +41,6 @@ static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 #import <JTSImageViewController/JTSImageViewController.h>
 
-#pragma mark - Other
-
-#import "MLBUIFactory.h"
-#import "MLBUtilities.h"
-#import "MLBHTTPRequester.h"
-
 #pragma mark - NSEnum
 
 typedef NS_ENUM(NSUInteger, MLBActionType) {
@@ -64,5 +58,11 @@ typedef NS_ENUM(NSUInteger, MLBReadType) {
 #pragma mark - Block
 
 typedef void(^CommonActionBlock)(void);
+
+#pragma mark - Other
+
+#import "MLBUIFactory.h"
+#import "MLBUtilities.h"
+#import "MLBHTTPRequester.h"
 
 #endif /* MyOne3_pch */

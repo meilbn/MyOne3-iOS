@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MLBApiConstants.h"
 
 // 成功，失败 block
 typedef void(^SuccessBlock)(id responseObject);
@@ -15,9 +14,21 @@ typedef void(^FailBlock)(NSError *error);
 
 @interface MLBHTTPRequester : NSObject
 
+#pragma mark - get Api String
+
++ (NSString *)apiStringForReadDetailsWithReadType:(MLBReadType)readType;
+
++ (NSString *)apiStringForReadWithReadType:(MLBReadType)readType;
+
++ (NSString *)apiStringForMusic;
+
++ (NSString *)apiStringForMovie;
+
 #pragma mark - Common
 
-+ (void)requestCommentsWithType:(NSString *)type itemId:(NSString *)itemId offset:(NSInteger)offset success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
++ (void)requestPraiseCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
++ (void)requestTimeCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
@@ -66,5 +77,21 @@ typedef void(^FailBlock)(NSError *error);
 
 // 获取电影列表
 + (void)requestMovieListWithOffer:(NSInteger)offset success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 获取电影详情
++ (void)requestMovieDetailsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 获取电影故事列表
++ (void)requestMovieDetailsMovieStoriesById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
++ (void)requestMovieStoriesById:(NSString *)movieId firstItemId:(NSString *)firstItemId forDetails:(BOOL)forDetails success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 获取电影短评列表
++ (void)requestMovieDetailsMovieReviewsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
++ (void)requestMovieReviewsById:(NSString *)movieId firstItemId:(NSString *)firstItemId forDetails:(BOOL)forDetails success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 获取电影评论列表
++ (void)requestMovieDetailsPraiseCommentsById:(NSString *)movieId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 @end

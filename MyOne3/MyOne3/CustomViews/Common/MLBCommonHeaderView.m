@@ -39,7 +39,7 @@
 #pragma mark - Private Method
 
 - (void)setupViews {
-    if (_commentsCountLabel) {
+    if (viewType == MLBHeaderViewTypeNone || _commentsCountLabel) {
         return;
     }
     
@@ -49,6 +49,8 @@
     NSString *leftText;
     NSString *rightButtonImageNamePrefix;
     switch (viewType) {
+        case MLBHeaderViewTypeNone:
+            break;
         case MLBHeaderViewTypeComment: {
             leftText = @"评论列表";
             rightButtonImageNamePrefix = @"review";

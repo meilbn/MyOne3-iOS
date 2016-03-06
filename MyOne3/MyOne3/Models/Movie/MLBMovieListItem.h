@@ -10,7 +10,7 @@
 
 @interface MLBMovieListItem : MLBBaseModel
 
-@property (nonatomic, copy) NSString *itemId;
+@property (nonatomic, copy) NSString *movieId;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *verse;
 @property (nonatomic, copy) NSString *verseEn;

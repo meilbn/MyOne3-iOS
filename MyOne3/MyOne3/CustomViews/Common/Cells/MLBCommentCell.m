@@ -7,6 +7,8 @@
 //
 
 #import "MLBCommentCell.h"
+#import "MLBMovieStory.h"
+#import "MLBMovieReview.h"
 #import "MLBComment.h"
 
 NSString *const kMLBCommentCellID = @"MLBCommentCellID";
@@ -217,7 +219,30 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
 
 #pragma mark - Public Method
 
-- (void)configureCellForMusicWithComment:(MLBComment *)comment atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCellForMovieWithStory:(MLBMovieStory *)story atIndexPath:(NSIndexPath *)indexPath {
+    self.indexPath = indexPath;
+    [_userAvatarView mlb_sd_setImageWithURL:story.user.webURL placeholderImageName:@"personal"];
+    _usernameLabel.text = story.user.username;
+    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:story.inputDate];
+    _praiseNumLabel.text = [@(story.praiseNum) stringValue];
+    _replyContentLabel.text = story.title;
+    _replyContentLabel.textColor = [UIColor colorWithWhite:48 / 255.0 alpha:1];
+    _replyContentLabel.font = [UIFont boldSystemFontOfSize:14];
+    _replyContentLabel.backgroundColor = [UIColor whiteColor];
+    _contentLabel.text = story.content;
+}
+
+- (void)configureCellForMovieWithReview:(MLBMovieReview *)review atIndexPath:(NSIndexPath *)indexPath {
+    self.indexPath = indexPath;
+    [_userAvatarView mlb_sd_setImageWithURL:review.author.webURL placeholderImageName:@"personal"];
+    _usernameLabel.text = review.author.username;
+    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:review.inputDate];
+    _praiseNumLabel.text = [@(review.praiseNum) stringValue];
+    _scoreLabel.text = review.score;
+    _contentLabel.text = review.content;
+}
+
+- (void)configureCellForCommonWithComment:(MLBComment *)comment atIndexPath:(NSIndexPath *)indexPath {
     self.indexPath = indexPath;
     [_userAvatarView mlb_sd_setImageWithURL:comment.user.webURL placeholderImageName:@"personal"];
     _usernameLabel.text = comment.user.username;

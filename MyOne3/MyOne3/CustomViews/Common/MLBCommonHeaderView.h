@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, MLBHeaderViewType) {
+    MLBHeaderViewTypeNone,// 无
     MLBHeaderViewTypeComment,// 评论列表
     MLBHeaderViewTypeRelatedRec,// 相关推荐
     MLBHeaderViewTypeRelatedMusic,// 相似歌曲
