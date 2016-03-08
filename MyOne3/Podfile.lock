@@ -22,6 +22,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
+  - FLAnimatedImage (1.0.12)
   - GMCPagingScrollView (1.0.3)
   - JTSImageViewController (1.5.1)
   - KMNavigationBarTransition (0.0.4)
@@ -31,6 +32,13 @@ PODS:
   - Masonry (0.6.4)
   - MBProgressHUD (0.9.2)
   - MJRefresh (3.1.0)
+  - NYTPhotoViewer (1.1.0):
+    - NYTPhotoViewer/AnimatedGifSupport (= 1.1.0)
+    - NYTPhotoViewer/Core (= 1.1.0)
+  - NYTPhotoViewer/AnimatedGifSupport (1.1.0):
+    - FLAnimatedImage (~> 1.0.8)
+    - NYTPhotoViewer/Core
+  - NYTPhotoViewer/Core (1.1.0)
   - pop (1.0.9)
   - SDCycleScrollView (1.61):
     - SDWebImage (~> 3.7)
@@ -54,6 +62,7 @@ DEPENDENCIES:
   - Masonry
   - MBProgressHUD
   - MJRefresh
+  - NYTPhotoViewer
   - pop
   - SDCycleScrollView
   - SDWebImage
@@ -67,6 +76,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GMCPagingScrollView: 32285a8e2c0162a4709dfcb4fefb0b9896f87db2
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   KMNavigationBarTransition: f121665408fb74fc2cf40541b06a8b578d69fc2d
@@ -74,6 +84,7 @@ SPEC CHECKSUMS:
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
+  NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDCycleScrollView: a002d85b30cfa9d0ac74069cd3973ca19ff4f22f
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
