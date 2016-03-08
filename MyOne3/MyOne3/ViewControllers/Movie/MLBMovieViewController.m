@@ -9,12 +9,12 @@
 #import "MLBMovieViewController.h"
 #import <MJRefresh/MJRefresh.h>
 #import "MLBMovieListItem.h"
-#import "MLBMovieListItemCell.h"
+#import "MLBMovieListItemCCell.h"
 #import "MLBMovieDetailsViewController.h"
 
-@interface MLBMovieViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MLBMovieViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UICollectionView *collectionView;
 
 @end
 
@@ -51,28 +51,31 @@
 - (void)setupViews {
     [self addNavigationBarRightItems];
     
-    _tableView = ({
-        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-        tableView.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];// #E5E5E5
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        [tableView registerClass:[MLBMovieListItemCell class] forCellReuseIdentifier:kMLBMovieListItemCellID];
-        [MLBUIFactory addMJRefreshTo:tableView target:self refreshAction:nil loadMoreAction:@selector(loadMoreMovieItem)];
-        [self.view addSubview:tableView];
-        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    _collectionView = ({
+        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
+        layout.itemSize = [MLBMovieListItemCCell cellSize];
+        layout.minimumLineSpacing = 5;
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        collectionView.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];// #E5E5E5
+        collectionView.dataSource = self;
+        collectionView.delegate = self;
+        [collectionView registerClass:[MLBMovieListItemCCell class] forCellWithReuseIdentifier:kMLBMovieListItemCCellID];
+        [self.view addSubview:collectionView];
+        [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
         }];
         
-        tableView;
+        collectionView;
     });
+    
+    [MLBUIFactory addMJRefreshTo:_collectionView target:self refreshAction:nil loadMoreAction:@selector(loadMoreMovieItem)];
 }
 
 - (void)loadCache {
     id cacheMovieList = [NSKeyedUnarchiver unarchiveObjectWithFile:MLBCacheMovieListFilePath];
     if (cacheMovieList) {
         dataSource = cacheMovieList;
-        [_tableView reloadData];
+        [_collectionView reloadData];
     }
 }
 
@@ -96,8 +99,8 @@
             NSArray *movies = [MTLJSONAdapter modelsOfClass:[MLBMovieListItem class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
                 [dataSource addObjectsFromArray:movies];
-                [_tableView reloadData];
-                [self endRefreshingScrollView:_tableView hasMoreData:movies.count >= 30];
+                [_collectionView reloadData];
+                [self endRefreshingScrollView:_collectionView hasMoreData:movies.count >= 30];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [NSKeyedArchiver archiveRootObject:dataSource toFile:MLBCacheMovieListFilePath];
@@ -110,47 +113,31 @@
             [self showHUDErrorWithText:responseObject[@"msg"]];
         }
         
-        [self endRefreshingScrollView:_tableView hasMoreData:YES];
+        [self endRefreshingScrollView:_collectionView hasMoreData:YES];
     } fail:^(NSError *error) {
         [self showHUDServerError];
-        [self endRefreshingScrollView:_tableView hasMoreData:YES];
+        [self endRefreshingScrollView:_collectionView hasMoreData:YES];
     }];
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UICollectionViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return dataSource.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [collectionView dequeueReusableCellWithReuseIdentifier:kMLBMovieListItemCCellID forIndexPath:indexPath];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView dequeueReusableCellWithIdentifier:kMLBMovieListItemCellID forIndexPath:indexPath];
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [(MLBMovieListItemCCell *)cell configureCellWithMovieListItem:dataSource[indexPath.row] atIndexPath:indexPath];
 }
 
-#pragma mark UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 5;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [MLBMovieListItemCell cellHight];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBMovieListItemCell *)cell configureCellWithMovieListItem:dataSource[indexPath.section] atIndexPath:indexPath];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MLBMovieDetailsViewController *movieDetailsViewController = [[MLBMovieDetailsViewController alloc] init];
     movieDetailsViewController.movieListItem = dataSource[indexPath.section];
     [self.navigationController pushViewController:movieDetailsViewController animated:YES];

@@ -8,15 +8,15 @@
 
 #import "MLBMovieDetailsViewController.h"
 #import "MLBMovieDetailsHeaderView.h"
-#import "MLBCommentCell.h"
 #import "MLBNoneMessageCell.h"
 #import "MLBMovieListItem.h"
 #import "MLBMovieDetails.h"
-#import "MLBMovieStoryList.h"
-#import "MLBMovieReviewList.h"
-#import "MLBCommentList.h"
-//#import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 #import "MLBCommentListViewController.h"
+#import "MLBTicketsGrossView.h"
+#import "MLBMoviePosterCCell.h"
+#import <NYTPhotoViewer/NYTPhoto.h>
+#import <NYTPhotoViewer/NYTPhotosViewController.h>
+#import "MLBMoviePoster.h"
 
 typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     MLBMovieDetailsTypeNone,
@@ -25,36 +25,29 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     MLBMovieDetailsTypeCast,
 };
 
-@interface MLBMovieDetailsViewController () <UIScrollViewDelegate>// <UITableViewDataSource, UITableViewDelegate>
+@interface MLBMovieDetailsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *contentView;
 @property (strong, nonatomic) MLBMovieDetailsHeaderView *headerView;
 @property (strong, nonatomic) UIView *toolView;
 @property (strong, nonatomic) UIButton *ticketButton;
-//@property (strong, nonatomic) UILabel *ticketLabel;
 @property (strong, nonatomic) UIButton *gradeButton;
 @property (strong, nonatomic) UIButton *moreButton;
 @property (strong, nonatomic) UIView *shareView;
 @property (strong, nonatomic) UIButton *scoreShareButton;
 @property (strong, nonatomic) UIButton *otherShareButton;
-//@property (strong, nonatomic) UITableView *storiesTableView;
-//@property (strong, nonatomic) MLBCommonHeaderView *storiesHeaderView;
-//@property (strong, nonatomic) MLBCommonFooterView *storiesFooterView;
 @property (strong, nonatomic) MLBCommentListViewController *storyListViewController;
-//@property (strong, nonatomic) UITableView *reviewsTableView;
-//@property (strong, nonatomic) MLBCommonHeaderView *reviewsHeaderView;
-//@property (strong, nonatomic) MLBCommonFooterView *reviewsFooterView;
 @property (strong, nonatomic) MLBCommentListViewController *reviewListViewController;
-//@property (strong, nonatomic) UITableView *commentsTableView;
-//@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
-//@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
 @property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
 @property (strong, nonatomic) UIView *infoView;
 @property (strong, nonatomic) UILabel *infoTypeLabel;
 @property (strong, nonatomic) UIButton *movieTableButton;
 @property (strong, nonatomic) UIButton *stillsButton;
 @property (strong, nonatomic) UIButton *castButton;
+@property (strong, nonatomic) MLBTicketsGrossView *grossView;
+@property (strong, nonatomic) UICollectionView *moviePosterView;
+@property (strong, nonatomic) UITextView *castTextView;
 @property (strong, nonatomic) MLBCommonHeaderView *scoreHeaderView;
 @property (strong, nonatomic) UILabel *scoreRatioLabel;
 
@@ -68,13 +61,9 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 @implementation MLBMovieDetailsViewController {
     NSNumber *tableViewInitHeight;
     MLBMovieDetails *movieDetials;
-//    MLBMovieStoryList *storyList;
-//    NSMutableArray *storyRowsHeight;
-//    MLBMovieReviewList *reviewList;
-//    NSMutableArray *reviewRowsHeight;
-//    MLBCommentList *commentList;
-//    NSMutableArray *commentRowsHeight;
     NSArray *infoButtons;
+    NSArray *keywordsLabels;
+    NSMutableArray <MLBMoviePoster *> *posters;
 }
 
 #pragma mark - Lifecycle
@@ -100,10 +89,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 #pragma mark - Private Method
 
 - (void)initDatas {
-    tableViewInitHeight = @([MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight] + 1);
-//    storyRowsHeight = @[].mutableCopy;
-//    reviewRowsHeight = @[].mutableCopy;
-//    commentRowsHeight = @[].mutableCopy;
+    tableViewInitHeight = @([MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight] + [MLBNoneMessageCell cellHeight] + 1);
 }
 
 - (void)setupViews {
@@ -237,26 +223,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         button;
     });
     
-//    _storiesTableView = ({
-//        UITableView *tableView = [self tableView];
-//        
-//        _storiesHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeMovieStory];
-//        _storiesHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonHeaderView headerViewHeight]);
-//        tableView.tableHeaderView = _storiesHeaderView;
-//        _storiesFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeMovieStory];
-//        _storiesFooterView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonFooterView footerViewHeight]);
-//        tableView.tableFooterView = _storiesFooterView;
-//        
-//        [_contentView addSubview:tableView];
-//        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(_toolView.mas_bottom);
-//            make.left.right.equalTo(_contentView);
-//            _storiesTableViewHeightConstraint = make.height.equalTo(@0);
-//        }];
-//        
-//        tableView;
-//    });
-    
     __weak typeof(self) weakSelf = self;
     _storyListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeMovieStories headerViewType:MLBHeaderViewTypeMovieStory footerViewType:MLBFooterViewTypeMovieStory];
     _storyListViewController.finishedCalculateHeight = ^(CGFloat height) {
@@ -269,26 +235,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         _storiesTableViewHeightConstraint = make.height.equalTo(@0);
     }];
     
-//    _reviewsTableView = ({
-//        UITableView *tableView = [self tableView];
-//        
-//        _reviewsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeMovieReview];
-//        _reviewsHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonHeaderView headerViewHeight]);
-//        tableView.tableHeaderView = _reviewsHeaderView;
-//        _reviewsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeMovieReview];
-//        _reviewsFooterView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonFooterView footerViewHeight]);
-//        tableView.tableFooterView = _reviewsFooterView;
-//        
-//        [_contentView addSubview:tableView];
-//        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(_storiesTableView.mas_bottom).offset(12);
-//            make.left.right.equalTo(_contentView);
-//            _reviewsTableViewHeightConstraint = make.height.equalTo(@0);
-//        }];
-//        
-//        tableView;
-//    });
-    
     _reviewListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeMovieReviews headerViewType:MLBHeaderViewTypeMovieReview footerViewType:MLBFooterViewTypeMovieReview];
     _reviewListViewController.finishedCalculateHeight = ^(CGFloat height) {
         weakSelf.reviewsTableViewHeightConstraint.equalTo(@(height));
@@ -299,26 +245,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         make.left.right.equalTo(_contentView);
         _reviewsTableViewHeightConstraint = make.height.equalTo(@0);
     }];
-    
-//    _commentsTableView = ({
-//        UITableView *tableView = [self tableView];
-//        
-//        _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeMovieComment];
-//        _commentsHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonHeaderView headerViewHeight]);
-//        tableView.tableHeaderView = _commentsHeaderView;
-//        _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
-//        _commentsFooterView.frame = CGRectMake(0, 0, SCREEN_WIDTH, [MLBCommonFooterView footerViewHeight]);
-//        tableView.tableFooterView = _commentsFooterView;
-//        
-//        [_contentView addSubview:tableView];
-//        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(_reviewsTableView.mas_bottom).offset(12);
-//            make.left.right.equalTo(_contentView);
-//            _commentsTableViewHeightConstraint = make.height.equalTo(@0);
-//        }];
-//        
-//        tableView;
-//    });
     
     _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeMovieComments headerViewType:MLBHeaderViewTypeMovieComment footerViewType:MLBFooterViewTypeComment];
     _commentListViewController.finishedCalculateHeight = ^(CGFloat height) {
@@ -346,6 +272,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     
     _castButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"actor_normal" selectedImageName:@"actor_selected" target:self action:@selector(infoButtonClicked:)];
+        button.backgroundColor = [UIColor whiteColor];
         button.tag = MLBMovieDetailsTypeCast;
         [_infoView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -359,6 +286,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     
     _stillsButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"still_normal" selectedImageName:@"still_selected" target:self action:@selector(infoButtonClicked:)];
+        button.backgroundColor = [UIColor whiteColor];
         button.tag = MLBMovieDetailsTypeStills;
         [_infoView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -372,6 +300,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     
     _movieTableButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"plot_normal" selectedImageName:@"plot_selected" target:self action:@selector(infoButtonClicked:)];
+        button.backgroundColor = [UIColor whiteColor];
         button.tag = MLBMovieDetailsTypeTable;
         [_infoView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -387,6 +316,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     
     _infoTypeLabel = ({
         UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
         label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
         label.font = FontWithSize(12);
         [_infoView addSubview:label];
@@ -396,6 +326,71 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         }];
         
         label;
+    });
+    
+    UIView *infoContainer = [UIView new];
+    infoContainer.backgroundColor = [UIColor whiteColor];
+    [_infoView addSubview:infoContainer];
+    [infoContainer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_movieTableButton.mas_bottom).offset(2);
+        make.left.bottom.right.equalTo(_infoView);
+    }];
+    
+    UIImageView *infoBGView = ({
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gross_border"]];
+        imageView.backgroundColor = [UIColor whiteColor];
+        [infoContainer addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(infoContainer);
+        }];
+        
+        imageView;
+    });
+    
+    _grossView = ({
+        MLBTicketsGrossView *view = [MLBTicketsGrossView new];
+        [infoBGView addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(infoBGView).insets(UIEdgeInsetsMake(6, 6, 6, 6));
+        }];
+        
+        view;
+    });
+    
+    _moviePosterView = ({
+        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
+        layout.itemSize = CGSizeMake(130, 130);
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.minimumLineSpacing = 2;
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        collectionView.backgroundColor = [UIColor whiteColor];
+        collectionView.dataSource = self;
+        collectionView.delegate = self;
+        collectionView.scrollsToTop = NO;
+        collectionView.showsVerticalScrollIndicator = NO;
+        collectionView.showsHorizontalScrollIndicator = NO;
+        [collectionView registerClass:[MLBMoviePosterCCell class] forCellWithReuseIdentifier:kMLBMoviePosterCCellID];
+        [infoContainer addSubview:collectionView];
+        [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(infoContainer);
+        }];
+        
+        collectionView;
+    });
+    
+    _castTextView = ({
+        UITextView *textView = [UITextView new];
+        textView.backgroundColor = [UIColor whiteColor];
+        textView.scrollsToTop = NO;
+        textView.selectable = NO;
+        textView.editable = NO;
+        textView.font = FontWithSize(12);
+        [infoContainer addSubview:textView];
+        [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(infoContainer);
+        }];
+        
+        textView;
     });
     
     _scoreHeaderView = ({
@@ -412,6 +407,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     
     _scoreRatioLabel = ({
         UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
         label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #F7F7F7
         label.font = FontWithSize(14);
         label.numberOfLines = 0;
@@ -425,22 +421,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     });
 }
 
-//- (UITableView *)tableView {
-//    UITableView *tableView = [UITableView new];
-//    tableView.backgroundColor = [UIColor whiteColor];
-//    tableView.dataSource = self;
-//    tableView.delegate = self;
-//    tableView.separatorColor = MLBSeparatorColor;
-//    tableView.showsVerticalScrollIndicator = NO;
-//    tableView.showsHorizontalScrollIndicator = NO;
-//    tableView.scrollsToTop = NO;
-//    tableView.scrollEnabled = NO;
-//    [tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
-//    [tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
-//    
-//    return tableView;
-//}
-
 - (void)prepareForDisplay {
     _storiesTableViewHeightConstraint.equalTo(tableViewInitHeight);
     _reviewsTableViewHeightConstraint.equalTo(tableViewInitHeight);
@@ -450,6 +430,9 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 
 - (void)updateViews {
     [_headerView configureViewWithMovieDetails:movieDetials];
+    
+    [_grossView configureViewWithKeywords:[movieDetials.keywords componentsSeparatedByString:@";"]];
+    _castTextView.text = movieDetials.info;
     
     _scoreRatioLabel.text = movieDetials.review;
     
@@ -466,67 +449,14 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     [_commentListViewController requestDatas];
 }
 
-//- (void)updateStoriesTableView {
-//    CGFloat tableViewHeight = tableViewInitHeight.integerValue;
-//    if (storyList.stories.count > 0) {
-//        [storyRowsHeight removeAllObjects];
-//        for (MLBMovieStory*story in storyList.stories) {
-//            CGFloat cellHeight = [_storiesTableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
-//                [cell configureCellForMovieWithStory:story atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//            }];
-//            [storyRowsHeight addObject:@(ceil(cellHeight))];
-//            tableViewHeight += ceil(cellHeight);
-//        }
-//    } else {
-//        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
-//    }
-//    
-//    _storiesTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-//    [_storiesTableView reloadData];
-//}
-//
-//- (void)updateReviewsTableView {
-//    CGFloat tableViewHeight = tableViewInitHeight.integerValue;
-//    if (reviewList.reviews.count > 0) {
-//        [reviewRowsHeight removeAllObjects];
-//        for (MLBMovieReview *review in reviewList.reviews) {
-//            CGFloat cellHeight = [_reviewsTableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
-//                [cell configureCellForMovieWithReview:review atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//            }];
-//            [reviewRowsHeight addObject:@(ceil(cellHeight))];
-//            tableViewHeight += ceil(cellHeight);
-//        }
-//    } else {
-//        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
-//    }
-//    
-//    _reviewsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-//    [_reviewsTableView reloadData];
-//}
-//
-//- (void)updateCommentsTableView {
-//    CGFloat tableViewHeight = tableViewInitHeight.integerValue;
-//    if (commentList.comments.count > 0) {
-//        [commentRowsHeight removeAllObjects];
-//        for (MLBComment *comment in commentList.comments) {
-//            CGFloat cellHeight = [_commentsTableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
-//                [cell configureCellForCommonWithComment:comment atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//            }];
-//            [commentRowsHeight addObject:@(ceil(cellHeight))];
-//            tableViewHeight += ceil(cellHeight);
-//        }
-//    } else {
-//        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
-//    }
-//    
-//    _commentsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-//    [_commentsTableView reloadData];
-//}
-
 - (void)switchInfoWithType:(MLBMovieDetailsType)type {
     for (UIButton *button in infoButtons) {
         button.selected = button.tag == type;
     }
+    
+    _grossView.hidden = !_movieTableButton.isSelected;
+    _moviePosterView.hidden = !_stillsButton.isSelected;
+    _castTextView.hidden = !_castButton.isSelected;
     
     switch (type) {
         case MLBMovieDetailsTypeNone: {
@@ -535,16 +465,31 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         }
         case MLBMovieDetailsTypeTable: {
             _infoTypeLabel.text = @"一个·电影表";
+            
             break;
         }
         case MLBMovieDetailsTypeStills: {
             _infoTypeLabel.text = @"剧照";
+            if (!posters || posters.count != movieDetials.photos.count) {
+                [self configurePhotos];
+            }
+            [_moviePosterView reloadData];
             break;
         }
         case MLBMovieDetailsTypeCast: {
             _infoTypeLabel.text = @"演职人员";
             break;
         }
+    }
+}
+
+- (void)configurePhotos {
+    posters = @[].mutableCopy;
+    
+    for (NSString *url in movieDetials.photos) {
+        MLBMoviePoster *poster = [[MLBMoviePoster alloc] init];
+        poster.imageData = [NSData dataWithContentsOfURL:[url mlb_encodedURL]];
+        [posters addObject:poster];
     }
 }
 
@@ -597,85 +542,26 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     }];
 }
 
-//- (void)requestMovieStories {
-//    [MLBHTTPRequester requestMovieDetailsMovieStoriesById:_movieListItem.movieId success:^(id responseObject) {
-//        if ([responseObject[@"res"] integerValue] == 0) {
-//            NSError *error;
-//            MLBMovieStoryList *stories = [MTLJSONAdapter modelOfClass:[MLBMovieStoryList class] fromJSONDictionary:responseObject[@"data"] error:&error];
-//            if (!error) {
-//                storyList = stories;
-//                [self updateStoriesTableView];
-//            } else {
-//                [self modelTransformFailedWithError:error];
-//            }
-//        } else {
-//            [self showHUDErrorWithText:responseObject[@"msg"]];
-//        }
-//    } fail:^(NSError *error) {
-//        [self showHUDServerError];
-//    }];
-//}
-//
-//- (void)requestMovieReviews {
-//    [MLBHTTPRequester requestMovieDetailsMovieReviewsById:_movieListItem.movieId success:^(id responseObject) {
-//        if ([responseObject[@"res"] integerValue] == 0) {
-//            NSError *error;
-//            MLBMovieReviewList *reviews = [MTLJSONAdapter modelOfClass:[MLBMovieReviewList class] fromJSONDictionary:responseObject[@"data"] error:&error];
-//            if (!error) {
-//                reviewList = reviews;
-//                [self updateReviewsTableView];
-//            } else {
-//                [self modelTransformFailedWithError:error];
-//            }
-//        } else {
-//            [self showHUDErrorWithText:responseObject[@"msg"]];
-//        }
-//    } fail:^(NSError *error) {
-//        [self showHUDServerError];
-//    }];
-//}
-//
-//- (void)requestComments {
-//    [MLBHTTPRequester requestMovieDetailsPraiseCommentsById:_movieListItem.movieId success:^(id responseObject) {
-//        if ([responseObject[@"res"] integerValue] == 0) {
-//            NSError *error;
-//            MLBCommentList *comments = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
-//            if (!error) {
-//                commentList = comments;
-//                [self updateCommentsTableView];
-//            } else {
-//                [self modelTransformFailedWithError:error];
-//            }
-//        } else {
-//            [self showHUDErrorWithText:responseObject[@"msg"]];
-//        }
-//    } fail:^(NSError *error) {
-//        [self showHUDServerError];
-//    }];
-//}
+#pragma mark - UICollectionViewDataSource
 
-//#pragma mark - UITableViewDataSource
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return 0;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return nil;
-//}
-//
-//#pragma mark UITableViewDelegate
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return 0;
-//}
-//
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//}
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return movieDetials.photos.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [collectionView dequeueReusableCellWithReuseIdentifier:kMLBMoviePosterCCellID forIndexPath:indexPath];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [(MLBMoviePosterCCell *)cell configureCellWithPostURL:movieDetials.photos[indexPath.row]];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:posters initialPhoto:posters[indexPath.row]];
+    [self presentViewController:photosViewController animated:NO completion:NULL];
+}
 
 @end
