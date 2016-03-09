@@ -48,6 +48,14 @@ static NSDateFormatter *musicDetailsDateFormatter;
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
 }
 
+#pragma mark - Int
+
++ (NSInteger)rowWithCount:(NSInteger)count colNumber:(NSInteger)colNumber {
+    NSInteger row = ceilf(count / (CGFloat)colNumber);
+    
+    return row;
+}
+
 #pragma mark - Date / 日期
 
 + (NSDate *)dateWithString:(NSString *)string {

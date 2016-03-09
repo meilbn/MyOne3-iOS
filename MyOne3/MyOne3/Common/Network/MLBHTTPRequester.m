@@ -148,6 +148,11 @@
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, MLBApiEssay, essayId] success:successBlock fail:failBlock];
 }
 
+// 连载文章列表
++ (void)requestSerialListById:(NSString *)serialId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiSerialList, serialId] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Music
 
 + (void)requestMusicIdListWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {

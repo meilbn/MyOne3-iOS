@@ -23,6 +23,7 @@
 #import "MLBReadQuestionDetails.h"
 #import "MLBReadBaseCell.h"
 #import "MLBCommentListViewController.h"
+#import "MLBSerialCollectionView.h"
 
 #define kMLBReadDetailsEditorViewMaxHeight       68
 
@@ -45,13 +46,12 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 @property (strong, nonatomic) UIButton *listenInButton;
 @property (strong, nonatomic) YYTextView *contentTextView;
 @property (strong, nonatomic) MLBChargeEditorView *editorView;
-//@property (strong, nonatomic) UITableView *commentsTableView;
-//@property (strong, nonatomic) MLBCommonHeaderView *commentsHeaderView;
-//@property (strong, nonatomic) MLBCommonFooterView *commentsFooterView;
 @property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
 @property (strong, nonatomic) UITableView *relatedsTableView;
 @property (strong, nonatomic) MLBCommonHeaderView *relatedsHeaderView;
 @property (strong, nonatomic) MLBCommonFooterView *relatedsFooterView;
+
+@property (strong, nonatomic) MLBSerialCollectionView *serialCollectionView;
 
 @property (strong, nonatomic) MASConstraint *questionViewTopConstraint;
 @property (strong, nonatomic) MASConstraint *contentTextViewHeightConstraint;
@@ -66,8 +66,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     MLBReadType viewType;
     MLBBaseModel *readDetailsModel;
     MLBBaseModel *readModel;
-//    MLBCommentList *commentList;
-//    NSMutableArray *commentRowsHeight;
     NSArray *relatedList;
     NSMutableArray *relatedRowsHeight;
 }
@@ -112,7 +110,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)initDatas {
-//    commentRowsHeight = @[].mutableCopy;
     relatedRowsHeight = @[].mutableCopy;
 }
 
@@ -289,6 +286,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         label.textColor = MLBLightBlackTextColor;
         label.font = FontWithSize(18);
         label.numberOfLines = 0;
+        label.lineBreakMode = NSLineBreakByCharWrapping;
         [_contentCenterView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_contentCenterView).offset(12);
@@ -344,27 +342,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         
         view;
     });
-    
-//    _commentsTableView = ({
-//        UITableView *tableView = [UITableView new];
-//        tableView.backgroundColor = [UIColor whiteColor];
-//        tableView.dataSource = self;
-//        tableView.delegate = self;
-//        tableView.scrollEnabled = NO;
-//        [tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
-//        [tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
-//        tableView.tableFooterView = [UIView new];
-//        tableView.separatorInset = UIEdgeInsetsMake(0, 60, 0, 0);
-//        tableView.separatorColor = MLBSeparatorColor;
-//        [_contentView addSubview:tableView];
-//        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(_editorView.mas_bottom);
-//            make.left.right.equalTo(_contentView);
-//            _commentsTableViewHeightConstraint = make.height.equalTo(@0);
-//        }];
-//
-//        tableView;
-//    });
     
     __weak typeof(self) weakSelf = self;
     _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeReadComments headerViewType:MLBHeaderViewTypeComment footerViewType:MLBFooterViewTypeComment];
@@ -425,12 +402,14 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         dateString = serial.makeTime;
         NSString *numberString = [NSString stringWithFormat:@"( %@ )", serial.number];
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]
-                                                       initWithString:[NSString stringWithFormat:@"%@%@", serial.title, numberString]
+                                                       initWithString:[NSString stringWithFormat:@"%@ %@", serial.title, numberString]
                                                        attributes:@{ NSForegroundColorAttributeName : _titleLabel.textColor,
                                                                      NSFontAttributeName : _titleLabel.font}];
         NSRange numberStringRange = [attributedString.string rangeOfString:numberString];
         [attributedString addAttributes:@{ NSForegroundColorAttributeName : MLBAppThemeColor} range:numberStringRange];
+        [attributedString addAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor]} range:NSMakeRange(0, numberStringRange.location)];
         _titleLabel.attributedText = attributedString;
+        [_titleLabel.selectableRanges removeAllObjects];
         [_titleLabel setSelectableRange:numberStringRange hightlightedBackgroundColor:MLBAppThemeColor];
         __weak typeof(self) weakSelf = self;
         _titleLabel.selectionHandler = ^(NSRange range, NSString *string) {
@@ -448,10 +427,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _commentsTableViewHeightConstraint.equalTo(@0);
     _relatedsTableViewHeightConstraint.equalTo(@0);
 }
-
-//- (NSString *)readType {
-//    return (viewType == MLBReadTypeEssay ? MLBApiEssay : (viewType == MLBReadTypeSerial ? MLBApiSerial : MLBApiQuestion));
-//}
 
 - (NSString *)contentId {
     return (viewType == MLBReadTypeEssay ? ((MLBReadEssay *)readModel).contentId : (viewType == MLBReadTypeSerial ? ((MLBReadSerial *)readModel).contentId : ((MLBReadQuestion *)readModel).questionId));
@@ -502,7 +477,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         }];
     }];
     
-//    [self requestComment];
     [_commentListViewController configureViewForReadDetailsWithReadType:viewType itemId:[self contentId]];
     [self.parentViewController addChildViewController:_commentListViewController];
     [_commentListViewController requestDatas];
@@ -522,25 +496,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _contentTextView.attributedText = attributedString;
     _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
 }
-
-//- (void)updateCommentsTableView {
-//    CGFloat tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeight];// headerView + footerView
-//    if (commentList.comments.count > 0) {
-//        [commentRowsHeight removeAllObjects];
-//        for (MLBComment *comment in commentList.comments) {
-//            CGFloat cellHeight = [_commentListViewController.tableView fd_heightForCellWithIdentifier:kMLBCommentCellID configuration:^(MLBCommentCell *cell) {
-//                [cell configureCellForCommonWithComment:comment atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//            }];
-//            [commentRowsHeight addObject:@(ceil(cellHeight))];
-//            tableViewHeight += ceil(cellHeight);
-//        }
-//    } else {
-//        tableViewHeight += [MLBNoneMessageCell cellHeight];// add none message cell height
-//    }
-//    
-//    _commentsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-//    [_commentListViewController.tableView reloadData];
-//}
 
 - (void)updateRelatedsTableView {
     CGFloat tableViewHeight = 0;
@@ -584,14 +539,13 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)titleNumberClicked {
-    DDLogDebug(@"%@", NSStringFromSelector(_cmd));
+    if (!_serialCollectionView) {
+        _serialCollectionView = [[MLBSerialCollectionView alloc] init];
+    }
+    
+    _serialCollectionView.serial = (MLBReadSerial *)readModel;
+    [_serialCollectionView show];
 }
-
-//- (void)showAllComments {
-//    MLBCommentListViewController *commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeReadComments];
-//    [commentListViewController configureViewForReadDetailsWithReadType:viewType itemId:[self contentId]];
-//    [self.parentViewController.navigationController pushViewController:commentListViewController animated:YES];
-//}
 
 #pragma mark - Network Request
 
@@ -628,25 +582,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         
     }];
 }
-
-//- (void)requestComment {
-//    [MLBHTTPRequester requestPraiseCommentsWithType:[MLBHTTPRequester apiStringForReadWithReadType:viewType] itemId:[self contentId] firstItemId:@"0" success:^(id responseObject) {
-//        if ([responseObject[@"res"] integerValue] == 0) {
-//            NSError *error;
-//            MLBCommentList *comments = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
-//            if (!error) {
-//                commentList = comments;
-//                [self updateCommentsTableView];
-//            } else {
-//                // callback
-//            }
-//        } else {
-//            // callback
-//        }
-//    } fail:^(NSError *error) {
-//        
-//    }];
-//}
 
 - (void)requestRelateds {
     [MLBHTTPRequester requestRelatedsWithType:[MLBHTTPRequester apiStringForReadWithReadType:viewType] itemId:[self contentId] success:^(id responseObject) {
@@ -705,27 +640,11 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    if (tableView == _commentsTableView) {
-//        return commentList.comments.count;
-//    } else if (tableView == _relatedsTableView) {
-        return relatedList.count;
-//    }
-//    
-//    return 0;
+    return relatedList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (tableView == _commentsTableView) {
-//        if (commentList.comments.count > 0) {
-//            return [tableView dequeueReusableCellWithIdentifier:kMLBCommentCellID forIndexPath:indexPath];
-//        } else {
-//            return [tableView dequeueReusableCellWithIdentifier:kMLBNoneMessageCellID];
-//        }
-//    } else if (tableView == _relatedsTableView) {
-        return [tableView dequeueReusableCellWithIdentifier:kMLBReadBaseCellID forIndexPath:indexPath];
-//    }
-//    
-//    return nil;
+    return [tableView dequeueReusableCellWithIdentifier:kMLBReadBaseCellID forIndexPath:indexPath];
 }
 
 #pragma mark UITableViewDelegate
@@ -735,79 +654,31 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//    if (tableView == _commentsTableView) {
-//        return [MLBCommonFooterView footerViewHeight];
-//    } else if (tableView == _relatedsTableView) {
-        return [MLBCommonFooterView footerViewHeightForShadow];
-//    }
-//    
-//    return 0;
+    return [MLBCommonFooterView footerViewHeightForShadow];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (tableView == _commentsTableView) {
-//        if (commentList.comments.count > 0) {
-//            return [commentRowsHeight[indexPath.row] floatValue];
-//        } else {
-//            return [MLBNoneMessageCell cellHeight];
-//        }
-//    } else if (tableView == _relatedsTableView) {
-        return [relatedRowsHeight[indexPath.row] floatValue];
-//    }
-//    
-//    return 0;
+    return [relatedRowsHeight[indexPath.row] floatValue];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    if (tableView == _commentsTableView) {
-//        if (!_commentsHeaderView) {
-//            _commentsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeComment];
-//        }
-//        
-//        return _commentsHeaderView;
-//    } else if (tableView == _relatedsTableView) {
-        if (!_relatedsHeaderView) {
-            _relatedsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedRec];
-        }
-        
-        return _relatedsHeaderView;
-//    }
-//    
-//    return nil;
+    if (!_relatedsHeaderView) {
+        _relatedsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedRec];
+    }
+    
+    return _relatedsHeaderView;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-//    if (tableView == _commentsTableView) {
-//        if (!_commentsFooterView) {
-//            _commentsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeComment];
-//        }
-//        
-//        [_commentsFooterView configureViewWithCount:commentList.count];
-//        __weak typeof(self) weakSelf = self;
-//        _commentsFooterView.showAllItems = ^() {
-//            [weakSelf showAllComments];
-//        };
-//        
-//        return _commentsFooterView;
-//    } else if (tableView == _relatedsTableView) {
-        if (!_relatedsFooterView) {
-            _relatedsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
-        }
-        
-        return _relatedsFooterView;
-//    }
-//    
-//    return nil;
+    if (!_relatedsFooterView) {
+        _relatedsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
+    }
+    
+    return _relatedsFooterView;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (tableView == _commentsTableView) {
-//        if (commentList.comments.count > 0) {
-//            [(MLBCommentCell *)cell configureCellForCommonWithComment:commentList.comments[indexPath.row] atIndexPath:indexPath];
-//        }
-//    } else if (tableView == _relatedsTableView) {
-        [self configureRelatedCell:(MLBReadBaseCell *)cell withModel:relatedList[indexPath.row]];
-//    }
+    [self configureRelatedCell:(MLBReadBaseCell *)cell withModel:relatedList[indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

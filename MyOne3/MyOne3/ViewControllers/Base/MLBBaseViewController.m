@@ -46,11 +46,6 @@
     [self setupViews];
 }
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    self.navigationController.navigationBar.hidden = _hideNavigationBar;
-//}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.hidesBottomBarWhenPushed = YES;
@@ -223,7 +218,6 @@
 
 - (void)presentLoginOptsViewController {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[MLBLiginOptsViewController alloc] init]];
-//    nav.navigationBar.hidden = YES;
     [self presentViewController:nav animated:YES completion:NULL];
 }
 

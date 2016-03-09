@@ -245,23 +245,6 @@
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBHomeView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBHomeViewID];
     [view configureViewWithHomeItem:[self homeItemAtIndex:index] atIndex:index inViewController:self];
-//    __weak typeof(self) weakSelf = self;
-//    view.clickedButton = ^(MLBActionType type) {
-//        switch (type) {
-//            case MLBActionTypeDiary: {
-//                [weakSelf diaryButtonClicked];
-//                break;
-//            }
-//            case MLBActionTypePraise: {
-//                [weakSelf likeButtonClicked];
-//                break;
-//            }
-//            case MLBActionTypeMore: {
-//                [weakSelf moreButtonClicked];
-//                break;
-//            }
-//        }
-//    };
     
     return view;
 }

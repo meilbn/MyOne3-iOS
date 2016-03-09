@@ -41,6 +41,8 @@
 // 连载
 #define MLBApiSerial                            @"serial"
 #define MLBApiSerialContent                     @"serialcontent"
+// 连载列表
+#define MLBApiSerialList                        @"/serial/list/%@"
 // 问题
 #define MLBApiQuestion                          @"question"
 

@@ -59,6 +59,9 @@ typedef void(^FailBlock)(NSError *error);
 // 短篇文章相关列表
 + (void)requestEssayRelatedsById:(NSString *)essayId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+// 连载文章列表
++ (void)requestSerialListById:(NSString *)serialId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Music
 
 // 音乐 ID 列表

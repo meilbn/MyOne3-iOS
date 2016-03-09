@@ -37,18 +37,4 @@
              @"serverTime" : @"servertime"};
 }
 
-//+ (NSValueTransformer *)photosJSONTransformer {
-//    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-//        if (!value) {
-//            return @[].mutableCopy;
-//        }
-//        
-//        NSError *jsonError;
-//        NSData *data = [value dataUsingEncoding:NSUTF8StringEncoding];
-//        NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
-//        NSAssert(error, @"JSON Serialization failed");
-//        return array;
-//    }];
-//}
-
 @end

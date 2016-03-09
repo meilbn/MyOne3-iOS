@@ -20,6 +20,10 @@
 
 + (NSString *)appCurrentBuild;
 
+#pragma mark - Int
+
++ (NSInteger)rowWithCount:(NSInteger)count colNumber:(NSInteger)colNumber;
+
 #pragma mark - Date / 日期
 
 + (NSDate *)dateWithString:(NSString *)string;

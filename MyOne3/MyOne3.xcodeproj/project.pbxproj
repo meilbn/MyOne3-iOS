@@ -85,6 +85,9 @@
 		23C174CA1C81BDA000C071A1 /* MLBTopTenArticalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C174C91C81BDA000C071A1 /* MLBTopTenArticalCell.m */; };
 		23C73CCD1C7C944900B9F412 /* MLBCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C73CCC1C7C944900B9F412 /* MLBCommentCell.m */; };
 		23C73CD11C7CA40500B9F412 /* MLBRelatedMusicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C73CD01C7CA40500B9F412 /* MLBRelatedMusicCell.m */; };
+		23D24E611C9036BD00761AD9 /* MLBSerialCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E601C9036BD00761AD9 /* MLBSerialCollectionView.m */; };
+		23D24E641C90389000761AD9 /* MLBSerialCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E631C90389000761AD9 /* MLBSerialCCell.m */; };
+		23D24E671C903C9B00761AD9 /* MLBSerialList.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E661C903C9B00761AD9 /* MLBSerialList.m */; };
 		23E176381C7C467E0052B2A9 /* MLBCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E176371C7C467E0052B2A9 /* MLBCommentList.m */; };
 		23E1763B1C7C471A0052B2A9 /* MLBComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E1763A1C7C471A0052B2A9 /* MLBComment.m */; };
 		23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E1763D1C7C47CA0052B2A9 /* MLBUser.m */; };
@@ -249,6 +252,12 @@
 		23C73CCC1C7C944900B9F412 /* MLBCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentCell.m; sourceTree = "<group>"; };
 		23C73CCF1C7CA40500B9F412 /* MLBRelatedMusicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBRelatedMusicCell.h; sourceTree = "<group>"; };
 		23C73CD01C7CA40500B9F412 /* MLBRelatedMusicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBRelatedMusicCell.m; sourceTree = "<group>"; };
+		23D24E5F1C9036BD00761AD9 /* MLBSerialCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSerialCollectionView.h; sourceTree = "<group>"; };
+		23D24E601C9036BD00761AD9 /* MLBSerialCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSerialCollectionView.m; sourceTree = "<group>"; };
+		23D24E621C90389000761AD9 /* MLBSerialCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSerialCCell.h; sourceTree = "<group>"; };
+		23D24E631C90389000761AD9 /* MLBSerialCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSerialCCell.m; sourceTree = "<group>"; };
+		23D24E651C903C9B00761AD9 /* MLBSerialList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSerialList.h; sourceTree = "<group>"; };
+		23D24E661C903C9B00761AD9 /* MLBSerialList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSerialList.m; sourceTree = "<group>"; };
 		23E176361C7C467E0052B2A9 /* MLBCommentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBCommentList.h; sourceTree = "<group>"; };
 		23E176371C7C467E0052B2A9 /* MLBCommentList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentList.m; sourceTree = "<group>"; };
 		23E176391C7C471A0052B2A9 /* MLBComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBComment.h; sourceTree = "<group>"; };
@@ -533,6 +542,8 @@
 				23AD5FD01C7FF87200D80701 /* MLBReadDetailsView.m */,
 				23C174C81C81BDA000C071A1 /* MLBTopTenArticalCell.h */,
 				23C174C91C81BDA000C071A1 /* MLBTopTenArticalCell.m */,
+				23D24E5F1C9036BD00761AD9 /* MLBSerialCollectionView.h */,
+				23D24E601C9036BD00761AD9 /* MLBSerialCollectionView.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -621,6 +632,8 @@
 				23BFAC801C808C590014A977 /* MLBReadQuestionDetails.m */,
 				23C174C51C819D0A00C071A1 /* MLBTopTenArtical.h */,
 				23C174C61C819D0A00C071A1 /* MLBTopTenArtical.m */,
+				23D24E651C903C9B00761AD9 /* MLBSerialList.h */,
+				23D24E661C903C9B00761AD9 /* MLBSerialList.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -741,6 +754,8 @@
 			children = (
 				23AD5FC91C7FEE9500D80701 /* MLBReadBaseCell.h */,
 				23AD5FCA1C7FEE9500D80701 /* MLBReadBaseCell.m */,
+				23D24E621C90389000761AD9 /* MLBSerialCCell.h */,
+				23D24E631C90389000761AD9 /* MLBSerialCCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1010,6 +1025,7 @@
 				239F033F1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.m in Sources */,
 				239F03351C797C6500B03AF3 /* MLBHTTPRequester.m in Sources */,
 				23FC0B781C7EBFD00019A16E /* MLBPoilcyViewController.m in Sources */,
+				23D24E671C903C9B00761AD9 /* MLBSerialList.m in Sources */,
 				230CC8C81C7B33D300EAA09C /* MLBHomeView.m in Sources */,
 				23FC0B751C7EABDF0019A16E /* UIImage+Common.m in Sources */,
 				239F03391C79847E00B03AF3 /* MLBBaseCell.m in Sources */,
@@ -1025,6 +1041,7 @@
 				238557FB1C80507200848919 /* AAPullToRefresh.m in Sources */,
 				23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */,
 				235A618C1C8DB212008FE79B /* MLBTicketsGrossView.m in Sources */,
+				23D24E611C9036BD00761AD9 /* MLBSerialCollectionView.m in Sources */,
 				23C174CA1C81BDA000C071A1 /* MLBTopTenArticalCell.m in Sources */,
 				23E176411C7C4A6E0052B2A9 /* MLBRelatedMusic.m in Sources */,
 				23AA05C51C78BF2F0043ACE7 /* MLBTabBarController.m in Sources */,
@@ -1033,6 +1050,7 @@
 				23AA05BD1C78BD0D0043ACE7 /* MLBBaseViewController.m in Sources */,
 				23E651D61C8BF8AA00E9B23B /* MLBCommentListViewController.m in Sources */,
 				23AA05831C78A77C0043ACE7 /* main.m in Sources */,
+				23D24E641C90389000761AD9 /* MLBSerialCCell.m in Sources */,
 				23AA05B81C78BCC70043ACE7 /* MTLModel+MANullableScalar.m in Sources */,
 				23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */,
 				23AD5FDB1C80000500D80701 /* UIColor+Equalable.m in Sources */,
