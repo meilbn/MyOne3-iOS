@@ -24,6 +24,7 @@
 #import "MLBReadBaseCell.h"
 #import "MLBCommentListViewController.h"
 #import "MLBSerialCollectionView.h"
+#import "MLBSingleReadDetailsViewController.h"
 
 #define kMLBReadDetailsEditorViewMaxHeight       68
 
@@ -389,6 +390,15 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _questionViewTopConstraint.offset((CGRectGetHeight(_questionView.frame) * -1));
     _questionView.hidden = YES;
     
+    [self updateAuthorViews];
+    
+    _contentTextViewHeightConstraint.equalTo(@0);
+    _chargeEditorHeightConstraint.equalTo(@0);
+    _commentsTableViewHeightConstraint.equalTo(@0);
+    _relatedsTableViewHeightConstraint.equalTo(@0);
+}
+
+- (void)updateAuthorViews {
     MLBAuthor *author;
     NSString *dateString;
     if (viewType == MLBReadTypeEssay) {
@@ -421,11 +431,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _authorNameLabel.text = author.username;
     _authorDescLabel.text = author.desc;
     _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:dateString];
-    
-    _contentTextViewHeightConstraint.equalTo(@0);
-    _chargeEditorHeightConstraint.equalTo(@0);
-    _commentsTableViewHeightConstraint.equalTo(@0);
-    _relatedsTableViewHeightConstraint.equalTo(@0);
 }
 
 - (NSString *)contentId {
@@ -437,6 +442,18 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)updateViews {
+    if (viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
+        MLBReadSerial *serial = (MLBReadSerial *)readModel;
+        MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
+        serial.title = serialDetails.title;
+        serial.excerpt = serialDetails.excerpt;
+        serial.readNum = serialDetails.readNum;
+        serial.makeTime = serialDetails.makeTime;
+        serial.author = serialDetails.author;
+        
+        [self updateAuthorViews];
+    }
+    
     NSString *chargeEditor = @"";
     NSInteger praiseNum = 0;
     switch (viewType) {
@@ -504,7 +521,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         [relatedRowsHeight removeAllObjects];
         for (MLBBaseModel *model in relatedList) {
             CGFloat cellHeight = [_relatedsTableView fd_heightForCellWithIdentifier:kMLBReadBaseCellID configuration:^(MLBReadBaseCell *cell) {
-                [self configureRelatedCell:cell withModel:model];
+                [cell configureCellWithBaseModel:model];
             }];
             [relatedRowsHeight addObject:@(ceil(cellHeight))];
             tableViewHeight += ceil(cellHeight);
@@ -513,23 +530,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
     _relatedsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
     [_relatedsTableView reloadData];
-}
-
-- (void)configureRelatedCell:(MLBReadBaseCell *)cell withModel:(MLBBaseModel *)model {
-    switch (viewType) {
-        case MLBReadTypeEssay: {
-            [cell configureCellWithreadEssay:(MLBReadEssay *)model];
-            break;
-        }
-        case MLBReadTypeSerial: {
-            [cell configureCellWithreadSerial:(MLBReadSerial *)model];
-            break;
-        }
-        case MLBReadTypeQuestion: {
-            [cell configureCellWithreadQuestion:(MLBReadQuestion *)model];
-            break;
-        }
-    }
 }
 
 #pragma mark - Action
@@ -541,10 +541,23 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 - (void)titleNumberClicked {
     if (!_serialCollectionView) {
         _serialCollectionView = [[MLBSerialCollectionView alloc] init];
+        __weak typeof(self) weakSelf = self;
+        _serialCollectionView.didSelectedSerial = ^(MLBReadSerial *serial) {
+            [weakSelf.serialCollectionView dismissWithCompleted:^{
+                [weakSelf showSingleReadDetailsWithReadModel:serial];
+            }];
+        };
     }
     
     _serialCollectionView.serial = (MLBReadSerial *)readModel;
     [_serialCollectionView show];
+}
+
+- (void)showSingleReadDetailsWithReadModel:(MLBBaseModel *)model {
+    MLBSingleReadDetailsViewController *singleReadDetailsViewController = [[MLBSingleReadDetailsViewController alloc] init];
+    singleReadDetailsViewController.readType = viewType;
+    singleReadDetailsViewController.readModel = model;
+    [self.parentViewController.navigationController pushViewController:singleReadDetailsViewController animated:YES];
 }
 
 #pragma mark - Network Request
@@ -678,11 +691,12 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self configureRelatedCell:(MLBReadBaseCell *)cell withModel:relatedList[indexPath.row]];
+    [(MLBReadBaseCell *)cell configureCellWithBaseModel:relatedList[indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self showSingleReadDetailsWithReadModel:relatedList[indexPath.row]];
 }
 
 @end

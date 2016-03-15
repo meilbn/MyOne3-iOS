@@ -121,7 +121,17 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
 
 #pragma mark - Public Method
 
-- (void)configureCellWithreadEssay:(MLBReadEssay *)readEssay {
+- (void)configureCellWithBaseModel:(MLBBaseModel *)model {
+    if ([model isMemberOfClass:[MLBReadEssay class]]) {
+        [self configureCellWithReadEssay:(MLBReadEssay *)model];
+    } else if ([model isMemberOfClass:[MLBReadSerial class]]) {
+        [self configureCellWithReadSerial:(MLBReadSerial *)model];
+    } else if ([model isMemberOfClass:[MLBReadQuestion class]]) {
+        [self configureCellWithReadQuestion:(MLBReadQuestion *)model];
+    }
+}
+
+- (void)configureCellWithReadEssay:(MLBReadEssay *)readEssay {
     _readTypeView.image = [UIImage imageNamed:@"read_essay"];
     _titleLabel.text = readEssay.title;
     if (readEssay.authors.count > 0) {
@@ -133,14 +143,14 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
     _contentLabel.text = readEssay.guideWord;
 }
 
-- (void)configureCellWithreadSerial:(MLBReadSerial *)readSerial {
+- (void)configureCellWithReadSerial:(MLBReadSerial *)readSerial {
     _readTypeView.image = [UIImage imageNamed:@"read_serial"];
     _titleLabel.text = [NSString stringWithFormat:@"%@( %@ )", readSerial.title, readSerial.number];
     _authorLabel.text = readSerial.author.username;
     _contentLabel.text = readSerial.excerpt;
 }
 
-- (void)configureCellWithreadQuestion:(MLBReadQuestion *)readQuestion {
+- (void)configureCellWithReadQuestion:(MLBReadQuestion *)readQuestion {
     _readTypeView.image = [UIImage imageNamed:@"read_question"];
     _titleLabel.text = readQuestion.questionTitle;
     _authorLabel.text = @"";

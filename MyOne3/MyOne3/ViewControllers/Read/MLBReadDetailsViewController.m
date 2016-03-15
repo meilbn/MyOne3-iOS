@@ -71,10 +71,6 @@
 }
 
 - (void)setupViews {
-    if (_pagingScrollView) {
-        return;
-    }
-    
     __weak typeof(self) weakSelf = self;
     
     _pagingScrollView = ({

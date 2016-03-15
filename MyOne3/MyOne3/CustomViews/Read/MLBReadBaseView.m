@@ -146,11 +146,11 @@ NSString *const kMLBReadBaseViewID = @"MLBReadBaseViewID";
 
 - (void)configureCell:(MLBReadBaseCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
-        [cell configureCellWithreadEssay:_readEssay];
+        [cell configureCellWithReadEssay:_readEssay];
     } else if (indexPath.row == 1) {
-        [cell configureCellWithreadSerial:_readSerial];
+        [cell configureCellWithReadSerial:_readSerial];
     } else {
-        [cell configureCellWithreadQuestion:_readQuestion];
+        [cell configureCellWithReadQuestion:_readQuestion];
     }
 }
 

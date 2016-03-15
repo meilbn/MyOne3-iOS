@@ -59,10 +59,6 @@
 }
 
 - (void)setupViews {
-    if (_pagingScrollView) {
-        return;
-    }
-    
     UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_home_title"]];
     self.navigationItem.titleView = titleView;
     

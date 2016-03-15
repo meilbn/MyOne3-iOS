@@ -10,16 +10,19 @@
 
 FOUNDATION_EXPORT NSString *const kMLBReadBaseCellID;
 
+@class MLBBaseModel;
 @class MLBReadEssay;
 @class MLBReadSerial;
 @class MLBReadQuestion;
 
 @interface MLBReadBaseCell : MLBBaseCell
 
-- (void)configureCellWithreadEssay:(MLBReadEssay *)readEssay;
+- (void)configureCellWithBaseModel:(MLBBaseModel *)model;
 
-- (void)configureCellWithreadSerial:(MLBReadSerial *)readSerial;
+- (void)configureCellWithReadEssay:(MLBReadEssay *)readEssay;
 
-- (void)configureCellWithreadQuestion:(MLBReadQuestion *)readQuestion;
+- (void)configureCellWithReadSerial:(MLBReadSerial *)readSerial;
+
+- (void)configureCellWithReadQuestion:(MLBReadQuestion *)readQuestion;
 
 @end

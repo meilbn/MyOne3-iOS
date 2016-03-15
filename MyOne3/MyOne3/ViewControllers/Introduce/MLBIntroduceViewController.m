@@ -60,10 +60,6 @@
 }
 
 - (void)setupViews {
-    if (_scrollView) {
-        return;
-    }
-    
     _scrollView = ({
         UIScrollView *scrollView = [UIScrollView new];
         scrollView.backgroundColor = MLBViewControllerBGColor;

@@ -56,10 +56,6 @@
 }
 
 - (void)setupViews {
-    if (_tableView) {
-        return;
-    }
-    
     self.view.backgroundColor = [UIColor colorWithHexString:[_carouselItem.bgColor substringFromIndex:1]];
     
     _tableView = ({

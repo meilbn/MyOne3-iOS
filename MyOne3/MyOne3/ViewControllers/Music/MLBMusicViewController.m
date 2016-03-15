@@ -53,10 +53,6 @@
 }
 
 - (void)setupViews {
-    if (_pagingScrollView) {
-        return;
-    }
-    
     [self addNavigationBarRightItems];
     
     UIButton *librariesButton = [MLBUIFactory buttonWithImageName:@"nav_music_libraries_normal" highlightImageName:@"nav_music_libraries_highlighted" target:self action:@selector(librariesButtonClicked)];

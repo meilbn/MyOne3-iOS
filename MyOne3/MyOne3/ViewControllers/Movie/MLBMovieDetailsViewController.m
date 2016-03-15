@@ -93,10 +93,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)setupViews {
-    if (_scrollView) {
-        return;
-    }
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
     _scrollView = ({

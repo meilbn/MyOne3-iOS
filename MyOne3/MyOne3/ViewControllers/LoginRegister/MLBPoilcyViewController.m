@@ -48,10 +48,6 @@
 }
 
 - (void)setupViews {
-    if (_webView) {
-        return;
-    }
-    
     _webView = ({
         UIWebView *webView = [UIWebView new];
         webView.backgroundColor = self.view.backgroundColor;

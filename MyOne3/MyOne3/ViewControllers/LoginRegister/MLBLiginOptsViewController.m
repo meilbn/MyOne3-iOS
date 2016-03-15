@@ -70,10 +70,6 @@
 }
 
 - (void)setupViews {
-    if (_bgImageView) {
-        return;
-    }
-    
     _bgImageView = ({
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"personalBackgroundImage"]];
         imageView.contentMode = UIViewContentModeScaleAspectFill;

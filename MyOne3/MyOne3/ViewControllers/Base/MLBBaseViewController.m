@@ -41,9 +41,6 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     self.navigationController.navigationBar.hidden = _hideNavigationBar;
-    
-    [self initDatas];
-    [self setupViews];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -61,13 +58,7 @@
 
 #pragma mark - Private Method
 
-- (void)initDatas {
-    
-}
 
-- (void)setupViews {
-    
-}
 
 #pragma mark - HUD
 

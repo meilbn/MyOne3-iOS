@@ -14,8 +14,12 @@
 
 @property (nonatomic, copy) MLBReadSerial *serial;
 
+@property (nonatomic, copy) void (^didSelectedSerial)(MLBReadSerial *serial);
+
 - (void)show;
 
 - (void)dismiss;
+
+- (void)dismissWithCompleted:(void (^)())completedBlock;
 
 @end

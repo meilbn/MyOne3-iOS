@@ -119,7 +119,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
     self.alpha = 0;
     [kKeyWindow addSubview:self];
     [self requestSerialList];
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.alpha = 1;
     } completion:^(BOOL finished) {
         
@@ -127,12 +127,19 @@ NSInteger kCollectionViewHeaderHeight = 50;
 }
 
 - (void)dismiss {
+    [self dismissWithCompleted:NULL];
+}
+
+- (void)dismissWithCompleted:(void (^)())completedBlock {
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
         _collectionViewHeightConstraint.equalTo(@(kCollectionViewHeaderHeight));
         serialList = nil;
+        if (completedBlock) {
+            completedBlock();
+        }
     }];
 }
 
@@ -199,6 +206,9 @@ NSInteger kCollectionViewHeaderHeight = 50;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    if (_didSelectedSerial) {
+        _didSelectedSerial(serialList.list[indexPath.row]);
+    }
 }
 
 @end

@@ -63,10 +63,6 @@
 }
 
 - (void)setupViews {
-    if (_carouselView) {
-        return;
-    }
-    
     [self addNavigationBarRightItems];
     
     __weak typeof(self) weakSelf = self;
