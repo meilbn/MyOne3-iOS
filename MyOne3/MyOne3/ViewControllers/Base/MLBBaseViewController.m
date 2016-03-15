@@ -39,14 +39,16 @@
     self.view.backgroundColor = MLBViewControllerBGColor;
     // 设置标题栏不能覆盖下面 ViewController 的内容
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
-    self.navigationController.navigationBar.hidden = _hideNavigationBar;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = _hideNavigationBar;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.hidesBottomBarWhenPushed = YES;
-    self.navigationController.navigationBar.hidden = _hideNavigationBar;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

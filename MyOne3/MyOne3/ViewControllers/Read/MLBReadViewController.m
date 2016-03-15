@@ -70,6 +70,7 @@
     _carouselView = ({
         SDCycleScrollView *cycleScrollView = [SDCycleScrollView new];
         cycleScrollView.backgroundColor = [UIColor colorWithWhite:170 / 255.0 alpha:1];// #AAAAAA
+        cycleScrollView.placeholderImage = [UIImage imageNamed:@"top10"];
         cycleScrollView.autoScrollTimeInterval = 5;
         cycleScrollView.clickItemOperationBlock = ^(NSInteger currentIndex) {
             [weakSelf showTopTenArticalWithIndex:currentIndex];
@@ -153,7 +154,8 @@
 - (void)showTopTenArticalWithIndex:(NSInteger)index {
     MLBTopTenArticalViewController *topTenArticalViewController = [[MLBTopTenArticalViewController alloc] init];
     topTenArticalViewController.carouselItem = carousels[index];
-    [self presentViewController:topTenArticalViewController animated:NO completion:NULL];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:topTenArticalViewController];
+    [self presentViewController:navigationController animated:NO completion:NULL];
 }
 
 - (void)refreshReadIndex {

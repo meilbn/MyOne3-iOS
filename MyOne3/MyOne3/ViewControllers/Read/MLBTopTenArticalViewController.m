@@ -10,6 +10,10 @@
 #import "MLBReadCarouselItem.h"
 #import "MLBTopTenArtical.h"
 #import "MLBTopTenArticalCell.h"
+#import "MLBReadEssay.h"
+#import "MLBReadSerial.h"
+#import "MLBReadQuestion.h"
+#import "MLBSingleReadDetailsViewController.h"
 
 @interface MLBTopTenArticalViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -42,6 +46,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.hideNavigationBar = YES;
     
     [self initDatas];
     [self setupViews];
@@ -65,7 +71,6 @@
         tableView.delegate = self;
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [tableView registerClass:[MLBTopTenArticalCell class] forCellReuseIdentifier:kMLBTopTenArticalCellID];
-        tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
         [self.view addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
@@ -138,6 +143,13 @@
     [self dismissViewControllerAnimated:NO completion:NULL];
 }
 
+- (void)showSingleReadDetailsWithReadModel:(MLBBaseModel *)model type:(MLBReadType)type {
+    MLBSingleReadDetailsViewController *singleReadDetailsViewController = [[MLBSingleReadDetailsViewController alloc] init];
+    singleReadDetailsViewController.readType = type;
+    singleReadDetailsViewController.readModel = model;
+    [self.navigationController pushViewController:singleReadDetailsViewController animated:YES];
+}
+
 #pragma mark - Network Request
 
 - (void)requestTopTenArtical {
@@ -203,6 +215,22 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    MLBTopTenArtical *artical = dataSource[indexPath.row];
+    if ([artical.type isEqualToString:@"1"]) {// 短篇
+        MLBReadEssay *essay = [[MLBReadEssay alloc] init];
+        essay.contentId = artical.itemId;
+        [self showSingleReadDetailsWithReadModel:essay type:MLBReadTypeEssay];
+    } else if ([artical.type isEqualToString:@"2"]) {// 连载
+        MLBReadSerial *serial = [[MLBReadSerial alloc] init];
+        serial.contentId = artical.itemId;
+        serial.number = [@(artical.number) stringValue];
+        [self showSingleReadDetailsWithReadModel:serial type:MLBReadTypeSerial];
+    } else if ([artical.type isEqualToString:@"3"]) {// 问题
+        MLBReadQuestion *question = [[MLBReadQuestion alloc] init];
+        question.questionId = artical.itemId;
+        question.questionTitle = artical.title;
+        [self showSingleReadDetailsWithReadModel:question type:MLBReadTypeQuestion];
+    }
 }
 
 @end

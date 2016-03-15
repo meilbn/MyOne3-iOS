@@ -73,6 +73,10 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 
 #pragma mark - LifeCycle
 
+- (void)dealloc {
+    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
+
 - (instancetype)init {
     self = [super init];
     
@@ -299,6 +303,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
     _listenInButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"audio_normal" highlightImageName:@"audio_highlighted" target:self action:@selector(listenInButtonClicked)];
+        button.hidden = YES;
         [_contentCenterView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
@@ -347,7 +352,8 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     __weak typeof(self) weakSelf = self;
     _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeReadComments headerViewType:MLBHeaderViewTypeComment footerViewType:MLBFooterViewTypeComment];
     _commentListViewController.finishedCalculateHeight = ^(CGFloat height) {
-        weakSelf.commentsTableViewHeightConstraint.equalTo(@(height));
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.commentsTableViewHeightConstraint.equalTo(@(height));
     };
     [_contentView addSubview:_commentListViewController.tableView];
     [_commentListViewController.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -390,7 +396,12 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _questionViewTopConstraint.offset((CGRectGetHeight(_questionView.frame) * -1));
     _questionView.hidden = YES;
     
-    [self updateAuthorViews];
+//    [self updateAuthorViews];
+    _titleLabel.text = @"";
+    _authorAvatarView.image = [UIImage imageNamed:@"personal"];
+    _authorNameLabel.text = @"";
+    _authorDescLabel.text = @"";
+    _dateLabel.text = @"";
     
     _contentTextViewHeightConstraint.equalTo(@0);
     _chargeEditorHeightConstraint.equalTo(@0);
@@ -442,14 +453,23 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)updateViews {
-    if (viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
-        MLBReadSerial *serial = (MLBReadSerial *)readModel;
-        MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
-        serial.title = serialDetails.title;
-        serial.excerpt = serialDetails.excerpt;
-        serial.readNum = serialDetails.readNum;
-        serial.makeTime = serialDetails.makeTime;
-        serial.author = serialDetails.author;
+    if (viewType != MLBReadTypeQuestion) {
+        if (viewType == MLBReadTypeEssay && IsStringEmpty(((MLBReadEssay *)readModel).title)) {
+            MLBReadEssay *essay = (MLBReadEssay *)readModel;
+            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)readDetailsModel;
+            essay.title = essayDetails.title;
+            essay.makeTime = essayDetails.makeTime;
+            essay.guideWord = essayDetails.guideWord;
+            essay.authors = essayDetails.authors;
+        } else if (viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
+            MLBReadSerial *serial = (MLBReadSerial *)readModel;
+            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
+            serial.title = serialDetails.title;
+            serial.excerpt = serialDetails.excerpt;
+            serial.readNum = serialDetails.readNum;
+            serial.makeTime = serialDetails.makeTime;
+            serial.author = serialDetails.author;
+        }
         
         [self updateAuthorViews];
     }
@@ -467,6 +487,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         case MLBReadTypeSerial: {
             MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
             [self updateContentTextViewWithText:serialDetails.content];
+            _listenInButton.hidden = IsStringEmpty(serialDetails.audioURL);
             chargeEditor = serialDetails.chargeEditor;
             praiseNum = serialDetails.praiseNum;
             break;
@@ -618,8 +639,9 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark - Public Method
 
 - (void)prepareForReuseWithViewType:(MLBReadType)type {
+    _listenInButton.hidden = YES;
+    
     if (type == MLBReadTypeQuestion) {
-        _listenInButton.hidden = YES;
         _contentCenterViewTopConstraint.offset(-55);
     } else {
         _authorAvatarView.image = [UIImage imageNamed:@"personal"];
@@ -627,12 +649,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
         _authorDescLabel.text = @"";
         _titleLabel.text = @"";
         _dateLabel.text = @"";
-        
-        if (type == MLBReadTypeEssay) {
-            _listenInButton.hidden = NO;
-        } else {
-            _listenInButton.hidden = YES;
-        }
     }
     
     _contentTextViewHeightConstraint.equalTo(@0);

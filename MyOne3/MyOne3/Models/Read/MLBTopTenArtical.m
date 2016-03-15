@@ -19,4 +19,10 @@
              @"type" : @"type"};
 }
 
++ (NSValueTransformer *)numberJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        return @([[NSString stringWithFormat:@"%@", value] integerValue]);
+    }];
+}
+
 @end

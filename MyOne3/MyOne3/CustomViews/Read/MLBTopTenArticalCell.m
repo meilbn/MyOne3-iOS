@@ -93,7 +93,12 @@ NSString *const kMLBTopTenArticalCellID = @"MLBTopTenArticalCellID";
 #pragma mark - Public Method
 
 - (void)configureCellWithTopTenArtical:(MLBTopTenArtical *)artical {
-    _titleLabel.text = artical.title;
+    if (artical.number != 0) {
+        _titleLabel.text = [NSString stringWithFormat:@"%@( %ld )", artical.title, artical.number];
+    } else {
+        _titleLabel.text = artical.title;
+    }
+    
     _authorNameLabel.text = artical.authorName;
 }
 
