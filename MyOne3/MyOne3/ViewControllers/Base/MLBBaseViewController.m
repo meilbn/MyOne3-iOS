@@ -12,6 +12,7 @@
 #import "PopMenu.h"
 #import "MenuButton.h"
 #import "MLBLiginOptsViewController.h"
+#import "MLBMusicControlView.h"
 
 @interface MLBBaseViewController ()
 
@@ -156,6 +157,8 @@
     _playerView = [[YLImageView alloc] initWithFrame:(CGRect){{0, 0}, CGSizeMake(44, 18)}];
     _playerView.contentMode = UIViewContentModeScaleAspectFit;
     _playerView.image = [YLGIFImage imageNamed:@"my_player_stop.gif"];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMusicControlView)];
+    [_playerView addGestureRecognizer:tap];
     UIBarButtonItem *playerItem = [[UIBarButtonItem alloc] initWithCustomView:_playerView];
     
     self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
@@ -207,6 +210,10 @@
 
 - (void)plantButtonClicked {
     
+}
+
+- (void)showMusicControlView {
+    [[MLBMusicControlView sharedInstance] show];
 }
 
 - (void)presentLoginOptsViewController {

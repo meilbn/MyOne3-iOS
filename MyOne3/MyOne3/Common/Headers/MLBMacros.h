@@ -93,6 +93,7 @@
 #define CURRENT_SOFT_VERSION      [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]
 #define CURRENT_LANGUAGE          [[NSLocale preferredLanguages] objectAtIndex:0]
 #define IS_IOS7_LATER             (CURRENT_IOS_VERSION >= 7.0)
+#define IS_IOS8_LATER             (CURRENT_IOS_VERSION >= 8.0)
 #define STATUSBAR_HEIGHT          [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NAVBAR_HEIGHT             (44.f + ((SYSTEM_VERSION >= 7) ? STATUSBAR_HEIGHT : 0))
 

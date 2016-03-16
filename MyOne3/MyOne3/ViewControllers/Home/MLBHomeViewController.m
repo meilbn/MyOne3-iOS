@@ -9,8 +9,9 @@
 #import "MLBHomeViewController.h"
 #import "MLBHomeItem.h"
 #import "MLBHomeView.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface MLBHomeViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate> {
+@interface MLBHomeViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate, CLLocationManagerDelegate> {
     AAPullToRefresh *pullToRefreshLeft;
     AAPullToRefresh *pullToRefreshRight;
 }
@@ -22,6 +23,8 @@
 @property (strong, nonatomic) UIButton *moreButton;
 
 @property (strong, nonatomic) NSArray *dataSource;
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -50,12 +53,19 @@
     [self setupViews];
     [self loadCache];
     [self requestHomeMore];
+    [_locationManager startUpdatingLocation];
 }
 
 #pragma mark - Private Method
 
 - (void)initDatas {
-    
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    _locationManager.distanceFilter = 500;
+    if (IS_IOS8_LATER) {
+        [_locationManager requestWhenInUseAuthorization];
+    }
 }
 
 - (void)setupViews {
@@ -256,6 +266,13 @@
 
 - (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
     [self updateLikeNumLabelTextWithItemIndex:index];
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations {
+    DDLogDebug(@"locations = %@", locations);
+    [_locationManager stopUpdatingLocation];
 }
 
 @end

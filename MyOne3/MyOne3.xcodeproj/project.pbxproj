@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		230860491C98F427007069EC /* MLBMusicControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 230860481C98F427007069EC /* MLBMusicControlView.m */; };
 		230CC8C51C7B30FC00EAA09C /* MLBHomeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8C41C7B30FC00EAA09C /* MLBHomeItem.m */; };
 		230CC8C81C7B33D300EAA09C /* MLBHomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8C71C7B33D300EAA09C /* MLBHomeView.m */; };
 		230CC8CB1C7B450500EAA09C /* MLBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 230CC8CA1C7B450500EAA09C /* MLBUtilities.m */; };
@@ -94,6 +95,7 @@
 		23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E1763D1C7C47CA0052B2A9 /* MLBUser.m */; };
 		23E176411C7C4A6E0052B2A9 /* MLBRelatedMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E176401C7C4A6E0052B2A9 /* MLBRelatedMusic.m */; };
 		23E651D61C8BF8AA00E9B23B /* MLBCommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E651D51C8BF8AA00E9B23B /* MLBCommentListViewController.m */; };
+		23F202851C9803FE00F586C1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F202841C9803FE00F586C1 /* CoreLocation.framework */; };
 		23FA09391C7C0C0A0068C97D /* MLBMusicDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FA09381C7C0C0A0068C97D /* MLBMusicDetails.m */; };
 		23FC0B711C7E9A310019A16E /* MLBLiginOptsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FC0B701C7E9A310019A16E /* MLBLiginOptsViewController.m */; };
 		23FC0B751C7EABDF0019A16E /* UIImage+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FC0B741C7EABDF0019A16E /* UIImage+Common.m */; };
@@ -103,6 +105,8 @@
 
 /* Begin PBXFileReference section */
 		06D7F8D6F9DD66A59F51E1A4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		230860471C98F427007069EC /* MLBMusicControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMusicControlView.h; sourceTree = "<group>"; };
+		230860481C98F427007069EC /* MLBMusicControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicControlView.m; sourceTree = "<group>"; };
 		230CC8C31C7B30FC00EAA09C /* MLBHomeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBHomeItem.h; sourceTree = "<group>"; };
 		230CC8C41C7B30FC00EAA09C /* MLBHomeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBHomeItem.m; sourceTree = "<group>"; };
 		230CC8C61C7B33D300EAA09C /* MLBHomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBHomeView.h; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 		23E176401C7C4A6E0052B2A9 /* MLBRelatedMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBRelatedMusic.m; sourceTree = "<group>"; };
 		23E651D41C8BF8AA00E9B23B /* MLBCommentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBCommentListViewController.h; sourceTree = "<group>"; };
 		23E651D51C8BF8AA00E9B23B /* MLBCommentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBCommentListViewController.m; sourceTree = "<group>"; };
+		23F202841C9803FE00F586C1 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		23FA09371C7C0C0A0068C97D /* MLBMusicDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMusicDetails.h; sourceTree = "<group>"; };
 		23FA09381C7C0C0A0068C97D /* MLBMusicDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicDetails.m; sourceTree = "<group>"; };
 		23FC0B6F1C7E9A310019A16E /* MLBLiginOptsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBLiginOptsViewController.h; sourceTree = "<group>"; };
@@ -288,6 +293,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23F202851C9803FE00F586C1 /* CoreLocation.framework in Frameworks */,
 				FBEEFD0C7290C70F09C3741C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -795,6 +801,8 @@
 				23C174BF1C8170C000C071A1 /* MLBCommonHeaderView.m */,
 				23C174BC1C8170C000C071A1 /* MLBCommonFooterView.h */,
 				23C174BD1C8170C000C071A1 /* MLBCommonFooterView.m */,
+				230860471C98F427007069EC /* MLBMusicControlView.h */,
+				230860481C98F427007069EC /* MLBMusicControlView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -842,6 +850,7 @@
 		2A2917239ECE56534122759F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23F202841C9803FE00F586C1 /* CoreLocation.framework */,
 				AE35E8E8B042DD82FB5F3253 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -1002,6 +1011,7 @@
 				230CC8C51C7B30FC00EAA09C /* MLBHomeItem.m in Sources */,
 				23AD5FCD1C7FEE9500D80701 /* MLBReadBaseCell.m in Sources */,
 				23AA05BA1C78BCC70043ACE7 /* UIColor+MLBUtilities.m in Sources */,
+				230860491C98F427007069EC /* MLBMusicControlView.m in Sources */,
 				2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */,
 				2325E7B81C86DC9700BA9544 /* MLBMovieReviewList.m in Sources */,
 				23FC0B711C7E9A310019A16E /* MLBLiginOptsViewController.m in Sources */,
