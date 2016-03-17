@@ -41,7 +41,11 @@ typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 
 #pragma mark - UI
 
+// 右侧盆栽和音乐
 - (void)addNavigationBarRightItems;
+
+// 右侧单独一个音乐
+- (void)addNavigationBarRightMusicItem;
 
 - (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData;
 

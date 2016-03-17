@@ -40,6 +40,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBMusicTitle;
+    [self addNavigationBarRightItems];
     
     [self initDatas];
     [self setupViews];
@@ -53,8 +54,6 @@
 }
 
 - (void)setupViews {
-    [self addNavigationBarRightItems];
-    
     UIButton *librariesButton = [MLBUIFactory buttonWithImageName:@"nav_music_libraries_normal" highlightImageName:@"nav_music_libraries_highlighted" target:self action:@selector(librariesButtonClicked)];
     librariesButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
     UIBarButtonItem *librariesItem = [[UIBarButtonItem alloc] initWithCustomView:librariesButton];

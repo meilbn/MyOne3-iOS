@@ -63,5 +63,10 @@
 #pragma mark - NSUserDefault
 
 #define MLBLastShowIntroduceVersionAndBuild     @"MLBLastShowIntroduceVersionAndBuild"
+#define MLBNetworkFlowRemind                    @"MLBNetworkFlowRemind"
+
+#pragma mark - NSUserDefault Key
+
+#define MLBNetworkFlowRemindKey                 @"MLBNetworkFlowRemindKey"
 
 #endif /* Constants_h */

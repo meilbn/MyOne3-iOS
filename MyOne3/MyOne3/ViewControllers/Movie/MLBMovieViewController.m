@@ -35,6 +35,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBMovieTitle;
+    [self addNavigationBarRightItems];
     
     [self initDatas];
     [self setupViews];
@@ -49,8 +50,6 @@
 }
 
 - (void)setupViews {
-    [self addNavigationBarRightItems];
-    
     _collectionView = ({
         UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
         layout.itemSize = [MLBMovieListItemCCell cellSize];

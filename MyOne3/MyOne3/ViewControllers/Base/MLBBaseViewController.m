@@ -13,6 +13,7 @@
 #import "MenuButton.h"
 #import "MLBLiginOptsViewController.h"
 #import "MLBMusicControlView.h"
+#import "MLBUserHomeViewController.h"
 
 @interface MLBBaseViewController ()
 
@@ -44,18 +45,28 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+//    self.navigationController.navigationBar.hidden = _hideNavigationBar;
     self.navigationController.navigationBarHidden = _hideNavigationBar;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.hidesBottomBarWhenPushed = YES;
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     if (self == [self.navigationController.viewControllers firstObject]) {
         self.hidesBottomBarWhenPushed = NO;
+    }
+    
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
 }
 
@@ -150,18 +161,29 @@
 #pragma mark - UI
 
 - (void)addNavigationBarRightItems {
+    UIBarButtonItem *plantItem = [self rightPlantItem];
+    UIBarButtonItem *playerItem = [self rightMusicItem];
+    
+    self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
+}
+
+- (void)addNavigationBarRightMusicItem {
+    self.navigationItem.rightBarButtonItem = [self rightMusicItem];
+}
+
+- (UIBarButtonItem *)rightPlantItem {
     UIButton *plantButton = [MLBUIFactory buttonWithImageName:@"nav_me_normal" highlightImageName:@"nav_me_highlighted" target:self action:@selector(plantButtonClicked)];
     plantButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
-    UIBarButtonItem *plantItem = [[UIBarButtonItem alloc] initWithCustomView:plantButton];
-    
+    return [[UIBarButtonItem alloc] initWithCustomView:plantButton];
+}
+
+- (UIBarButtonItem *)rightMusicItem {
     _playerView = [[YLImageView alloc] initWithFrame:(CGRect){{0, 0}, CGSizeMake(44, 18)}];
     _playerView.contentMode = UIViewContentModeScaleAspectFit;
     _playerView.image = [YLGIFImage imageNamed:@"my_player_stop.gif"];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMusicControlView)];
     [_playerView addGestureRecognizer:tap];
-    UIBarButtonItem *playerItem = [[UIBarButtonItem alloc] initWithCustomView:_playerView];
-    
-    self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
+    return [[UIBarButtonItem alloc] initWithCustomView:_playerView];
 }
 
 - (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData {
@@ -209,7 +231,7 @@
 #pragma mark - Action
 
 - (void)plantButtonClicked {
-    
+    [self.navigationController pushViewController:[[MLBUserHomeViewController alloc] init] animated:YES];
 }
 
 - (void)showMusicControlView {

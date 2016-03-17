@@ -48,6 +48,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBReadTitle;
+    [self addNavigationBarRightItems];
     
     [self initDatas];
     [self setupViews];
@@ -63,8 +64,6 @@
 }
 
 - (void)setupViews {
-    [self addNavigationBarRightItems];
-    
     __weak typeof(self) weakSelf = self;
     
     _carouselView = ({

@@ -55,6 +55,11 @@ typedef NS_ENUM(NSUInteger, MLBReadType) {
     MLBReadTypeQuestion,
 };
 
+typedef NS_ENUM(NSUInteger, MLBUserType) {
+    MLBUserTypeMe,
+    MLBUserTypeOthers,
+};
+
 #pragma mark - Block
 
 typedef void(^CommonActionBlock)(void);
@@ -64,5 +69,6 @@ typedef void(^CommonActionBlock)(void);
 #import "MLBUIFactory.h"
 #import "MLBUtilities.h"
 #import "MLBHTTPRequester.h"
+#import "MLBTapImageView.h"
 
 #endif /* MyOne3_pch */

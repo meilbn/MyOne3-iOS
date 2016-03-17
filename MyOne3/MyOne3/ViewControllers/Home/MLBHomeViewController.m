@@ -24,7 +24,7 @@
 
 @property (strong, nonatomic) NSArray *dataSource;
 
-@property (strong, nonatomic) CLLocationManager *locationManager;
+//@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -48,32 +48,30 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_home_title"]];
+    self.navigationItem.titleView = titleView;
+    [self addNavigationBarRightItems];
     
     [self initDatas];
     [self setupViews];
     [self loadCache];
     [self requestHomeMore];
-    [_locationManager startUpdatingLocation];
+//    [_locationManager startUpdatingLocation];
 }
 
 #pragma mark - Private Method
 
 - (void)initDatas {
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    _locationManager.distanceFilter = 500;
-    if (IS_IOS8_LATER) {
-        [_locationManager requestWhenInUseAuthorization];
-    }
+//    _locationManager = [[CLLocationManager alloc] init];
+//    _locationManager.delegate = self;
+//    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    _locationManager.distanceFilter = 500;
+//    if (IS_IOS8_LATER) {
+//        [_locationManager requestWhenInUseAuthorization];
+//    }
 }
 
 - (void)setupViews {
-    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_home_title"]];
-    self.navigationItem.titleView = titleView;
-    
-    [self addNavigationBarRightItems];
-    
     __weak typeof(self) weakSelf = self;
     
     _pagingScrollView = ({
@@ -272,7 +270,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations {
     DDLogDebug(@"locations = %@", locations);
-    [_locationManager stopUpdatingLocation];
+//    [_locationManager stopUpdatingLocation];
 }
 
 @end
