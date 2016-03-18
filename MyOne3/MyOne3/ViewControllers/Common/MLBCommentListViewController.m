@@ -44,6 +44,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
+
 - (instancetype)init {
     self = [super init];
     

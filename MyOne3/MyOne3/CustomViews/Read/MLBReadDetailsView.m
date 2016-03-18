@@ -74,7 +74,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark - LifeCycle
 
 - (void)dealloc {
-    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    [_commentListViewController removeFromParentViewController];
 }
 
 - (instancetype)init {

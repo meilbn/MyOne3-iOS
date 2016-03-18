@@ -28,6 +28,10 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     return  CGSizeMake(SCREEN_WIDTH, 140);
 }
 
+- (void)prepareForReuse {
+    _coverView.image = nil;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     
@@ -83,12 +87,13 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     
     _timerLabel = ({
         MZTimerLabel *label = [[MZTimerLabel alloc] initWithTimerType:MZTimerLabelTypeTimer];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor colorWithWhite:85 / 255.0 alpha:1];// #555555
         label.font = FontWithSize(12);
         label.text = @"00:00:00";
-        [self addSubview:label];
+        label.timeFormat = @"距离公布分数还剩：HH:mm:ss";
+        [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.bottom.equalTo(self).offset(-6);
+            make.right.bottom.equalTo(self.contentView).offset(-6);
         }];
         label.hidden = YES;
         
@@ -103,12 +108,26 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     [_coverView mlb_sd_setImageWithURL:movieListItem.cover placeholderImageName:placeholderImageName];
     if (IsStringEmpty(movieListItem.score)) {
         _scoreView.hidden = YES;
-        _comingSoonLabel.hidden = NO;
+        NSTimeInterval scoreDiffTimeInterval = [MLBUtilities diffTimeIntervalSinceNowToDateString:movieListItem.scoreTime];
+        if (scoreDiffTimeInterval < 24 * 60 * 60) {
+            _comingSoonLabel.hidden = YES;
+            _timerLabel.hidden = NO;
+            [_timerLabel setCountDownTime:scoreDiffTimeInterval];
+            [_timerLabel start];
+        } else {
+            _comingSoonLabel.hidden = NO;
+        }
     } else {
         _scoreView.hidden = NO;
         _comingSoonLabel.hidden = YES;
+        _timerLabel.hidden = YES;
         _scoreView.scoreLabel.text = movieListItem.score;
     }
+}
+
+- (void)stopCountDownIfNeeded {
+    [_timerLabel pause];
+    [_timerLabel reset];
 }
 
 @end

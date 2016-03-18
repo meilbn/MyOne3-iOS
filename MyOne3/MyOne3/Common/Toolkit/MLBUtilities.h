@@ -28,4 +28,8 @@
 
 + (NSDate *)dateWithString:(NSString *)string;
 
++ (NSTimeInterval)diffTimeIntervalSinceNowFromDateString:(NSString *)dateString;
+
++ (NSTimeInterval)diffTimeIntervalSinceNowToDateString:(NSString *)dateString;
+
 @end

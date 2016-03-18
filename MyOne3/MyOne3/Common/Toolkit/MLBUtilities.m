@@ -68,4 +68,19 @@ static NSDateFormatter *musicDetailsDateFormatter;
     return [longDateFormatter dateFromString:string];
 }
 
++ (NSTimeInterval)diffTimeIntervalSinceNowFromDateString:(NSString *)dateString {
+    NSDate *date = [MLBUtilities dateWithString:dateString];
+    NSTimeInterval interval = [date timeIntervalSinceNow];
+    
+    return interval;
+}
+
++ (NSTimeInterval)diffTimeIntervalSinceNowToDateString:(NSString *)dateString {
+    NSDate *date = [MLBUtilities dateWithString:dateString];
+    NSDate *now = [NSDate date];
+    NSTimeInterval interval = [date timeIntervalSinceDate:now];
+    
+    return interval;
+}
+
 @end

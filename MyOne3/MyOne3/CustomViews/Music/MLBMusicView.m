@@ -17,6 +17,7 @@
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 #import "MLBBaseViewController.h"
 #import "MLBCommentListViewController.h"
+#import "MLBMusicRelatedViewController.h"
 
 NSString *const kMLBMusicViewID = @"MLBMusicViewID";
 
@@ -82,6 +83,10 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 #pragma mark - LifeCycle
+
+- (void)dealloc {
+    [_commentListViewController removeFromParentViewController];
+}
 
 - (instancetype)init {
     self = [super init];
@@ -816,6 +821,10 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    MLBRelatedMusic *music = relatedMusics[indexPath.row];
+    MLBMusicRelatedViewController *musicRelatedViewController = [[MLBMusicRelatedViewController alloc] init];
+    musicRelatedViewController.relatedMusic = music;
+    [self.parentViewController.navigationController pushViewController:musicRelatedViewController animated:YES];
 }
 
 @end

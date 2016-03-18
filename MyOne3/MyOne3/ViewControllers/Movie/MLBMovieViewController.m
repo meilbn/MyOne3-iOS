@@ -135,10 +135,14 @@
     [(MLBMovieListItemCCell *)cell configureCellWithMovieListItem:dataSource[indexPath.row] atIndexPath:indexPath];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [(MLBMovieListItemCCell *)cell stopCountDownIfNeeded];
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MLBMovieDetailsViewController *movieDetailsViewController = [[MLBMovieDetailsViewController alloc] init];
-    movieDetailsViewController.movieListItem = dataSource[indexPath.section];
+    movieDetailsViewController.movieListItem = dataSource[indexPath.row];
     [self.navigationController pushViewController:movieDetailsViewController animated:YES];
 }
 

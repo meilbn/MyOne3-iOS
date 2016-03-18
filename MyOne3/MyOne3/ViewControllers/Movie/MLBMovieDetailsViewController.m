@@ -60,7 +60,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 
 @implementation MLBMovieDetailsViewController {
     NSNumber *tableViewInitHeight;
-    MLBMovieDetails *movieDetials;
+    MLBMovieDetails *movieDetails;
     NSArray *infoButtons;
     NSArray *keywordsLabels;
     NSMutableArray <MLBMoviePoster *> *posters;
@@ -71,6 +71,12 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [_storyListViewController removeFromParentViewController];
+    [_reviewListViewController removeFromParentViewController];
+    [_commentListViewController removeFromParentViewController];
 }
 
 #pragma mark - View Lifecycle
@@ -98,7 +104,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     _scrollView = ({
         UIScrollView *scrollView = [UIScrollView new];
         scrollView.backgroundColor = self.view.backgroundColor;
-        scrollView.showsVerticalScrollIndicator = NO;
         scrollView.delegate = self;
         [self.view addSubview:scrollView];
         [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -425,12 +430,13 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)updateViews {
-    [_headerView configureViewWithMovieDetails:movieDetials];
+    [_headerView configureViewWithMovieDetails:movieDetails];
     
-    [_grossView configureViewWithKeywords:[movieDetials.keywords componentsSeparatedByString:@";"]];
-    _castTextView.text = movieDetials.info;
+    [_grossView configureViewWithKeywords:[movieDetails.keywords componentsSeparatedByString:@";"]];
+    _castTextView.text = movieDetails.info;
     
-    _scoreRatioLabel.text = movieDetials.review;
+    _scoreHeaderView.hidden = IsStringEmpty(movieDetails.score);
+    _scoreRatioLabel.text = movieDetails.review;
     
     [_storyListViewController configureViewForMovieDetailsWithItemId:_movieListItem.movieId];
     [self addChildViewController:_storyListViewController];
@@ -466,7 +472,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         }
         case MLBMovieDetailsTypeStills: {
             _infoTypeLabel.text = @"剧照";
-            if (!posters || posters.count != movieDetials.photos.count) {
+            if (!posters || posters.count != movieDetails.photos.count) {
                 [self configurePhotos];
             }
             [_moviePosterView reloadData];
@@ -482,7 +488,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 - (void)configurePhotos {
     posters = @[].mutableCopy;
     
-    for (NSString *url in movieDetials.photos) {
+    for (NSString *url in movieDetails.photos) {
         MLBMoviePoster *poster = [[MLBMoviePoster alloc] init];
         poster.imageData = [NSData dataWithContentsOfURL:[url mlb_encodedURL]];
         [posters addObject:poster];
@@ -525,7 +531,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
             NSError *error;
             MLBMovieDetails *details = [MTLJSONAdapter modelOfClass:[MLBMovieDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                movieDetials = details;
+                movieDetails = details;
                 [self updateViews];
             } else {
                 [self modelTransformFailedWithError:error];
@@ -541,7 +547,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return movieDetials.photos.count;
+    return movieDetails.photos.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -551,7 +557,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBMoviePosterCCell *)cell configureCellWithPostURL:movieDetials.photos[indexPath.row]];
+    [(MLBMoviePosterCCell *)cell configureCellWithPostURL:movieDetails.photos[indexPath.row]];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

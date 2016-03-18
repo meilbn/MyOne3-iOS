@@ -18,4 +18,6 @@ FOUNDATION_EXPORT NSString *const kMLBMovieListItemCCellID;
 
 - (void)configureCellWithMovieListItem:(MLBMovieListItem *)movieListItem atIndexPath:(NSIndexPath *)indexPath;
 
+- (void)stopCountDownIfNeeded;
+
 @end
