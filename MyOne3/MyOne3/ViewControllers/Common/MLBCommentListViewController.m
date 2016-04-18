@@ -195,7 +195,7 @@
         tableViewHeight += _footerViewType != MLBFooterViewTypeShadow ? [MLBCommonFooterView footerViewHeight] : [MLBCommonFooterView footerViewHeightForShadow];
     }
     
-    if (_finishedCalculateHeight) {
+    if (_finishedCalculateHeight && self.parentViewController) {
         _finishedCalculateHeight(tableViewHeight);
     }
 }

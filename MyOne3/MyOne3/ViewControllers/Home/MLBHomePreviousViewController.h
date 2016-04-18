@@ -10,4 +10,6 @@
 
 @interface MLBHomePreviousViewController : MLBBaseViewController
 
+@property (nonatomic, copy) NSString *period;
+
 @end

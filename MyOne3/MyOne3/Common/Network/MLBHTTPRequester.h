@@ -39,6 +39,9 @@ typedef void(^FailBlock)(NSError *error);
 // 首页图文列表
 + (void)requestHomeMoreWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+// 首页指定月份的图文列表
++ (void)requestHomeByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Read
 
 // 头部轮播列表

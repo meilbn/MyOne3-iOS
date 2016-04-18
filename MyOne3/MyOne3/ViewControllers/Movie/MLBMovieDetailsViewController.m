@@ -51,6 +51,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 @property (strong, nonatomic) MLBCommonHeaderView *scoreHeaderView;
 @property (strong, nonatomic) UILabel *scoreRatioLabel;
 
+@property (strong, nonatomic) MASConstraint *moreButtonWidthConstraint;
 @property (strong, nonatomic) MASConstraint *shareViewRightConstraint;
 @property (strong, nonatomic) MASConstraint *storiesTableViewHeightConstraint;
 @property (strong, nonatomic) MASConstraint *reviewsTableViewHeightConstraint;
@@ -74,6 +75,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)dealloc {
+    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     [_storyListViewController removeFromParentViewController];
     [_reviewListViewController removeFromParentViewController];
     [_commentListViewController removeFromParentViewController];
@@ -201,7 +203,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         UIButton *button = [MLBUIFactory buttonWithImageName:@"more_normal" highlightImageName:@"more_highlighted" target:self action:@selector(moreButtonClicked)];
         [_toolView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(button.mas_height).multipliedBy(1);
+            _moreButtonWidthConstraint = make.width.equalTo(@48);
             make.right.equalTo(_shareView.mas_left);
             make.top.bottom.equalTo(_toolView);
         }];
@@ -506,7 +508,15 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)moreButtonClicked {
-    
+    _moreButtonWidthConstraint.equalTo(@0);
+    _shareViewRightConstraint.equalTo(@0);
+    [_toolView setNeedsUpdateConstraints];
+    [_toolView updateConstraintsIfNeeded];
+    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [_toolView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 - (void)scoreShare {
@@ -514,7 +524,9 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)otherShare {
-    
+    [self showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        DDLogDebug(@"menuType = %ld", menuType);
+    }];
 }
 
 - (void)infoButtonClicked:(UIButton *)sender {

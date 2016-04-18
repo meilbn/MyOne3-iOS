@@ -48,7 +48,7 @@
 }
 
 - (void)setupTabBar {
-    NSArray *tabBarItemImageNames = @[@"tab_home", @"tab_reading", @"tab_music", @"tab_movie"];
+    NSArray *tabBarItemImageNames = @[@"tab_home", @"tab_read", @"tab_music", @"tab_movie"];
     NSInteger index = 0;
     
     for (UIViewController *vc in self.viewControllers) {

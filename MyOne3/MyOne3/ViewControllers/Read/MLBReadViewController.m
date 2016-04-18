@@ -13,6 +13,7 @@
 #import "MLBReadBaseView.h"
 #import "MLBReadDetailsViewController.h"
 #import "MLBTopTenArticalViewController.h"
+#import "MLBPreviousViewController.h"
 
 @interface MLBReadViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate> {
     AAPullToRefresh *pullToRefreshLeft;
@@ -165,6 +166,10 @@
 - (void)loadMoreReadIndex {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:([self numberOfMaxIndex] - 1) reloadData:NO];
+    
+    MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
+    previousViewController.previousType = MLBPreviousTypeRead;
+    [self.navigationController pushViewController:previousViewController animated:YES];
 }
 
 - (void)openReadDetailsViewControllerWithReadType:(MLBReadType)type {

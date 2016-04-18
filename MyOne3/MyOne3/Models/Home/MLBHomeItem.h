@@ -23,5 +23,7 @@
 @property (nonatomic, copy) NSString *webURL;
 @property (nonatomic, copy) NSString *wbImageURL;
 @property (nonatomic, assign) NSInteger praiseNum;
+@property (nonatomic, assign) NSInteger shareNum;
+@property (nonatomic, assign) NSInteger commentNum;
 
 @end

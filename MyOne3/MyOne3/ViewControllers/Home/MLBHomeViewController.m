@@ -10,6 +10,7 @@
 #import "MLBHomeItem.h"
 #import "MLBHomeView.h"
 #import <CoreLocation/CoreLocation.h>
+#import "MLBPreviousViewController.h"
 
 @interface MLBHomeViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate, CLLocationManagerDelegate> {
     AAPullToRefresh *pullToRefreshLeft;
@@ -200,6 +201,10 @@
 - (void)showPreviousList {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:(_dataSource.count - 1) reloadData:NO];
+    
+    MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
+    previousViewController.previousType = MLBPreviousTypeHome;
+    [self.navigationController pushViewController:previousViewController animated:YES];
 }
 
 - (void)diaryButtonClicked {

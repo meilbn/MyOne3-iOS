@@ -117,6 +117,11 @@
     [MLBHTTPRequester getWithURI:MLBApiHomePageMore success:successBlock fail:failBlock];
 }
 
+// 首页指定月份的图文列表
++ (void)requestHomeByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiHomePageByMonth, period] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Read
 
 // 头部轮播列表

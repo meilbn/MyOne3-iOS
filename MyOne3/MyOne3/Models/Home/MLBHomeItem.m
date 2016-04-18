@@ -23,7 +23,9 @@
              @"lastUpdateDate" : @"last_update_date",
              @"webURL" : @"web_url",
              @"wbImageURL" : @"wb_img_url",
-             @"praiseNum" : @"praisenum"};
+             @"praiseNum" : @"praisenum",
+             @"shareNum" : @"sharenum",
+             @"commentNum" : @"commentnum"};
 }
 
 @end

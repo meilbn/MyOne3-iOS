@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXPORT NSString *const kHomeCCellID;
+
+@class MLBHomeItem;
+
 @interface MLBHomeCCell : UICollectionViewCell
+
++ (CGSize)cellSizeWithHomeItem:(MLBHomeItem *)item;
+
+- (void)configureCellWithHomeItem:(MLBHomeItem *)homeItem atIndexPath:(NSIndexPath *)indexPath;
 
 @end

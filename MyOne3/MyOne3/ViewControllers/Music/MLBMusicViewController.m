@@ -8,6 +8,7 @@
 
 #import "MLBMusicViewController.h"
 #import "MLBMusicView.h"
+#import "MLBPreviousViewController.h"
 
 @interface MLBMusicViewController () <GMCPagingScrollViewDataSource, GMCPagingScrollViewDelegate> {
     AAPullToRefresh *pullToRefreshLeft;
@@ -110,6 +111,10 @@
 - (void)showPreviousList {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:(dataSource.count - 1) reloadData:NO];
+    
+    MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
+    previousViewController.previousType = MLBPreviousTypeMusic;
+    [self.navigationController pushViewController:previousViewController animated:YES];
 }
 
 #pragma mark - Network Request
