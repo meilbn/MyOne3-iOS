@@ -31,6 +31,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
 @implementation MLBCommentCell
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     _userAvatarView.image = nil;
 }
 

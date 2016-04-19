@@ -9,6 +9,8 @@
 #import "MLBPreviousViewController.h"
 #import "DZNSegmentedControl.h"
 #import "MLBHomePreviousViewController.h"
+#import "MLBMusicPreviousViewController.h"
+#import "MLBReadPreviousViewController.h"
 
 @interface MLBPreviousViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -194,11 +196,16 @@ NSString *const kPreviousCellID = @"MLBPreviousCellID";
             break;
         }
         case MLBPreviousTypeRead: {
-            
+            MLBReadPreviousViewController *readPreviousViewController = [[MLBReadPreviousViewController alloc] init];
+            readPreviousViewController.readType = readType;
+            readPreviousViewController.period = selectedPeriod;
+            [self.navigationController pushViewController:readPreviousViewController animated:YES];
             break;
         }
         case MLBPreviousTypeMusic: {
-            
+            MLBMusicPreviousViewController *musicPreviousViewController = [[MLBMusicPreviousViewController alloc] init];
+            musicPreviousViewController.period = selectedPeriod;
+            [self.navigationController pushViewController:musicPreviousViewController animated:YES];
             break;
         }
     }

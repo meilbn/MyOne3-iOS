@@ -56,7 +56,7 @@
         collectionView.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];
         collectionView.dataSource = self;
         collectionView.delegate = self;
-        [collectionView registerClass:[MLBHomeCCell class] forCellWithReuseIdentifier:kHomeCCellID];
+        [collectionView registerClass:[MLBHomeCCell class] forCellWithReuseIdentifier:kMLBHomeCCellID];
         [self.view addSubview:collectionView];
         [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
@@ -104,7 +104,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [collectionView dequeueReusableCellWithReuseIdentifier:kHomeCCellID forIndexPath:indexPath];
+    return [collectionView dequeueReusableCellWithReuseIdentifier:kMLBHomeCCellID forIndexPath:indexPath];
 }
 
 #pragma mark - DDCollectionViewDelegateFlowLayout

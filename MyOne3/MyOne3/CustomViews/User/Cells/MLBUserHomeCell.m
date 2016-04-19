@@ -24,6 +24,7 @@ NSString *const kUserHomeCellID = @"MLBUserHomeCellID";
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     _leftImageView.image = nil;
 }
 

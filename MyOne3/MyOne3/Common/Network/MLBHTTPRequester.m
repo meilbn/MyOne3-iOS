@@ -158,6 +158,21 @@
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiSerialList, serialId] success:successBlock fail:failBlock];
 }
 
+// 指定月份的短篇文章列表
++ (void)requestEssayByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiReadByMonth, MLBApiEssay, period] success:successBlock fail:failBlock];
+}
+
+// 指定月份的连载文章列表
++ (void)requestSerialByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiReadByMonth, MLBApiSerialContent, period] success:successBlock fail:failBlock];
+}
+
+// 指定月份的问题列表
++ (void)requestQuestionByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiReadByMonth, MLBApiQuestion, period] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Music
 
 + (void)requestMusicIdListWithSuccess:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
@@ -177,6 +192,11 @@
 // 音乐详情相似歌曲列表
 + (void)requestMusicDetailsRelatedMusicsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, MLBApiMusic, musicId] success:successBlock fail:failBlock];
+}
+
+// 指定月份的音乐列表
++ (void)requestMusicByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicByMonth, period] success:successBlock fail:failBlock];
 }
 
 #pragma mark - Movie

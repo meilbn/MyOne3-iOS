@@ -9,7 +9,7 @@
 #import "MLBHomeCCell.h"
 #import "MLBHomeItem.h"
 
-NSString *const kHomeCCellID = @"MLBHomeCCellID";
+NSString *const kMLBHomeCCellID = @"MLBHomeCCellID";
 
 @interface MLBHomeCCell ()
 

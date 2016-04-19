@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-FOUNDATION_EXPORT NSString *const kHomeCCellID;
+FOUNDATION_EXPORT NSString *const kMLBHomeCCellID;
 
 @class MLBHomeItem;
 

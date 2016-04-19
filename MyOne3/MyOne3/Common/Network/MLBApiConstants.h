@@ -52,6 +52,8 @@
 #define MLBApiReadingIndex                      @"/reading/index"
 // 短篇文章详情
 #define MLBApiEssayDetailsById                  @"/essay/%@"
+// 月的文章列表
+#define MLBApiReadByMonth                      @"/%@/bymonth/%@"
 
 #pragma mark - Music
 
@@ -61,6 +63,8 @@
 #define MLBApiMusicIdList                       @"/music/idlist/0"
 // 音乐详情
 #define MLBApiMusicDetailsById                  @"/music/detail/%@"
+// 月的音乐列表
+#define MLBApiMusicByMonth                      @"/music/bymonth/%@"
 
 #pragma mark - Movie
 

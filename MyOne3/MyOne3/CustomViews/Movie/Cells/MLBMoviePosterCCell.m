@@ -19,6 +19,7 @@ NSString *const kMLBMoviePosterCCellID = @"kMLBMoviePosterCCellID";
 @implementation MLBMoviePosterCCell
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     _posterView.image = nil;
 }
 

@@ -28,6 +28,7 @@ NSString *const kMLBRelatedMusicCellID = @"MLBRelatedMusicCellID";
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     _albumView.image = nil;
 }
 

@@ -29,6 +29,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     _coverView.image = nil;
 }
 

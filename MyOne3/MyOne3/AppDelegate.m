@@ -28,6 +28,7 @@
     
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : MLBNavigationBarTitleTextColor}];
     [[UINavigationBar appearance] setTintColor:MLBLightGrayTextColor];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
     
     NSString *version = [MLBUtilities appCurrentVersion];
     NSString *build = [MLBUtilities appCurrentBuild];

@@ -65,6 +65,15 @@ typedef void(^FailBlock)(NSError *error);
 // 连载文章列表
 + (void)requestSerialListById:(NSString *)serialId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+// 指定月份的短篇文章列表
++ (void)requestEssayByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 指定月份的连载文章列表
++ (void)requestSerialByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 指定月份的问题列表
++ (void)requestQuestionByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Music
 
 // 音乐 ID 列表
@@ -78,6 +87,9 @@ typedef void(^FailBlock)(NSError *error);
 
 // 音乐详情相似歌曲列表
 + (void)requestMusicDetailsRelatedMusicsById:(NSString *)musicId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 指定月份的音乐列表
++ (void)requestMusicByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 #pragma mark - Movie
 

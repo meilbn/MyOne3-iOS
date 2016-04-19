@@ -26,6 +26,9 @@
 		2345EAFB1C7B554900F20BDF /* MLBMusicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2345EAFA1C7B554900F20BDF /* MLBMusicView.m */; };
 		2357A7611C7D72E70036F7DC /* MLBNoneMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */; };
 		235A618C1C8DB212008FE79B /* MLBTicketsGrossView.m in Sources */ = {isa = PBXBuildFile; fileRef = 235A618B1C8DB212008FE79B /* MLBTicketsGrossView.m */; };
+		2368863A1CC64E4C00A51301 /* MLBMusicPreviousViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 236886391CC64E4C00A51301 /* MLBMusicPreviousViewController.m */; };
+		2368863D1CC6559900A51301 /* MLBReadPreviousViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2368863C1CC6559900A51301 /* MLBReadPreviousViewController.m */; };
+		236886401CC657B800A51301 /* MLBReadPreviousCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2368863F1CC657B800A51301 /* MLBReadPreviousCell.m */; };
 		2374B3261C8EF53D00E37EDF /* MLBMoviePosterCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374B3251C8EF53D00E37EDF /* MLBMoviePosterCCell.m */; };
 		2374B32B1C8EFCC500E37EDF /* MLBMoviePoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374B32A1C8EFCC500E37EDF /* MLBMoviePoster.m */; };
 		2374B32E1C8F125E00E37EDF /* MLBMovieListItemCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374B32D1C8F125E00E37EDF /* MLBMovieListItemCCell.m */; };
@@ -159,6 +162,12 @@
 		2357A7601C7D72E70036F7DC /* MLBNoneMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBNoneMessageCell.m; sourceTree = "<group>"; };
 		235A618A1C8DB212008FE79B /* MLBTicketsGrossView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBTicketsGrossView.h; sourceTree = "<group>"; };
 		235A618B1C8DB212008FE79B /* MLBTicketsGrossView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBTicketsGrossView.m; sourceTree = "<group>"; };
+		236886381CC64E4C00A51301 /* MLBMusicPreviousViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMusicPreviousViewController.h; sourceTree = "<group>"; };
+		236886391CC64E4C00A51301 /* MLBMusicPreviousViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMusicPreviousViewController.m; sourceTree = "<group>"; };
+		2368863B1CC6559900A51301 /* MLBReadPreviousViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadPreviousViewController.h; sourceTree = "<group>"; };
+		2368863C1CC6559900A51301 /* MLBReadPreviousViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadPreviousViewController.m; sourceTree = "<group>"; };
+		2368863E1CC657B800A51301 /* MLBReadPreviousCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadPreviousCell.h; sourceTree = "<group>"; };
+		2368863F1CC657B800A51301 /* MLBReadPreviousCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadPreviousCell.m; sourceTree = "<group>"; };
 		2374B3241C8EF53D00E37EDF /* MLBMoviePosterCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMoviePosterCCell.h; sourceTree = "<group>"; };
 		2374B3251C8EF53D00E37EDF /* MLBMoviePosterCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBMoviePosterCCell.m; sourceTree = "<group>"; };
 		2374B3291C8EFCC500E37EDF /* MLBMoviePoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBMoviePoster.h; sourceTree = "<group>"; };
@@ -810,6 +819,8 @@
 				23AA05CD1C78BFD00043ACE7 /* MLBMusicViewController.m */,
 				23957B731C9A93E2003FBB88 /* MLBMusicRelatedViewController.h */,
 				23957B741C9A93E2003FBB88 /* MLBMusicRelatedViewController.m */,
+				236886381CC64E4C00A51301 /* MLBMusicPreviousViewController.h */,
+				236886391CC64E4C00A51301 /* MLBMusicPreviousViewController.m */,
 			);
 			path = Music;
 			sourceTree = "<group>";
@@ -825,6 +836,8 @@
 				23C174C31C81999B00C071A1 /* MLBTopTenArticalViewController.m */,
 				23DD14111C97A58C0092B495 /* MLBSingleReadDetailsViewController.h */,
 				23DD14121C97A58C0092B495 /* MLBSingleReadDetailsViewController.m */,
+				2368863B1CC6559900A51301 /* MLBReadPreviousViewController.h */,
+				2368863C1CC6559900A51301 /* MLBReadPreviousViewController.m */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -868,6 +881,8 @@
 				23AD5FCA1C7FEE9500D80701 /* MLBReadBaseCell.m */,
 				23D24E621C90389000761AD9 /* MLBSerialCCell.h */,
 				23D24E631C90389000761AD9 /* MLBSerialCCell.m */,
+				2368863E1CC657B800A51301 /* MLBReadPreviousCell.h */,
+				2368863F1CC657B800A51301 /* MLBReadPreviousCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1146,10 +1161,12 @@
 				23C73CD11C7CA40500B9F412 /* MLBRelatedMusicCell.m in Sources */,
 				23AD5FDA1C80000500D80701 /* MZSelectableLabel.m in Sources */,
 				23AA05CB1C78BFC20043ACE7 /* MLBReadViewController.m in Sources */,
+				236886401CC657B800A51301 /* MLBReadPreviousCell.m in Sources */,
 				23C73CCD1C7C944900B9F412 /* MLBCommentCell.m in Sources */,
 				23E1763E1C7C47CA0052B2A9 /* MLBUser.m in Sources */,
 				230860551C993736007069EC /* MLBTapImageView.m in Sources */,
 				239536A61C7DA77200FFA93C /* MenuItem.m in Sources */,
+				2368863A1CC64E4C00A51301 /* MLBMusicPreviousViewController.m in Sources */,
 				23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */,
 				2308604D1C993034007069EC /* MLBUserHomeViewController.m in Sources */,
 				23AD5FD11C7FF87200D80701 /* MLBReadDetailsView.m in Sources */,
@@ -1207,6 +1224,7 @@
 				23C9065D1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.m in Sources */,
 				23AD5FCE1C7FEE9500D80701 /* MLBReadBaseView.m in Sources */,
 				23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */,
+				2368863D1CC6559900A51301 /* MLBReadPreviousViewController.m in Sources */,
 				2325E7B51C86DA9600BA9544 /* MLBMovieStory.m in Sources */,
 				238557FB1C80507200848919 /* AAPullToRefresh.m in Sources */,
 				23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */,
