@@ -19,6 +19,7 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *authorLabel;
 @property (strong, nonatomic) UILabel *contentLabel;
+@property (strong, nonatomic) UIView *bottomLine;
 
 @end
 
@@ -68,8 +69,9 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
         imageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:imageView];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.left.top.equalTo(self.contentView).offset(10);
+            make.size.sizeOffset(CGSizeMake(41, 19));
+            make.top.equalTo(self.contentView).offset(16);
+            make.right.equalTo(self.contentView).offset(-10);
         }];
         
         imageView;
@@ -77,14 +79,14 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
     
     _titleLabel = ({
         UILabel *label = [UILabel new];
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(18);
+        label.textColor = MLBDarkBlackTextColor;
+        label.font = BoldFontWithSize(18);
         label.numberOfLines = 0;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_readTypeView.mas_right).offset(6);
-            make.top.equalTo(self.contentView).offset(19);
-            make.right.equalTo(self.contentView).offset(-12);
+            make.left.equalTo(self.contentView).offset(10);
+            make.top.equalTo(_readTypeView);
+            make.right.lessThanOrEqualTo(_readTypeView.mas_left).offset(-10);
         }];
         
         label;
@@ -92,11 +94,11 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
     
     _authorLabel = ({
         UILabel *label = [UILabel new];
-        label.textColor = MLBAppThemeColor;
-        label.font = FontWithSize(12);
+        label.textColor = MLBLightBlackTextColor;
+        label.font = FontWithSize(13);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_titleLabel.mas_bottom).offset(5);
+            make.top.equalTo(_titleLabel.mas_bottom).offset(10);
             make.left.right.equalTo(_titleLabel);
         }];
         
@@ -105,17 +107,29 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
     
     _contentLabel = ({
         UILabel *label = [UILabel new];
-        label.textColor = MLBGrayTextColor;
+        label.textColor = MLBLightBlackTextColor;
         label.font = FontWithSize(13);
         label.numberOfLines = 0;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_authorLabel.mas_bottom).offset(5);
+            make.top.equalTo(_authorLabel.mas_bottom).offset(10);
             make.left.right.equalTo(_authorLabel);
-            make.bottom.equalTo(self.contentView).offset(-12);
+            make.bottom.equalTo(self.contentView).offset(-24);
         }];
         
         label;
+    });
+    
+    _bottomLine = ({
+        UIView *line = [UIView new];
+        line.backgroundColor = MLBSeparatorColor;
+        [self.contentView addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@0.5);
+            make.left.bottom.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 10, 0, 10));
+        }];
+        
+        line;
     });
 }
 
@@ -132,29 +146,42 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
 }
 
 - (void)configureCellWithReadEssay:(MLBReadEssay *)readEssay {
-    _readTypeView.image = [UIImage imageNamed:@"read_essay"];
+    _readTypeView.image = [UIImage imageNamed:@"icon_read"];
     _titleLabel.text = readEssay.title;
+    
     if (readEssay.authors.count > 0) {
         MLBAuthor *author = readEssay.authors[0];
         _authorLabel.text = author.username;
     } else {
         _authorLabel.text = @"";
     }
-    _contentLabel.text = readEssay.guideWord;
+    
+    [self commonConfigureContentLabelWithText:readEssay.guideWord];
+    _bottomLine.hidden = NO;
 }
 
 - (void)configureCellWithReadSerial:(MLBReadSerial *)readSerial {
-    _readTypeView.image = [UIImage imageNamed:@"read_serial"];
-    _titleLabel.text = [NSString stringWithFormat:@"%@( %@ )", readSerial.title, readSerial.number];
+    _readTypeView.image = [UIImage imageNamed:@"icon_serial"];
+    _titleLabel.text = readSerial.title;
     _authorLabel.text = readSerial.author.username;
-    _contentLabel.text = readSerial.excerpt;
+    [self commonConfigureContentLabelWithText:readSerial.excerpt];
+    _bottomLine.hidden = NO;
 }
 
 - (void)configureCellWithReadQuestion:(MLBReadQuestion *)readQuestion {
-    _readTypeView.image = [UIImage imageNamed:@"read_question"];
+    _readTypeView.image = [UIImage imageNamed:@"icon_question"];
     _titleLabel.text = readQuestion.questionTitle;
-    _authorLabel.text = @"";
-    _contentLabel.text = readQuestion.answerTitle;
+    _authorLabel.text = readQuestion.answerTitle;
+    [self commonConfigureContentLabelWithText:readQuestion.answerContent];
+    _bottomLine.hidden = YES;
+}
+
+- (void)commonConfigureContentLabelWithText:(NSString *)content {
+    if (IsStringEmpty(content)) {
+        return;
+    }
+
+    _contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:content lineSpacing:10 font:_contentLabel.font textColor:_contentLabel.textColor];
 }
 
 @end

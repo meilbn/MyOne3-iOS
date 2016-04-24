@@ -15,7 +15,8 @@
              @"title" : @"hp_title",
              @"makeTime" : @"hp_makettime",
              @"guideWord" : @"guide_word",
-             @"authors" : @"author"};
+             @"authors" : @"author",
+             @"hasAudio" : @"has_audio"};
 }
 
 + (NSValueTransformer *)authorsJSONTransformer {

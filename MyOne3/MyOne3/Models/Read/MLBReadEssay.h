@@ -16,5 +16,6 @@
 @property (nonatomic, copy) NSString *makeTime;
 @property (nonatomic, copy) NSString *guideWord;
 @property (nonatomic, copy) NSArray *authors;
+@property (nonatomic, assign) BOOL hasAudio;
 
 @end

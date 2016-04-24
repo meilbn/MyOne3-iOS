@@ -41,7 +41,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBMusicTitle;
-    [self addNavigationBarRightItems];
+    [self addNavigationBarLeftSearchItem];
+    [self addNavigationBarRightMeItem];
     
     [self initDatas];
     [self setupViews];
@@ -55,11 +56,6 @@
 }
 
 - (void)setupViews {
-    UIButton *librariesButton = [MLBUIFactory buttonWithImageName:@"nav_music_libraries_normal" highlightImageName:@"nav_music_libraries_highlighted" target:self action:@selector(librariesButtonClicked)];
-    librariesButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
-    UIBarButtonItem *librariesItem = [[UIBarButtonItem alloc] initWithCustomView:librariesButton];
-    self.navigationItem.leftBarButtonItem = librariesItem;
-    
     __weak typeof(self) weakSelf = self;
     
     _pagingScrollView = ({
@@ -99,10 +95,6 @@
 
 #pragma mark - Action
 
-- (void)librariesButtonClicked {
-    
-}
-
 - (void)refreshHomeMore {
     // 很奇怪，不写这行代码的话，_pagingScrollView 里面的 scrollview 的 contentOffset.x 会变成和释放刷新时 contentOffset.x 的绝对值差不多，导致第一个 item 看起来像是左移了，论脑洞的重要性
     [_pagingScrollView setCurrentPageIndex:0 reloadData:NO];
@@ -111,7 +103,7 @@
 - (void)showPreviousList {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:(dataSource.count - 1) reloadData:NO];
-    
+    // 显示往期列表
     MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
     previousViewController.previousType = MLBPreviousTypeMusic;
     [self.navigationController pushViewController:previousViewController animated:YES];

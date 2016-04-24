@@ -14,6 +14,7 @@
 #import "MLBReadSerial.h"
 #import "MLBReadQuestion.h"
 #import "MLBSingleReadDetailsViewController.h"
+#import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
 @interface MLBTopTenArticalViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -29,7 +30,6 @@
 
 @implementation MLBTopTenArticalViewController {
     NSArray *dataSource;
-    NSInteger tableViewWrapperViewHeight;
     NSInteger bottomTextLabelHeight;
     NSInteger coverViewHeight;
 }
@@ -84,7 +84,7 @@
         [self.view addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
-            make.top.equalTo(self.view).offset(24);
+            make.top.equalTo(self.view).offset(20);
             make.left.equalTo(self.view);
         }];
         
@@ -114,10 +114,10 @@
     _footerView.backgroundColor = _tableView.backgroundColor;
     
     _bottomLabel = ({
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, bottomTextLabelHeight)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, SCREEN_WIDTH - 40, bottomTextLabelHeight)];
         label.backgroundColor = _footerView.backgroundColor;
         label.textColor = [UIColor whiteColor];
-        label.font = FontWithSize(28);
+        label.font = FontWithSize(18);
         label.textAlignment = NSTextAlignmentCenter;
         label.text = _carouselItem.bottomText;
         label.numberOfLines = 0;
@@ -161,7 +161,6 @@
                 dataSource = array;
                 [_tableView reloadData];
                 _tableView.tableFooterView = _footerView;
-                tableViewWrapperViewHeight = CGRectGetHeight(_headerView.frame) + dataSource.count * [MLBTopTenArticalCell cellHeight] + CGRectGetHeight(_footerView.frame);
             } else {
                 [self modelTransformFailedWithError:error];
             }
@@ -176,15 +175,14 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if ((scrollView.contentOffset.y + SCREEN_HEIGHT) > tableViewWrapperViewHeight) {
-        CGFloat diff = scrollView.contentOffset.y + SCREEN_HEIGHT - tableViewWrapperViewHeight;
-        CGFloat height = (diff + coverViewHeight / 2.0) * 2.0;
-        CGFloat transformRatio = height / coverViewHeight;
-        CGAffineTransform transform = CGAffineTransformMake(transformRatio, 0, 0, transformRatio, 0, 0);
-        _coverView.y = bottomTextLabelHeight;
-        [UIView animateWithDuration:0.1
+    if (scrollView.contentOffset.y >= CGRectGetMinY(_footerView.frame)) {
+        CGFloat diff = scrollView.contentOffset.y - CGRectGetMinY(_footerView.frame);
+        CGFloat scale = 1 + diff / coverViewHeight;
+        CGAffineTransform transform = CGAffineTransformMakeScale(scale, scale);
+        _coverView.y = bottomTextLabelHeight + diff / 2;
+        [UIView animateWithDuration:0.01
                               delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear
                          animations:^{
                              _coverView.transform = transform;
                          }
@@ -200,7 +198,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MLBTopTenArticalCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBTopTenArticalCellID forIndexPath:indexPath];
-    [cell configureCellWithTopTenArtical:dataSource[indexPath.row]];
+    [cell configureCellWithTopTenArtical:dataSource[indexPath.row] atIndexPath:indexPath];
     cell.backgroundColor = _tableView.backgroundColor;
     cell.contentView.backgroundColor = _tableView.backgroundColor;
     
@@ -210,7 +208,9 @@
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [MLBTopTenArticalCell cellHeight];
+    return [tableView fd_heightForCellWithIdentifier:kMLBTopTenArticalCellID cacheByIndexPath:indexPath configuration:^(MLBTopTenArticalCell *cell) {
+        [cell configureCellWithTopTenArtical:dataSource[indexPath.row] atIndexPath:indexPath];
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

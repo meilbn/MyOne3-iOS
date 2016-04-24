@@ -18,7 +18,8 @@
              @"excerpt" : @"excerpt",
              @"readNum" : @"read_num",
              @"makeTime" : @"maketime",
-             @"author" : @"author"};
+             @"author" : @"author",
+             @"hasAudio" : @"has_audio"};
 }
 
 + (NSValueTransformer *)authorJSONTransformer {

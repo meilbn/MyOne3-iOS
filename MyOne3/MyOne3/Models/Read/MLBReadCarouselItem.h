@@ -15,6 +15,6 @@
 @property (nonatomic, copy) NSString *cover;
 @property (nonatomic, copy) NSString *bottomText;
 @property (nonatomic, copy) NSString *bgColor;
-@property (nonatomic, copy) NSString *inputName;
+@property (nonatomic, copy) NSString *pvURL;
 
 @end

@@ -113,6 +113,8 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     
     _likeNumLabel = ({
         UILabel *label = [UILabel new];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(11);
         [_scrollView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
@@ -169,73 +171,32 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
         imageView;
     });
     
+    _volLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBLightGrayTextColor;
+        label.font = FontWithSize(11);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_coverView.mas_bottom).offset(10);
+            make.left.equalTo(_coverView);
+        }];
+        
+        label;
+    });
+    
     _titleLabel = ({
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor whiteColor];
         label.textColor = MLBGrayTextColor;
         label.font = FontWithSize(10);
         label.textAlignment = NSTextAlignmentRight;
+        [label setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
         [_contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_coverView.mas_bottom).offset(8);
-            make.left.right.equalTo(_coverView);
-        }];
-        
-        label;
-    });
-    
-    _weatherView = ({
-        UIImageView *imageView = [UIImageView new];
-        imageView.backgroundColor = [UIColor whiteColor];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        [_contentView addSubview:imageView];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@24);
-            make.top.equalTo(_titleLabel.mas_bottom).offset(30);
-            make.left.equalTo(_coverView);
-        }];
-        
-        imageView;
-    });
-    
-    _temperatureLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBDarkGrayTextColor;
-        label.font = FontWithSize(24);
-        [_contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.equalTo(_weatherView);
-            make.left.equalTo(_weatherView.mas_right).offset(10);
-        }];
-        
-        label;
-    });
-    
-    _locationLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBDarkGrayTextColor;
-        label.font = FontWithSize(12);
-        [_contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_temperatureLabel.mas_right);
-            make.bottom.equalTo(_temperatureLabel);
-        }];
-        
-        label;
-    });
-    
-    _dateLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBDarkGrayTextColor;
-        label.font = FontWithSize(12);
-        [_contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.greaterThanOrEqualTo(_locationLabel.mas_right);
+            make.left.greaterThanOrEqualTo(_volLabel.mas_right).offset(4);
             make.right.equalTo(_coverView);
-            make.bottom.equalTo(_locationLabel);
         }];
         
         label;
@@ -249,7 +210,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
         textView.editable = NO;
         [_contentView addSubview:textView];
         [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_dateLabel.mas_bottom).offset(10);
+            make.top.equalTo(_volLabel.mas_bottom).offset(15);
             make.left.right.equalTo(_coverView);
             _textViewHeightConstraint = make.height.equalTo(@0);
         }];
@@ -257,19 +218,61 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
         textView;
     });
     
-    _volLabel = ({
+    _dateLabel = ({
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBLightGrayTextColor;
-        label.font = FontWithSize(11);
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(12);
         [_contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentTextView.mas_bottom).offset(30);
-            make.right.equalTo(_contentTextView);
+            make.top.equalTo(_contentTextView.mas_bottom).offset(10);
+            make.right.equalTo(_coverView);
             make.bottom.equalTo(_contentView).offset(-12);
         }];
         
         label;
+    });
+    
+    _locationLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(12);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_dateLabel);
+            make.right.equalTo(_dateLabel.mas_left).offset(-10);
+        }];
+        
+        label;
+    });
+    
+    _temperatureLabel = ({
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = MLBDarkGrayTextColor;
+        label.font = FontWithSize(12);
+        [_contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_dateLabel);
+            make.right.equalTo(_locationLabel.mas_left).offset(-2);
+        }];
+        
+        label;
+    });
+    
+    _weatherView = ({
+        UIImageView *imageView = [UIImageView new];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_contentView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@24);
+            make.centerY.equalTo(_dateLabel);
+            make.right.equalTo(_temperatureLabel.mas_left).offset(-5);
+        }];
+        
+        imageView;
     });
 }
 
@@ -315,14 +318,26 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     [_coverView mlb_sd_setImageWithURL:homeItem.imageURL placeholderImageName:@"home_cover_placeholder"];
     _titleLabel.text = homeItem.authorName;
     _weatherView.image = [UIImage imageNamed:@"light_rain"];
-    _temperatureLabel.text = @"6";
-    _locationLabel.text = @"℃ 杭州";
+    _temperatureLabel.text = @"6℃";
+    _locationLabel.text = @"杭州";
     _dateLabel.text = [MLBUtilities stringDateFormatWithddMMMyyyyEEEByNormalDateString:homeItem.makeTime];
-    _contentTextView.text = homeItem.content;
-    CGFloat textHeight = [homeItem.content mlb_heightWithFont:_contentTextView.font width:(SCREEN_WIDTH - 24 - 12)];
-    _textViewHeightConstraint.equalTo(@(textHeight + 25));
+    
+    _contentTextView.attributedText = [MLBUtilities mlb_attributedStringWithText:homeItem.content lineSpacing:10 font:_contentTextView.font textColor:_contentTextView.textColor];
+    
+    _textViewHeightConstraint.equalTo(@(ceilf([MLBUtilities mlb_rectWithAttributedString:_contentTextView.attributedText size:CGSizeMake((SCREEN_WIDTH - 24 - 12), CGFLOAT_MAX)].size.height) + 50));
+    
     _volLabel.text = homeItem.title;
     _scrollView.contentOffset = CGPointZero;
+    
+    // 如果是-1，说明是单个视图界面，则显示按钮上的图片和点赞数
+    if (index == -1) {
+        [_diaryButton setImage:[UIImage imageNamed:@"diary_normal"] forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"share_image"] forState:UIControlStateNormal];
+        [_likeButton setImage:[UIImage imageNamed:@"like_normal"] forState:UIControlStateNormal];
+        [_likeButton setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        
+        _likeNumLabel.text = [@(homeItem.praiseNum) stringValue];
+    }
 }
 
 @end

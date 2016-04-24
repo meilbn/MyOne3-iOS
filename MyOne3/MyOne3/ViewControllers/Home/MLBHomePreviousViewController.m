@@ -10,6 +10,7 @@
 #import "MLBHomeItem.h"
 #import "MLBHomeCCell.h"
 #import "DDCollectionViewFlowLayout.h"
+#import "MLBSingleHomeViewController.h"
 
 @interface MLBHomePreviousViewController () <UICollectionViewDataSource, DDCollectionViewDelegateFlowLayout>
 
@@ -140,7 +141,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    
+    MLBSingleHomeViewController *singleHomeViewController = [[MLBSingleHomeViewController alloc] init];
+    singleHomeViewController.homeItem = dataSource[indexPath.row];
+    [self.navigationController pushViewController:singleHomeViewController animated:YES];
 }
 
 @end

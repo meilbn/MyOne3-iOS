@@ -48,6 +48,22 @@ static NSDateFormatter *musicDetailsDateFormatter;
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
 }
 
++ (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = lineSpacing;
+    
+    NSDictionary *attrsDictionary = @{NSFontAttributeName : font, NSForegroundColorAttributeName : textColor, NSParagraphStyleAttributeName : paragraphStyle};
+    NSAttributedString *attributedString =  [[NSAttributedString alloc] initWithString:text attributes:attrsDictionary];
+    
+    return attributedString;
+}
+
++ (CGRect)mlb_rectWithAttributedString:(NSAttributedString *)attributedString size:(CGSize)size {
+    CGRect rect = [attributedString boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    return rect;
+}
+
 #pragma mark - Int
 
 + (NSInteger)rowWithCount:(NSInteger)count colNumber:(NSInteger)colNumber {

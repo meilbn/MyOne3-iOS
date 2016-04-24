@@ -13,16 +13,14 @@ NSString *const kMLBTopTenArticalCellID = @"MLBTopTenArticalCellID";
 
 @interface MLBTopTenArticalCell ()
 
+@property (strong, nonatomic) UILabel *numberLabel;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *authorNameLabel;
+@property (strong, nonatomic) UILabel *contentLabel;
 
 @end
 
 @implementation MLBTopTenArticalCell
-
-+ (CGFloat)cellHeight {
-    return 90;
-}
 
 - (instancetype)init {
     self = [super init];
@@ -61,15 +59,30 @@ NSString *const kMLBTopTenArticalCellID = @"MLBTopTenArticalCellID";
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    _numberLabel = ({
+        UILabel *label = [UILabel new];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont italicSystemFontOfSize:14];
+        [label setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
+        [self.contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView).offset(8);
+            make.left.equalTo(self.contentView).offset(36);
+        }];
+        
+        label;
+    });
+    
     _titleLabel = ({
         UILabel *label = [UILabel new];
         label.textColor = [UIColor whiteColor];
         label.font = BoldFontWithSize(18);
         label.numberOfLines = 2;
-        label.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(16, 8, 0, 8));
+            make.top.equalTo(_numberLabel);
+            make.left.equalTo(_numberLabel.mas_right).offset(8);
+            make.right.equalTo(self.contentView).offset(-36);
         }];
         
         label;
@@ -78,12 +91,26 @@ NSString *const kMLBTopTenArticalCellID = @"MLBTopTenArticalCellID";
     _authorNameLabel = ({
         UILabel *label = [UILabel new];
         label.textColor = [UIColor whiteColor];
-        label.font = FontWithSize(15);
-        label.textAlignment = NSTextAlignmentCenter;
+        label.font = FontWithSize(12);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_titleLabel.mas_bottom).offset(5);
+            make.top.equalTo(_titleLabel.mas_bottom).offset(8);
             make.left.right.equalTo(_titleLabel);
+        }];
+        
+        label;
+    });
+    
+    _contentLabel = ({
+        UILabel *label = [UILabel new];
+        label.textColor = [UIColor whiteColor];
+        label.numberOfLines = 2;
+        label.font = FontWithSize(13);
+        [self.contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_authorNameLabel.mas_bottom).offset(8);
+            make.left.right.equalTo(_titleLabel);
+            make.bottom.equalTo(self.contentView).offset(-30);
         }];
         
         label;
@@ -92,14 +119,11 @@ NSString *const kMLBTopTenArticalCellID = @"MLBTopTenArticalCellID";
 
 #pragma mark - Public Method
 
-- (void)configureCellWithTopTenArtical:(MLBTopTenArtical *)artical {
-    if (artical.number != 0) {
-        _titleLabel.text = [NSString stringWithFormat:@"%@( %ld )", artical.title, artical.number];
-    } else {
-        _titleLabel.text = artical.title;
-    }
-    
+- (void)configureCellWithTopTenArtical:(MLBTopTenArtical *)artical atIndexPath:(NSIndexPath *)indexPath {
+    _numberLabel.text = [@(indexPath.row + 1) stringValue];
+    _titleLabel.text = artical.title;
     _authorNameLabel.text = artical.authorName;
+    _contentLabel.text = artical.introduction;
 }
 
 @end

@@ -14,6 +14,7 @@
 #import "MLBLiginOptsViewController.h"
 #import "MLBMusicControlView.h"
 #import "MLBUserHomeViewController.h"
+#import "MLBSearchViewController.h"
 
 @interface MLBBaseViewController ()
 
@@ -160,6 +161,14 @@
 
 #pragma mark - UI
 
+- (void)addNavigationBarLeftSearchItem {
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_search"] style:UIBarButtonItemStylePlain target:self action:@selector(showSearchingViewController)];
+}
+
+- (void)addNavigationBarRightMeItem {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_me_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(pushMeViewController)];
+}
+
 - (void)addNavigationBarRightItems {
     UIBarButtonItem *plantItem = [self rightPlantItem];
     UIBarButtonItem *playerItem = [self rightMusicItem];
@@ -229,6 +238,14 @@
 }
 
 #pragma mark - Action
+
+- (void)pushMeViewController {
+    
+}
+
+- (void)showSearchingViewController {
+    [self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:[[MLBSearchViewController alloc] init]] animated:YES completion:NULL];
+}
 
 - (void)plantButtonClicked {
     [self.navigationController pushViewController:[[MLBUserHomeViewController alloc] init] animated:YES];

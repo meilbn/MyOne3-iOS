@@ -85,8 +85,7 @@
     });
     
     _likeButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
-        [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" selectedImageName:@"like_selected" target:self action:@selector(likeButtonClicked)];
         [self insertSubview:button atIndex:3];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);

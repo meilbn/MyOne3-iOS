@@ -60,6 +60,14 @@ typedef NS_ENUM(NSUInteger, MLBUserType) {
     MLBUserTypeOthers,
 };
 
+typedef NS_ENUM(NSUInteger, MLBSearchType) {
+    MLBSearchTypeHome,
+    MLBSearchTypeRead,
+    MLBSearchTypeMusic,
+    MLBSearchTypeMovie,
+    MLBSearchTypeAuthor,
+};
+
 #pragma mark - Block
 
 typedef void(^CommonActionBlock)(void);

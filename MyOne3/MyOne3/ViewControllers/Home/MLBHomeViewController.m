@@ -49,9 +49,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    
     UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_home_title"]];
     self.navigationItem.titleView = titleView;
-    [self addNavigationBarRightItems];
+    
+    [self addNavigationBarLeftSearchItem];
+    [self addNavigationBarRightMeItem];
     
     [self initDatas];
     [self setupViews];
@@ -122,7 +125,7 @@
     });
     
     _moreButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"more_normal" highlightImageName:@"more_highlighted" target:self action:@selector(moreButtonClicked)];
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"share_image" highlightImageName:nil target:self action:@selector(moreButtonClicked)];
         [_pagingScrollView insertSubview:button atIndex:1];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
@@ -148,8 +151,7 @@
     });
     
     _likeButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
-        [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" selectedImageName:@"like_selected" target:self action:@selector(likeButtonClicked)];
         [_pagingScrollView insertSubview:button atIndex:3];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
@@ -196,12 +198,14 @@
 - (void)refreshHomeMore {
     // 很奇怪，不写这行代码的话，_pagingScrollView 里面的 scrollview 的 contentOffset.x 会变成和释放刷新时 contentOffset.x 的绝对值差不多，导致第一个 item 看起来像是左移了，论脑洞的重要性
     [_pagingScrollView setCurrentPageIndex:0 reloadData:NO];
+    // 刷新
+    [self requestHomeMore];
 }
 
 - (void)showPreviousList {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:(_dataSource.count - 1) reloadData:NO];
-    
+    // 显示往期列表
     MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
     previousViewController.previousType = MLBPreviousTypeHome;
     [self.navigationController pushViewController:previousViewController animated:YES];

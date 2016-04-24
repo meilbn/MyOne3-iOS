@@ -24,6 +24,8 @@ typedef void(^FailBlock)(NSError *error);
 
 + (NSString *)apiStringForMovie;
 
++ (NSString *)apiStringForSearchWithSearchType:(MLBSearchType)type;
+
 #pragma mark - Common
 
 + (void)requestPraiseCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
@@ -33,6 +35,9 @@ typedef void(^FailBlock)(NSError *error);
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 + (void)requestRelatedsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
+// 搜索
++ (void)searchWithType:(NSString *)type keywords:(NSString *)keywords success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 #pragma mark - Home Page
 

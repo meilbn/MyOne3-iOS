@@ -20,6 +20,10 @@
 
 + (NSString *)appCurrentBuild;
 
++ (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor;
+
++ (CGRect)mlb_rectWithAttributedString:(NSAttributedString *)attributedString size:(CGSize)size;
+
 #pragma mark - Int
 
 + (NSInteger)rowWithCount:(NSInteger)count colNumber:(NSInteger)colNumber;

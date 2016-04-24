@@ -22,6 +22,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
+  - DZNEmptyDataSet (1.7.3)
   - FLAnimatedImage (1.0.12)
   - GMCPagingScrollView (1.0.3)
   - JTSImageViewController (1.5.1)
@@ -54,10 +55,12 @@ PODS:
   - YLGIFImage (0.11)
   - YYImage (0.9.3)
   - YYText (0.9.19)
+  - ZYCornerRadius (0.8.1)
 
 DEPENDENCIES:
   - AFNetworking
   - CocoaLumberjack
+  - DZNEmptyDataSet
   - GMCPagingScrollView
   - JTSImageViewController
   - KMNavigationBarTransition
@@ -76,10 +79,12 @@ DEPENDENCIES:
   - YLGIFImage
   - YYImage
   - YYText
+  - ZYCornerRadius (~> 0.8.1)
 
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  DZNEmptyDataSet: dd7cca17c1d07dfa78956859b1e70a52505678ef
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GMCPagingScrollView: 32285a8e2c0162a4709dfcb4fefb0b9896f87db2
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
@@ -100,5 +105,6 @@ SPEC CHECKSUMS:
   YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
   YYImage: f831ce12f2bf5ce35137f6079a4b9cb4e91eb0ef
   YYText: b823b71b99b526c4a81029ecb59f3d8172ed5c9a
+  ZYCornerRadius: 485a8e9304d16d1620641054a08b9c0f55dd512c
 
 COCOAPODS: 0.39.0

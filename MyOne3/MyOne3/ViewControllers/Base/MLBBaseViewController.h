@@ -44,6 +44,12 @@ typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 // 右侧盆栽和音乐
 - (void)addNavigationBarRightItems;
 
+// 左侧搜索按钮
+- (void)addNavigationBarLeftSearchItem;
+
+// 右侧"我"按钮
+- (void)addNavigationBarRightMeItem;
+
 // 右侧单独一个音乐
 - (void)addNavigationBarRightMusicItem;
 

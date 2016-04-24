@@ -19,5 +19,6 @@
 @property (nonatomic, copy) NSString *readNum;
 @property (nonatomic, copy) NSString *makeTime;
 @property (nonatomic, strong) MLBAuthor *author;
+@property (nonatomic, assign) BOOL hasAudio;
 
 @end

@@ -139,8 +139,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
     });
     
     _praiseButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" highlightImageName:@"like_highlighted" target:self action:@selector(likeButtonClicked)];
-        [button setImage:[UIImage imageNamed:@"like_selected"] forState:UIControlStateSelected];
+        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" selectedImageName:@"like_selected" target:self action:@selector(likeButtonClicked)];
         [_userView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);

@@ -13,7 +13,8 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{@"userId" : @"user_id",
              @"username" : @"user_name",
-             @"webURL" : @"web_url"};
+             @"webURL" : @"web_url",
+             @"desc" : @"desc"};
 }
 
 @end

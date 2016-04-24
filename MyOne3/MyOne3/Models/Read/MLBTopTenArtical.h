@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *itemId;
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *introduction;
 @property (nonatomic, copy) NSString *authorName;
 @property (nonatomic, copy) NSString *webURL;
 @property (nonatomic, assign) NSInteger number;

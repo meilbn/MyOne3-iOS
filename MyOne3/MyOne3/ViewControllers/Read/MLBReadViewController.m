@@ -49,7 +49,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBReadTitle;
-    [self addNavigationBarRightItems];
+    [self addNavigationBarLeftSearchItem];
+    [self addNavigationBarRightMeItem];
     
     [self initDatas];
     [self setupViews];
@@ -166,7 +167,7 @@
 - (void)loadMoreReadIndex {
     // 原因同上
     [_pagingScrollView setCurrentPageIndex:([self numberOfMaxIndex] - 1) reloadData:NO];
-    
+    // 显示往期列表
     MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
     previousViewController.previousType = MLBPreviousTypeRead;
     [self.navigationController pushViewController:previousViewController animated:YES];

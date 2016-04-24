@@ -14,6 +14,7 @@
     return @{@"questionId" : @"question_id",
              @"questionTitle" : @"question_title",
              @"answerTitle" : @"answer_title",
+             @"answerContent" : @"answer_content",
              @"questionMakeTime" : @"question_makettime"};
 }
 

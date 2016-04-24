@@ -16,7 +16,7 @@
              @"cover" : @"cover",
              @"bottomText" : @"bottom_text",
              @"bgColor" : @"bgcolor",
-             @"inputName" : @"input_name"};
+             @"pvURL" : @"pv_url"};
 }
 
 @end

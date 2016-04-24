@@ -92,8 +92,7 @@ NSString *const kMLBReadBaseViewID = @"MLBReadBaseViewID";
         tableView.delegate = self;
         [tableView registerClass:[MLBReadBaseCell class] forCellReuseIdentifier:kMLBReadBaseCellID];
         tableView.tableFooterView = [UIView new];
-        tableView.separatorColor = MLBSeparatorColor;
-        tableView.separatorInset = UIEdgeInsetsMake(0, 54, 0, 6);
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.scrollEnabled = NO;
         tableView.scrollsToTop = NO;
         tableView.translatesAutoresizingMaskIntoConstraints = YES;
@@ -170,6 +169,16 @@ NSString *const kMLBReadBaseViewID = @"MLBReadBaseViewID";
     }
     
     return ceil(rowHeight);
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 10)];
+    }
+    
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsMake(0, 10, 0, 10)];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

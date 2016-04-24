@@ -35,7 +35,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = MLBMovieTitle;
-    [self addNavigationBarRightItems];
+    [self addNavigationBarLeftSearchItem];
+    [self addNavigationBarRightMeItem];
     
     [self initDatas];
     [self setupViews];

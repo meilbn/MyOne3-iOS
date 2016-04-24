@@ -21,20 +21,28 @@
 #define MLBApiGetPraiseComments                 @"/comment/praise/%@/%@/%@"
 #define MLBApiGetTimeComments                   @"/comment/time/%@/%@/%@"
 
-// 获取相关列表
-#define MLBApiGetRelateds                       @"/related/%@/%@"
+// 搜索
+#define MLBApiSearching                         @"/search/%@/%@"
+
+// 作者/音乐人
+#define MLBApiAuthor                            @"author"
 
 // 获取相关列表
 #define MLBApiGetRelateds                       @"/related/%@/%@"
 
 #pragma mark - Home Page
 
+// 首页图文
+#define MLBApiHomePage                          @"hp"
 // 首页图文列表
 #define MLBApiHomePageMore                      @"/hp/more/0"
 // 月的首页图文列表
 #define MLBApiHomePageByMonth                   @"/hp/bymonth/%@"
 
 #pragma mark - Read
+
+// 阅读
+#define MLBApiReading                           @"reading"
 
 // 短篇
 #define MLBApiEssay                             @"essay"
@@ -53,7 +61,7 @@
 // 短篇文章详情
 #define MLBApiEssayDetailsById                  @"/essay/%@"
 // 月的文章列表
-#define MLBApiReadByMonth                      @"/%@/bymonth/%@"
+#define MLBApiReadByMonth                       @"/%@/bymonth/%@"
 
 #pragma mark - Music
 

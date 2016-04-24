@@ -14,8 +14,6 @@ FOUNDATION_EXPORT NSString *const kMLBTopTenArticalCellID;
 
 @interface MLBTopTenArticalCell : MLBBaseCell
 
-+ (CGFloat)cellHeight;
-
-- (void)configureCellWithTopTenArtical:(MLBTopTenArtical *)artical;
+- (void)configureCellWithTopTenArtical:(MLBTopTenArtical *)artical atIndexPath:(NSIndexPath *)indexPath;
 
 @end

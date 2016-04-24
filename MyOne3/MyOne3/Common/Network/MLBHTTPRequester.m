@@ -92,6 +92,23 @@
     return MLBApiMovie;
 }
 
++ (NSString *)apiStringForSearchWithSearchType:(MLBSearchType)type {
+    switch (type) {
+        case MLBSearchTypeHome:
+            return MLBApiHomePage;
+        case MLBSearchTypeRead:
+            return MLBApiReading;
+        case MLBSearchTypeMusic:
+            return MLBApiMusic;
+        case MLBSearchTypeMovie:
+            return MLBApiMovie;
+        case MLBSearchTypeAuthor:
+            return MLBApiAuthor;
+        default:
+            return @"";
+    }
+}
+
 #pragma mark - Common
 
 + (void)requestPraiseCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
@@ -108,6 +125,11 @@
 
 + (void)requestRelatedsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetRelateds, type, itemId] success:successBlock fail:failBlock];
+}
+
+// 搜索
++ (void)searchWithType:(NSString *)type keywords:(NSString *)keywords success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+    [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiSearching, type, [keywords mlb_encodedURL]] success:successBlock fail:failBlock];
 }
 
 #pragma mark - Home Page
