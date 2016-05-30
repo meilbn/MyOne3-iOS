@@ -22,6 +22,9 @@
 ## 0x02 Requirements
 - iOS 8.0+
 
+## 0x03 Bugs
+- [ ] 有 issues ([#5](https://github.com/meilbn/MyOne3-iOS/issues/5)、[#2](https://github.com/meilbn/MyOne3-iOS/issues/2)) 说运行内存有点爆。。。的确是这样，还没优化好。。。
+
 ## 0x03 Screenshots
 ### 首页
 ![](https://github.com/meilbn/MyOne3-iOS/blob/master/Screenshots/Home.gif)
