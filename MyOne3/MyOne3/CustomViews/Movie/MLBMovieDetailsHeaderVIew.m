@@ -130,7 +130,7 @@
 #pragma mark - Public Method
 
 - (void)configureViewWithMovieDetails:(MLBMovieDetails *)movieDetails {
-    [_coverView mlb_sd_setImageWithURL:movieDetails.detailCover placeholderImageName:[NSString stringWithFormat:@"movieList_placeholder_%ld", ([movieDetails.movieId integerValue] % 12)]];
+    [_coverView mlb_sd_setImageWithURL:movieDetails.detailCover placeholderImageName:[NSString stringWithFormat:@"movieList_placeholder_%ld", ([movieDetails.movieId integerValue] % 12)] cachePlachoderImage:NO];
     _scoreView.hidden = NO;
     
     if (IsStringEmpty(movieDetails.score)) {

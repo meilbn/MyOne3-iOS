@@ -53,6 +53,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     
     _coverView = ({
         UIImageView *imageView = [UIImageView new];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:imageView];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,7 +107,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
 
 - (void)configureCellWithMovieListItem:(MLBMovieListItem *)movieListItem atIndexPath:(NSIndexPath *)indexPath {
     NSString *placeholderImageName = [NSString stringWithFormat:@"movieList_placeholder_%ld", indexPath.row % 12];
-    [_coverView mlb_sd_setImageWithURL:movieListItem.cover placeholderImageName:placeholderImageName];
+    [_coverView mlb_sd_setImageWithURL:movieListItem.cover placeholderImageName:placeholderImageName cachePlachoderImage:NO];
     if (IsStringEmpty(movieListItem.score)) {
         _scoreView.hidden = YES;
         NSTimeInterval scoreDiffTimeInterval = [MLBUtilities diffTimeIntervalSinceNowToDateString:movieListItem.scoreTime];

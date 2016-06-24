@@ -168,4 +168,17 @@
     return [UIImage imageNamed:iconName];
 }
 
++ (UIImage *)mlb_imageWithName:(NSString *)imageName cached:(BOOL)cached {
+    UIImage *image;
+    
+    if (cached) {
+        image = [UIImage imageNamed:imageName];
+    } else {
+        NSString *pathOfImage = [[NSBundle mainBundle] pathForResource:imageName ofType:@"png"];
+        image = [UIImage imageWithContentsOfFile:pathOfImage];
+    }
+    
+    return image;
+}
+
 @end

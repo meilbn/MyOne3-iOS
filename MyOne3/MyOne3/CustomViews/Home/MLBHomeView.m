@@ -315,7 +315,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 - (void)configureViewWithHomeItem:(MLBHomeItem *)homeItem atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController {
     self.viewIndex = index;
     self.parentViewController = parentViewController;
-    [_coverView mlb_sd_setImageWithURL:homeItem.imageURL placeholderImageName:@"home_cover_placeholder"];
+    [_coverView mlb_sd_setImageWithURL:homeItem.imageURL placeholderImageName:@"home_cover_placeholder" cachePlachoderImage:NO];
     _titleLabel.text = homeItem.authorName;
     _weatherView.image = [UIImage imageNamed:@"light_rain"];
     _temperatureLabel.text = @"6℃";

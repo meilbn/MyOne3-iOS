@@ -24,6 +24,10 @@
 
 #pragma mark - Lifecycle
 
+- (void)dealloc {
+    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

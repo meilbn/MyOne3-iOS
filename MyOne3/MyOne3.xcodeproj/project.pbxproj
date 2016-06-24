@@ -106,6 +106,22 @@
 		23C73CD11C7CA40500B9F412 /* MLBRelatedMusicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C73CD01C7CA40500B9F412 /* MLBRelatedMusicCell.m */; };
 		23C9065A1C99549D009E9B3E /* MLBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C906591C99549D009E9B3E /* MLBSettingsViewController.m */; };
 		23C9065D1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C9065C1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.m */; };
+		23CAEC3A1D1BDC6800C689B8 /* movieList_placeholder_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC2E1D1BDC6800C689B8 /* movieList_placeholder_0.png */; };
+		23CAEC3B1D1BDC6800C689B8 /* movieList_placeholder_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC2F1D1BDC6800C689B8 /* movieList_placeholder_1.png */; };
+		23CAEC3C1D1BDC6800C689B8 /* movieList_placeholder_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC301D1BDC6800C689B8 /* movieList_placeholder_10.png */; };
+		23CAEC3D1D1BDC6800C689B8 /* movieList_placeholder_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC311D1BDC6800C689B8 /* movieList_placeholder_11.png */; };
+		23CAEC3E1D1BDC6800C689B8 /* movieList_placeholder_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC321D1BDC6800C689B8 /* movieList_placeholder_2.png */; };
+		23CAEC3F1D1BDC6800C689B8 /* movieList_placeholder_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC331D1BDC6800C689B8 /* movieList_placeholder_3.png */; };
+		23CAEC401D1BDC6800C689B8 /* movieList_placeholder_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC341D1BDC6800C689B8 /* movieList_placeholder_4.png */; };
+		23CAEC411D1BDC6800C689B8 /* movieList_placeholder_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC351D1BDC6800C689B8 /* movieList_placeholder_5.png */; };
+		23CAEC421D1BDC6800C689B8 /* movieList_placeholder_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC361D1BDC6800C689B8 /* movieList_placeholder_6.png */; };
+		23CAEC431D1BDC6800C689B8 /* movieList_placeholder_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC371D1BDC6800C689B8 /* movieList_placeholder_7.png */; };
+		23CAEC441D1BDC6800C689B8 /* movieList_placeholder_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC381D1BDC6800C689B8 /* movieList_placeholder_8.png */; };
+		23CAEC451D1BDC6800C689B8 /* movieList_placeholder_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC391D1BDC6800C689B8 /* movieList_placeholder_9.png */; };
+		23CAEC491D1BE13300C689B8 /* music_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC471D1BE13300C689B8 /* music_cover.png */; };
+		23CAEC4A1D1BE13300C689B8 /* music_cover_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC481D1BE13300C689B8 /* music_cover_small.png */; };
+		23CAEC4D1D1BE40500C689B8 /* personalBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC4C1D1BE40500C689B8 /* personalBackgroundImage.png */; };
+		23CAEC501D1BE5D700C689B8 /* home_cover_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAEC4F1D1BE5D700C689B8 /* home_cover_placeholder.png */; };
 		23D24E611C9036BD00761AD9 /* MLBSerialCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E601C9036BD00761AD9 /* MLBSerialCollectionView.m */; };
 		23D24E641C90389000761AD9 /* MLBSerialCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E631C90389000761AD9 /* MLBSerialCCell.m */; };
 		23D24E671C903C9B00761AD9 /* MLBSerialList.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D24E661C903C9B00761AD9 /* MLBSerialList.m */; };
@@ -324,6 +340,22 @@
 		23C906591C99549D009E9B3E /* MLBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSettingsViewController.m; sourceTree = "<group>"; };
 		23C9065B1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSettingsSectionHeaderView.h; sourceTree = "<group>"; };
 		23C9065C1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSettingsSectionHeaderView.m; sourceTree = "<group>"; };
+		23CAEC2E1D1BDC6800C689B8 /* movieList_placeholder_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_0.png; sourceTree = "<group>"; };
+		23CAEC2F1D1BDC6800C689B8 /* movieList_placeholder_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_1.png; sourceTree = "<group>"; };
+		23CAEC301D1BDC6800C689B8 /* movieList_placeholder_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_10.png; sourceTree = "<group>"; };
+		23CAEC311D1BDC6800C689B8 /* movieList_placeholder_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_11.png; sourceTree = "<group>"; };
+		23CAEC321D1BDC6800C689B8 /* movieList_placeholder_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_2.png; sourceTree = "<group>"; };
+		23CAEC331D1BDC6800C689B8 /* movieList_placeholder_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_3.png; sourceTree = "<group>"; };
+		23CAEC341D1BDC6800C689B8 /* movieList_placeholder_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_4.png; sourceTree = "<group>"; };
+		23CAEC351D1BDC6800C689B8 /* movieList_placeholder_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_5.png; sourceTree = "<group>"; };
+		23CAEC361D1BDC6800C689B8 /* movieList_placeholder_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_6.png; sourceTree = "<group>"; };
+		23CAEC371D1BDC6800C689B8 /* movieList_placeholder_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_7.png; sourceTree = "<group>"; };
+		23CAEC381D1BDC6800C689B8 /* movieList_placeholder_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_8.png; sourceTree = "<group>"; };
+		23CAEC391D1BDC6800C689B8 /* movieList_placeholder_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movieList_placeholder_9.png; sourceTree = "<group>"; };
+		23CAEC471D1BE13300C689B8 /* music_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_cover.png; sourceTree = "<group>"; };
+		23CAEC481D1BE13300C689B8 /* music_cover_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_cover_small.png; sourceTree = "<group>"; };
+		23CAEC4C1D1BE40500C689B8 /* personalBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personalBackgroundImage.png; sourceTree = "<group>"; };
+		23CAEC4F1D1BE5D700C689B8 /* home_cover_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_cover_placeholder.png; sourceTree = "<group>"; };
 		23D24E5F1C9036BD00761AD9 /* MLBSerialCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSerialCollectionView.h; sourceTree = "<group>"; };
 		23D24E601C9036BD00761AD9 /* MLBSerialCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBSerialCollectionView.m; sourceTree = "<group>"; };
 		23D24E621C90389000761AD9 /* MLBSerialCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBSerialCCell.h; sourceTree = "<group>"; };
@@ -485,6 +517,7 @@
 		239F031A1C7964E700B03AF3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				23CAEC2C1D1BDC6800C689B8 /* PNG */,
 				23AB7F521C79DE8F00EF21EA /* Fonts */,
 				239536B01C7DCFA900FFA93C /* GIFs */,
 			);
@@ -1012,6 +1045,61 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		23CAEC2C1D1BDC6800C689B8 /* PNG */ = {
+			isa = PBXGroup;
+			children = (
+				23CAEC4E1D1BE5D700C689B8 /* Home */,
+				23CAEC4B1D1BE40500C689B8 /* User */,
+				23CAEC461D1BE13300C689B8 /* Music */,
+				23CAEC2D1D1BDC6800C689B8 /* Movie */,
+			);
+			path = PNG;
+			sourceTree = "<group>";
+		};
+		23CAEC2D1D1BDC6800C689B8 /* Movie */ = {
+			isa = PBXGroup;
+			children = (
+				23CAEC2E1D1BDC6800C689B8 /* movieList_placeholder_0.png */,
+				23CAEC2F1D1BDC6800C689B8 /* movieList_placeholder_1.png */,
+				23CAEC301D1BDC6800C689B8 /* movieList_placeholder_10.png */,
+				23CAEC311D1BDC6800C689B8 /* movieList_placeholder_11.png */,
+				23CAEC321D1BDC6800C689B8 /* movieList_placeholder_2.png */,
+				23CAEC331D1BDC6800C689B8 /* movieList_placeholder_3.png */,
+				23CAEC341D1BDC6800C689B8 /* movieList_placeholder_4.png */,
+				23CAEC351D1BDC6800C689B8 /* movieList_placeholder_5.png */,
+				23CAEC361D1BDC6800C689B8 /* movieList_placeholder_6.png */,
+				23CAEC371D1BDC6800C689B8 /* movieList_placeholder_7.png */,
+				23CAEC381D1BDC6800C689B8 /* movieList_placeholder_8.png */,
+				23CAEC391D1BDC6800C689B8 /* movieList_placeholder_9.png */,
+			);
+			path = Movie;
+			sourceTree = "<group>";
+		};
+		23CAEC461D1BE13300C689B8 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				23CAEC471D1BE13300C689B8 /* music_cover.png */,
+				23CAEC481D1BE13300C689B8 /* music_cover_small.png */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		23CAEC4B1D1BE40500C689B8 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				23CAEC4C1D1BE40500C689B8 /* personalBackgroundImage.png */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		23CAEC4E1D1BE5D700C689B8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				23CAEC4F1D1BE5D700C689B8 /* home_cover_placeholder.png */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		23DA37361CC72F1C00B6BFFD /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1142,15 +1230,31 @@
 			files = (
 				239536BB1C7DCFA900FFA93C /* 3.gif in Resources */,
 				239536C01C7DCFA900FFA93C /* my_player_stop_white.gif in Resources */,
+				23CAEC411D1BDC6800C689B8 /* movieList_placeholder_5.png in Resources */,
+				23CAEC451D1BDC6800C689B8 /* movieList_placeholder_9.png in Resources */,
 				239536BF1C7DCFA900FFA93C /* my_player_stop.gif in Resources */,
 				239536BE1C7DCFA900FFA93C /* my_player_action_white.gif in Resources */,
 				23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */,
 				239536BA1C7DCFA900FFA93C /* 2.gif in Resources */,
+				23CAEC501D1BE5D700C689B8 /* home_cover_placeholder.png in Resources */,
+				23CAEC3D1D1BDC6800C689B8 /* movieList_placeholder_11.png in Resources */,
+				23CAEC491D1BE13300C689B8 /* music_cover.png in Resources */,
+				23CAEC3F1D1BDC6800C689B8 /* movieList_placeholder_3.png in Resources */,
+				23CAEC3B1D1BDC6800C689B8 /* movieList_placeholder_1.png in Resources */,
+				23CAEC431D1BDC6800C689B8 /* movieList_placeholder_7.png in Resources */,
 				23AA05911C78A77C0043ACE7 /* LaunchScreen.storyboard in Resources */,
+				23CAEC3A1D1BDC6800C689B8 /* movieList_placeholder_0.png in Resources */,
+				23CAEC4D1D1BE40500C689B8 /* personalBackgroundImage.png in Resources */,
+				23CAEC3C1D1BDC6800C689B8 /* movieList_placeholder_10.png in Resources */,
+				23CAEC421D1BDC6800C689B8 /* movieList_placeholder_6.png in Resources */,
 				239536B91C7DCFA900FFA93C /* 1.gif in Resources */,
+				23CAEC401D1BDC6800C689B8 /* movieList_placeholder_4.png in Resources */,
+				23CAEC4A1D1BE13300C689B8 /* music_cover_small.png in Resources */,
 				23AA058E1C78A77C0043ACE7 /* Assets.xcassets in Resources */,
+				23CAEC3E1D1BDC6800C689B8 /* movieList_placeholder_2.png in Resources */,
 				239536BC1C7DCFA900FFA93C /* 4.gif in Resources */,
 				239536BD1C7DCFA900FFA93C /* my_player_action.gif in Resources */,
+				23CAEC441D1BDC6800C689B8 /* movieList_placeholder_8.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

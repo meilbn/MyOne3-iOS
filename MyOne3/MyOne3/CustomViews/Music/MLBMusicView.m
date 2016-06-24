@@ -536,7 +536,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)updateViews {
-    [_coverView mlb_sd_setImageWithURL:musicDetails.cover placeholderImageName:@"music_cover_small"];
+    [_coverView mlb_sd_setImageWithURL:musicDetails.cover placeholderImageName:@"music_cover_small" cachePlachoderImage:NO];
     [_authorAvatarView mlb_sd_setImageWithURL:musicDetails.author.webURL placeholderImageName:@"personal"];
     _authorNameLabel.text = musicDetails.author.username;
     _authorDescLabel.text = musicDetails.author.desc;
@@ -679,7 +679,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         return;
     }
     
-    _coverView.image = [UIImage imageNamed:@"music_cover"];
+    _coverView.image = [UIImage mlb_imageWithName:@"music_cover" cached:NO];
     _authorAvatarView.image = [UIImage imageNamed:@"personal"];
     _authorNameLabel.text = @"";
     _authorDescLabel.text = @"";
