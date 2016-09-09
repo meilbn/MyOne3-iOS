@@ -655,7 +655,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (void)moreButtonClicked {
     if (self.parentViewController) {
-        [self.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [self.parentViewController.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }

@@ -230,7 +230,7 @@
 }
 
 - (void)moreButtonClicked {
-    [self mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+    [self.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
         DDLogDebug(@"menuType = %ld", menuType);
     }];
 }

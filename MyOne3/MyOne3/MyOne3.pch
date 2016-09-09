@@ -25,7 +25,7 @@
 #import "UIImageView+MLBSDImageLoader.h"
 #import "UIImage+Common.h"
 #import "UIView+MLBShowHUD.h"
-#import "UIViewController+MLBShowSharesPopMenu.h"
+#import "UIView+MyOne.h"
 #import "UIScrollView+MLBEndMJRefreshing.h"
 
 #pragma mark - Framework

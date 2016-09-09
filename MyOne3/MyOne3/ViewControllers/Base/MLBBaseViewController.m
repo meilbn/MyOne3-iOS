@@ -134,23 +134,11 @@
     [[MLBMusicControlView sharedInstance] show];
 }
 
+#pragma mark - Public Action
+
 - (void)presentLoginOptsViewController {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[MLBLiginOptsViewController alloc] init]];
     [self presentViewController:nav animated:YES completion:NULL];
-}
-
-- (void)blowUpImage:(UIImage *)image referenceRect:(CGRect)referenceRect referenceView:(UIView *)referenceView {
-    // Create image info
-    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
-    imageInfo.image = image;
-    imageInfo.referenceRect = referenceRect;
-    imageInfo.referenceView = referenceView;
-    
-    // Setup view controller
-    JTSImageViewController *imageViewer = [[JTSImageViewController alloc] initWithImageInfo:imageInfo mode:JTSImageViewControllerMode_Image backgroundStyle:JTSImageViewControllerBackgroundOption_Blurred];
-    
-    // Present the view controller.
-    [imageViewer showFromViewController:kKeyWindow.rootViewController transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
 
 @end

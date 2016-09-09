@@ -524,7 +524,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)otherShare {
-    [self mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+    [self.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
         DDLogDebug(@"menuType = %ld", menuType);
     }];
 }

@@ -279,9 +279,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
 #pragma mark - Action
 
 - (void)coverTapped {
-    if (self.parentViewController) {
-        [self.parentViewController blowUpImage:_coverView.image referenceRect:_coverView.frame referenceView:_coverView.superview];
-    }
+    [self blowUpImage:_coverView.image referenceRect:_coverView.frame referenceView:_coverView.superview];
 }
 
 - (void)diaryButtonClicked {
@@ -300,7 +298,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     if (_clickedButton) {
         _clickedButton(MLBActionTypeMore);
     } else if (self.parentViewController) {
-        [self.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [self.parentViewController.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }

@@ -1,5 +1,5 @@
 //
-//  UIViewController+MLBShowSharesPopMenu.h
+//  UIView+MyOne.h
 //  MyOne3
 //
 //  Created by meilbn on 9/9/16.
@@ -19,8 +19,22 @@ typedef NS_ENUM(NSUInteger, MLBPopMenuType) {
 
 typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 
-@interface UIViewController (MLBShowSharesPopMenu)
+@interface UIView (MyOne)
 
+/**
+ *  显示分享菜单
+ *
+ *  @param block 菜单 item 点击回调
+ */
 - (void)mlb_showPopMenuViewWithMenuSelectedBlock:(MenuSelectedBlock)block;
+
+/**
+ *  展示图片
+ *
+ *  @param image         要展示的图片
+ *  @param referenceRect 尺寸大小
+ *  @param referenceView 父视图
+ */
+- (void)blowUpImage:(UIImage *)image referenceRect:(CGRect)referenceRect referenceView:(UIView *)referenceView;
 
 @end

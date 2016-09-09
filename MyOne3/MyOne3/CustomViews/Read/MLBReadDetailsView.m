@@ -511,7 +511,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     [_editorView configureViewWithEditorText:chargeEditor praiseNum:praiseNum praiseClickedBlock:^{
         DDLogDebug(@"praise");
     } moreClickedBlock:^{
-        [weakSelf.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [weakSelf.parentViewController.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }];

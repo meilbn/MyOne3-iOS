@@ -30,6 +30,4 @@
 
 - (void)presentLoginOptsViewController;
 
-- (void)blowUpImage:(UIImage *)image referenceRect:(CGRect)referenceRect referenceView:(UIView *)referenceView;
-
 @end
