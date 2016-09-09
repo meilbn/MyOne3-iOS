@@ -8,17 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSUInteger, MLBPopMenuType) {
-    MLBPopMenuTypeWechatFrined,// 微信好友
-    MLBPopMenuTypeMoments,// 朋友圈
-    MLBPopMenuTypeWeibo,// 微博
-    MLBPopMenuTypeQQ,// QQ
-    MLBPopMenuTypeCopyURL,// 复制链接
-    MLBPopMenuTypeFavorite,// 收藏
-};
-
-typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
-
 @interface MLBBaseViewController : UIViewController
 
 @property (nonatomic, assign) BOOL hideNavigationBar;
@@ -36,10 +25,6 @@ typedef void(^MenuSelectedBlock)(MLBPopMenuType menuType);
 
 // 右侧单独一个音乐
 - (void)addNavigationBarRightMusicItem;
-
-- (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData;
-
-- (void)showPopMenuViewWithMenuSelectedBlock:(MenuSelectedBlock)block;
 
 #pragma mark - Action
 

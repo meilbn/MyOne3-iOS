@@ -72,6 +72,8 @@
 		23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23AB7F531C79DE8F00EF21EA /* Bradley Hand Bold.ttf */; };
 		23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F611C79F12B00EF21EA /* MLBAuthor.m */; };
 		23ACBCDF1D824C71001F8DB4 /* UIView+MLBShowHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23ACBCDE1D824C71001F8DB4 /* UIView+MLBShowHUD.m */; };
+		23ACBCE21D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 23ACBCE11D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.m */; };
+		23ACBCE51D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.m in Sources */ = {isa = PBXBuildFile; fileRef = 23ACBCE41D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.m */; };
 		23AD5FB81C7FEDE200D80701 /* MLBReadDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */; };
 		23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBA1C7FEDF300D80701 /* MLBReadCarouselItem.m */; };
 		23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBC1C7FEDF300D80701 /* MLBReadEssay.m */; };
@@ -273,6 +275,10 @@
 		23AB7F611C79F12B00EF21EA /* MLBAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBAuthor.m; sourceTree = "<group>"; };
 		23ACBCDD1D824C71001F8DB4 /* UIView+MLBShowHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MLBShowHUD.h"; sourceTree = "<group>"; };
 		23ACBCDE1D824C71001F8DB4 /* UIView+MLBShowHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MLBShowHUD.m"; sourceTree = "<group>"; };
+		23ACBCE01D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MLBShowSharesPopMenu.h"; sourceTree = "<group>"; };
+		23ACBCE11D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MLBShowSharesPopMenu.m"; sourceTree = "<group>"; };
+		23ACBCE31D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MLBEndMJRefreshing.h"; sourceTree = "<group>"; };
+		23ACBCE41D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MLBEndMJRefreshing.m"; sourceTree = "<group>"; };
 		23AD5FB61C7FEDE200D80701 /* MLBReadDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadDetailsViewController.h; sourceTree = "<group>"; };
 		23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadDetailsViewController.m; sourceTree = "<group>"; };
 		23AD5FB91C7FEDF300D80701 /* MLBReadCarouselItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadCarouselItem.h; sourceTree = "<group>"; };
@@ -612,6 +618,10 @@
 				23AA05A01C78BCC70043ACE7 /* UIColor+MLBUtilities.m */,
 				239F033D1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.h */,
 				239F033E1C798DA000B03AF3 /* UIImageView+MLBSDImageLoader.m */,
+				23ACBCE01D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.h */,
+				23ACBCE11D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.m */,
+				23ACBCE31D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.h */,
+				23ACBCE41D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1393,6 +1403,7 @@
 				23BFAC7E1C8088670014A977 /* MLBReadSerialDetails.m in Sources */,
 				239F03191C79628100B03AF3 /* MLBUIFactory.m in Sources */,
 				2308605C1C993FF0007069EC /* UIImage+ImageEffects.m in Sources */,
+				23ACBCE51D82542F001F8DB4 /* UIScrollView+MLBEndMJRefreshing.m in Sources */,
 				239536A51C7DA77200FFA93C /* MenuButton.m in Sources */,
 				23E1763B1C7C471A0052B2A9 /* MLBComment.m in Sources */,
 				23C9065D1C995C0B009E9B3E /* MLBSettingsSectionHeaderView.m in Sources */,
@@ -1418,6 +1429,7 @@
 				23AA05B81C78BCC70043ACE7 /* MTLModel+MANullableScalar.m in Sources */,
 				23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */,
 				23957B751C9A93E2003FBB88 /* MLBMusicRelatedViewController.m in Sources */,
+				23ACBCE21D82526C001F8DB4 /* UIViewController+MLBShowSharesPopMenu.m in Sources */,
 				23AD5FDB1C80000500D80701 /* UIColor+Equalable.m in Sources */,
 				23C174C01C8170C000C071A1 /* MLBCommonFooterView.m in Sources */,
 				233A760B1C9A7B3000D82879 /* MLBSettingsCell.m in Sources */,

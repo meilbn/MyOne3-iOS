@@ -179,11 +179,22 @@
 
 - (void)searching {
     [_activityIndicatorView startAnimating];
-    
+	
+	__weak typeof(self) weakSelf = self;
     [MLBHTTPRequester searchWithType:[MLBHTTPRequester apiStringForSearchWithSearchType:searchType] keywords:_searchBar.text success:^(id responseObject) {
-        [self processWithResponseObject:responseObject];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf processWithResponseObject:responseObject];
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 

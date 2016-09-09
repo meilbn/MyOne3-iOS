@@ -61,13 +61,14 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 @property (strong, nonatomic) MASConstraint *commentsTableViewHeightConstraint;
 @property (strong, nonatomic) MASConstraint *relatedsTableViewHeightConstraint;
 
+@property (assign, nonatomic) MLBReadType viewType;
+@property (strong, nonatomic) MLBBaseModel *readDetailsModel;
+@property (strong, nonatomic) NSArray *relatedList;
+
 @end
 
 @implementation MLBReadDetailsView {
-    MLBReadType viewType;
-    MLBBaseModel *readDetailsModel;
     MLBBaseModel *readModel;
-    NSArray *relatedList;
     NSMutableArray *relatedRowsHeight;
 }
 
@@ -385,7 +386,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)preUpdateViews {
-    if (viewType == MLBReadTypeQuestion) {
+    if (_viewType == MLBReadTypeQuestion) {
         return;
     }
     
@@ -412,7 +413,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 - (void)updateAuthorViews {
     MLBAuthor *author;
     NSString *dateString;
-    if (viewType == MLBReadTypeEssay) {
+    if (_viewType == MLBReadTypeEssay) {
         MLBReadEssay *essay = (MLBReadEssay *)readModel;
         author = [essay.authors firstObject];
         dateString = essay.makeTime;
@@ -445,25 +446,25 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (NSString *)contentId {
-    return (viewType == MLBReadTypeEssay ? ((MLBReadEssay *)readModel).contentId : (viewType == MLBReadTypeSerial ? ((MLBReadSerial *)readModel).contentId : ((MLBReadQuestion *)readModel).questionId));
+    return (_viewType == MLBReadTypeEssay ? ((MLBReadEssay *)readModel).contentId : (_viewType == MLBReadTypeSerial ? ((MLBReadSerial *)readModel).contentId : ((MLBReadQuestion *)readModel).questionId));
 }
 
 - (Class)modelClass {
-    return (viewType == MLBReadTypeEssay ? [MLBReadEssay class] : (viewType == MLBReadTypeSerial ? [MLBReadSerial class] : [MLBReadQuestion class]));
+    return (_viewType == MLBReadTypeEssay ? [MLBReadEssay class] : (_viewType == MLBReadTypeSerial ? [MLBReadSerial class] : [MLBReadQuestion class]));
 }
 
 - (void)updateViews {
-    if (viewType != MLBReadTypeQuestion) {
-        if (viewType == MLBReadTypeEssay && IsStringEmpty(((MLBReadEssay *)readModel).title)) {
+    if (_viewType != MLBReadTypeQuestion) {
+        if (_viewType == MLBReadTypeEssay && IsStringEmpty(((MLBReadEssay *)readModel).title)) {
             MLBReadEssay *essay = (MLBReadEssay *)readModel;
-            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)readDetailsModel;
+            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)_readDetailsModel;
             essay.title = essayDetails.title;
             essay.makeTime = essayDetails.makeTime;
             essay.guideWord = essayDetails.guideWord;
             essay.authors = essayDetails.authors;
-        } else if (viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
+        } else if (_viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
             MLBReadSerial *serial = (MLBReadSerial *)readModel;
-            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
+            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)_readDetailsModel;
             serial.title = serialDetails.title;
             serial.excerpt = serialDetails.excerpt;
             serial.readNum = serialDetails.readNum;
@@ -476,16 +477,16 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
     NSString *chargeEditor = @"";
     NSInteger praiseNum = 0;
-    switch (viewType) {
+    switch (_viewType) {
         case MLBReadTypeEssay: {
-            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)readDetailsModel;
+            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)_readDetailsModel;
             [self updateContentTextViewWithText:essayDetails.content];
             chargeEditor = essayDetails.chargeEditor;
             praiseNum = essayDetails.praiseNum;
             break;
         }
         case MLBReadTypeSerial: {
-            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)readDetailsModel;
+            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)_readDetailsModel;
             [self updateContentTextViewWithText:serialDetails.content];
             _listenInButton.hidden = IsStringEmpty(serialDetails.audioURL);
             chargeEditor = serialDetails.chargeEditor;
@@ -493,7 +494,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
             break;
         }
         case MLBReadTypeQuestion: {
-            MLBReadQuestionDetails *questionDetails = (MLBReadQuestionDetails *)readDetailsModel;
+            MLBReadQuestionDetails *questionDetails = (MLBReadQuestionDetails *)_readDetailsModel;
             _questionTitleLabel.text = questionDetails.questionTitle;
             _questionContentLabel.text = questionDetails.questionContent;
             _titleLabel.text = questionDetails.answerTitle;
@@ -510,12 +511,12 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     [_editorView configureViewWithEditorText:chargeEditor praiseNum:praiseNum praiseClickedBlock:^{
         DDLogDebug(@"praise");
     } moreClickedBlock:^{
-        [weakSelf.parentViewController showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [weakSelf.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }];
     
-    [_commentListViewController configureViewForReadDetailsWithReadType:viewType itemId:[self contentId]];
+    [_commentListViewController configureViewForReadDetailsWithReadType:_viewType itemId:[self contentId]];
     [self.parentViewController addChildViewController:_commentListViewController];
     [_commentListViewController requestDatas];
     [self requestRelateds];
@@ -537,10 +538,10 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 
 - (void)updateRelatedsTableView {
     CGFloat tableViewHeight = 0;
-    if (relatedList.count > 0) {
+    if (_relatedList.count > 0) {
         tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow];// headerView + footerView
         [relatedRowsHeight removeAllObjects];
-        for (MLBBaseModel *model in relatedList) {
+        for (MLBBaseModel *model in _relatedList) {
             CGFloat cellHeight = [_relatedsTableView fd_heightForCellWithIdentifier:kMLBReadBaseCellID configuration:^(MLBReadBaseCell *cell) {
                 [cell configureCellWithBaseModel:model];
             }];
@@ -576,7 +577,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 
 - (void)showSingleReadDetailsWithReadModel:(MLBBaseModel *)model {
     MLBSingleReadDetailsViewController *singleReadDetailsViewController = [[MLBSingleReadDetailsViewController alloc] init];
-    singleReadDetailsViewController.readType = viewType;
+    singleReadDetailsViewController.readType = _viewType;
     singleReadDetailsViewController.readModel = model;
     [self.parentViewController.navigationController pushViewController:singleReadDetailsViewController animated:YES];
 }
@@ -584,11 +585,17 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark - Network Request
 
 - (void)requestDetails {
-    [MLBHTTPRequester requestReadDetailsWithType:[MLBHTTPRequester apiStringForReadDetailsWithReadType:viewType] itemId:[self contentId] success:^(id responseObject) {
+    __weak typeof(self) weakSelf = self;
+    [MLBHTTPRequester requestReadDetailsWithType:[MLBHTTPRequester apiStringForReadDetailsWithReadType:_viewType] itemId:[self contentId] success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBBaseModel *details;
-            switch (viewType) {
+            switch (strongSelf.viewType) {
                 case MLBReadTypeEssay: {
                     details = [MTLJSONAdapter modelOfClass:[MLBReadEssayDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
                     break;
@@ -604,8 +611,8 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
             }
             
             if (!error) {
-                readDetailsModel = details;
-                [self updateViews];
+                strongSelf.readDetailsModel = details;
+                [strongSelf updateViews];
             } else {
                 // callback
             }
@@ -618,13 +625,19 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)requestRelateds {
-    [MLBHTTPRequester requestRelatedsWithType:[MLBHTTPRequester apiStringForReadWithReadType:viewType] itemId:[self contentId] success:^(id responseObject) {
+    __weak typeof(self) weakSelf = self;
+    [MLBHTTPRequester requestRelatedsWithType:[MLBHTTPRequester apiStringForReadWithReadType:_viewType] itemId:[self contentId] success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
-            NSArray *relateds = [MTLJSONAdapter modelsOfClass:[self modelClass] fromJSONArray:responseObject[@"data"] error:&error];
+            NSArray *relateds = [MTLJSONAdapter modelsOfClass:[strongSelf modelClass] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                relatedList = relateds;
-                [self updateRelatedsTableView];
+                strongSelf.relatedList = relateds;
+                [strongSelf updateRelatedsTableView];
             } else {
                 // callback
             }
@@ -660,7 +673,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 - (void)configureViewWithReadModel:(MLBBaseModel *)model type:(MLBReadType)type atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController {
     self.viewIndex = index;
     self.parentViewController = parentViewController;
-    viewType = type;
+    _viewType = type;
     readModel = model;
     [self preUpdateViews];
     [self requestDetails];
@@ -669,7 +682,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return relatedList.count;
+    return _relatedList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -707,12 +720,12 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBReadBaseCell *)cell configureCellWithBaseModel:relatedList[indexPath.row]];
+    [(MLBReadBaseCell *)cell configureCellWithBaseModel:_relatedList[indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self showSingleReadDetailsWithReadModel:relatedList[indexPath.row]];
+    [self showSingleReadDetailsWithReadModel:_relatedList[indexPath.row]];
 }
 
 @end

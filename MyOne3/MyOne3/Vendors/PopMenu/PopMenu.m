@@ -42,6 +42,10 @@
 
 #pragma mark - Life Cycle
 
+- (void)dealloc {
+	NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
+
 - (id)initWithFrame:(CGRect)frame items:(NSArray *)items {
     self = [super initWithFrame:frame];
     if (self) {

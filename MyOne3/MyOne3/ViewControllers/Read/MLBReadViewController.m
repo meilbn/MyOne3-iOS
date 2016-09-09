@@ -23,12 +23,13 @@
 @property (strong, nonatomic) SDCycleScrollView *carouselView;
 @property (strong, nonatomic) GMCPagingScrollView *pagingScrollView;
 
+@property (strong, nonatomic) NSArray *carousels;
+@property (strong, nonatomic) MLBReadIndex *readIndex;
+
 @end
 
 @implementation MLBReadViewController {
-    NSArray *carousels;
     NSMutableArray *carouselCovers;
-    MLBReadIndex *readIndex;
 }
 
 #pragma mark - Lifecycle
@@ -134,13 +135,13 @@
 - (void)loadCache {
     id cacheCarousels = [NSKeyedUnarchiver unarchiveObjectWithFile:MLBCacheReadCarouselFilePath];
     if (cacheCarousels) {
-        carousels = cacheCarousels;
+        _carousels = cacheCarousels;
         [self setupCarouselViewDataSource];
     }
     
     id cacheReadIndex = [NSKeyedUnarchiver unarchiveObjectWithFile:MLBCacheReadIndexFilePath];
     if (cacheReadIndex) {
-        readIndex = cacheReadIndex;
+        _readIndex = cacheReadIndex;
         _pagingScrollView.hidden = NO;
         [_pagingScrollView reloadData];
     }
@@ -149,7 +150,7 @@
 - (void)setupCarouselViewDataSource {
     [carouselCovers removeAllObjects];
     
-    for (MLBReadCarouselItem *carousel in carousels) {
+    for (MLBReadCarouselItem *carousel in _carousels) {
         [carouselCovers addObject:carousel.cover];
     }
     
@@ -157,14 +158,14 @@
 }
 
 - (NSInteger)numberOfMaxIndex {
-    return MAX(MAX(readIndex.essay.count, readIndex.serial.count), readIndex.question.count);
+    return MAX(MAX(_readIndex.essay.count, _readIndex.serial.count), _readIndex.question.count);
 }
 
 #pragma mark - Action
 
 - (void)showTopTenArticalWithIndex:(NSInteger)index {
     MLBTopTenArticalViewController *topTenArticalViewController = [[MLBTopTenArticalViewController alloc] init];
-    topTenArticalViewController.carouselItem = carousels[index];
+    topTenArticalViewController.carouselItem = _carousels[index];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:topTenArticalViewController];
     [self presentViewController:navigationController animated:NO completion:NULL];
 }
@@ -185,57 +186,79 @@
 
 - (void)openReadDetailsViewControllerWithReadType:(MLBReadType)type {
     MLBReadDetailsViewController *readDetailsViewController = [[MLBReadDetailsViewController alloc] init];
-    readDetailsViewController.dataSource = type == MLBReadTypeEssay ? readIndex.essay : (type == MLBReadTypeSerial ? readIndex.serial : readIndex.question);
+    readDetailsViewController.dataSource = type == MLBReadTypeEssay ? _readIndex.essay : (type == MLBReadTypeSerial ? _readIndex.serial : _readIndex.question);
     [self.navigationController pushViewController:readDetailsViewController animated:YES];
 }
 
 #pragma mark - Network Request
 
 - (void)requestCarousel {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestReadCarouselWithSuccess:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *carouselArray = [MTLJSONAdapter modelsOfClass:[MLBReadCarouselItem class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                carousels = carouselArray.copy;
-                [self setupCarouselViewDataSource];
+                strongSelf.carousels = carouselArray.copy;
+                [strongSelf setupCarouselViewDataSource];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [NSKeyedArchiver archiveRootObject:carousels toFile:MLBCacheReadCarouselFilePath];
+                    [NSKeyedArchiver archiveRootObject:strongSelf.carousels toFile:MLBCacheReadCarouselFilePath];
                 });
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
 - (void)requestIndex {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestReadIndexWithSuccess:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
-            readIndex = [MTLJSONAdapter modelOfClass:[MLBReadIndex class] fromJSONDictionary:responseObject[@"data"] error:&error];
+            strongSelf.readIndex = [MTLJSONAdapter modelOfClass:[MLBReadIndex class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                _pagingScrollView.hidden = NO;
-                [_pagingScrollView reloadData];
+                strongSelf.pagingScrollView.hidden = NO;
+                [strongSelf.pagingScrollView reloadData];
                 // 防止加载出来前用户滑动而跳转到了最后一个
-                [_pagingScrollView setCurrentPageIndex:0];
+                [strongSelf.pagingScrollView setCurrentPageIndex:0];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [NSKeyedArchiver archiveRootObject:readIndex toFile:MLBCacheReadIndexFilePath];
+                    [NSKeyedArchiver archiveRootObject:strongSelf.readIndex toFile:MLBCacheReadIndexFilePath];
                 });
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
@@ -247,10 +270,11 @@
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBReadBaseView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBReadBaseViewID];
-    [view configureViewWithReadEssay:readIndex.essay[index] readSerial:readIndex.serial[index] readQuestion:readIndex.question[index] atIndex:index inViewController:self];
+    [view configureViewWithReadEssay:_readIndex.essay[index] readSerial:_readIndex.serial[index] readQuestion:_readIndex.question[index] atIndex:index inViewController:self];
     __weak typeof(self) weakSelf = self;
     view.readSelected = ^(MLBReadType type) {
-        [weakSelf openReadDetailsViewControllerWithReadType:type];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf openReadDetailsViewControllerWithReadType:type];
     };
     
     return view;

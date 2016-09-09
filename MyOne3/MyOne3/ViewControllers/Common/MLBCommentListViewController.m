@@ -336,14 +336,26 @@
     }
     
     if ([self isCommentListNotInDetails]) {
-        [MLBHTTPRequester requestTimeCommentsWithType:apiString itemId:_itemId firstItemId:firstItemId success:^(id responseObject) {
-            [self processCommentsResponseObject:responseObject firstItemId:firstItemId];
+        __weak typeof(self) weakSelf = self;
+		[MLBHTTPRequester requestTimeCommentsWithType:apiString itemId:_itemId firstItemId:firstItemId success:^(id responseObject) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			if (!strongSelf) {
+				return;
+			}
+		
+            [strongSelf processCommentsResponseObject:responseObject firstItemId:firstItemId];
         } fail:^(NSError *error) {
             
         }];
     } else {
-        [MLBHTTPRequester requestPraiseCommentsWithType:apiString itemId:_itemId firstItemId:firstItemId success:^(id responseObject) {
-            [self processCommentsResponseObject:responseObject firstItemId:firstItemId];
+        __weak typeof(self) weakSelf = self;
+		[MLBHTTPRequester requestPraiseCommentsWithType:apiString itemId:_itemId firstItemId:firstItemId success:^(id responseObject) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			if (!strongSelf) {
+				return;
+			}
+		
+            [strongSelf processCommentsResponseObject:responseObject firstItemId:firstItemId];
         } fail:^(NSError *error) {
             
         }];
@@ -376,23 +388,29 @@
 }
 
 - (void)requestMovieStoriesWithFirstItemId:(NSString *)firstItemId {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMovieStoriesById:_itemId firstItemId:firstItemId forDetails:![self isCommentListNotInDetails] success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBMovieStoryList *storyList = [MTLJSONAdapter modelOfClass:[MLBMovieStoryList class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                _dataCount = storyList.count;
+                strongSelf.dataCount = storyList.count;
                 if ([firstItemId isEqualToString:@"0"]) {
-                    [_dataSource removeAllObjects];
+                    [strongSelf.dataSource removeAllObjects];
                 }
                 
-                [_dataSource addObjectsFromArray:storyList.stories];
+                [strongSelf.dataSource addObjectsFromArray:storyList.stories];
                 
-                if ([self isCommentListNotInDetails]) {
-                    [self endRefreshingWithHasMoreData:storyList.stories.count >= 10];
+                if ([strongSelf isCommentListNotInDetails]) {
+                    [strongSelf endRefreshingWithHasMoreData:storyList.stories.count >= 10];
                 }
                 
-                [self updateViews];
+                [strongSelf updateViews];
             } else {
                 
             }
@@ -405,23 +423,29 @@
 }
 
 - (void)requestMovieReviewsWithFirstItemId:(NSString *)firstItemId {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMovieReviewsById:_itemId firstItemId:firstItemId forDetails:![self isCommentListNotInDetails] success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBMovieReviewList *reviewList = [MTLJSONAdapter modelOfClass:[MLBMovieReviewList class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                _dataCount = reviewList.count;
+                strongSelf.dataCount = reviewList.count;
                 if ([firstItemId isEqualToString:@"0"]) {
-                    [_dataSource removeAllObjects];
+                    [strongSelf.dataSource removeAllObjects];
                 }
                 
-                [_dataSource addObjectsFromArray:reviewList.reviews];
+                [strongSelf.dataSource addObjectsFromArray:reviewList.reviews];
                 
-                if ([self isCommentListNotInDetails]) {
-                    [self endRefreshingWithHasMoreData:reviewList.reviews.count >= 20];
+                if ([strongSelf isCommentListNotInDetails]) {
+                    [strongSelf endRefreshingWithHasMoreData:reviewList.reviews.count >= 20];
                 }
                 
-                [self updateViews];
+                [strongSelf updateViews];
             } else {
                 
             }

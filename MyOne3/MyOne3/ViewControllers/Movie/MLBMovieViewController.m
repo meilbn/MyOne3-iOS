@@ -16,11 +16,11 @@
 
 @property (strong, nonatomic) UICollectionView *collectionView;
 
+@property (strong, nonatomic) NSMutableArray *dataSource;
+
 @end
 
-@implementation MLBMovieViewController {
-    NSMutableArray *dataSource;
-}
+@implementation MLBMovieViewController
 
 #pragma mark - Lifecycle
 
@@ -57,7 +57,7 @@
 #pragma mark - Private Method
 
 - (void)initDatas {
-    dataSource = @[].mutableCopy;
+    _dataSource = @[].mutableCopy;
 }
 
 - (void)setupViews {
@@ -84,7 +84,7 @@
 - (void)loadCache {
     id cacheMovieList = [NSKeyedUnarchiver unarchiveObjectWithFile:MLBCacheMovieListFilePath];
     if (cacheMovieList) {
-        dataSource = cacheMovieList;
+        _dataSource = cacheMovieList;
         [_collectionView reloadData];
     }
 }
@@ -92,48 +92,59 @@
 #pragma mark - Action
 
 - (void)loadMoreMovieItem {
-    NSInteger offset = dataSource.count + (30 - (dataSource.count % 30));
+    NSInteger offset = _dataSource.count + (30 - (_dataSource.count % 30));
     [self requestMovieListWithOffser:offset];
 }
 
 #pragma mark - Network Request
 
 - (void)requestMovieListWithOffser:(NSInteger)offset {
+	__weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMovieListWithOffer:offset success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             if (offset == 0) {
-                [dataSource removeAllObjects];
+                [strongSelf.dataSource removeAllObjects];
             }
             
             NSError *error;
             NSArray *movies = [MTLJSONAdapter modelsOfClass:[MLBMovieListItem class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                [dataSource addObjectsFromArray:movies];
-                [_collectionView reloadData];
-                [self endRefreshingScrollView:_collectionView hasMoreData:movies.count >= 30];
+                [strongSelf.dataSource addObjectsFromArray:movies];
+                [strongSelf.collectionView reloadData];
+                [strongSelf.collectionView mlb_endRefreshingHasMoreData:movies.count >= 30];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [NSKeyedArchiver archiveRootObject:dataSource toFile:MLBCacheMovieListFilePath];
+                    [NSKeyedArchiver archiveRootObject:strongSelf.dataSource toFile:MLBCacheMovieListFilePath];
                 });
                 return;
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
         
-        [self endRefreshingScrollView:_collectionView hasMoreData:YES];
+        [strongSelf.collectionView mlb_endRefreshingHasMoreData:YES];
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
-        [self endRefreshingScrollView:_collectionView hasMoreData:YES];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
+        [strongSelf.collectionView mlb_endRefreshingHasMoreData:YES];
     }];
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -143,7 +154,7 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBMovieListItemCCell *)cell configureCellWithMovieListItem:dataSource[indexPath.row] atIndexPath:indexPath];
+    [(MLBMovieListItemCCell *)cell configureCellWithMovieListItem:_dataSource[indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -153,7 +164,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MLBMovieDetailsViewController *movieDetailsViewController = [[MLBMovieDetailsViewController alloc] init];
-    movieDetailsViewController.movieListItem = dataSource[indexPath.row];
+    movieDetailsViewController.movieListItem = _dataSource[indexPath.row];
     [self.navigationController pushViewController:movieDetailsViewController animated:YES];
 }
 

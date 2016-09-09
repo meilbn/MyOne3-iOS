@@ -57,11 +57,12 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 @property (strong, nonatomic) MASConstraint *reviewsTableViewHeightConstraint;
 @property (strong, nonatomic) MASConstraint *commentsTableViewHeightConstraint;
 
+@property (strong, nonatomic) MLBMovieDetails *movieDetails;
+
 @end
 
 @implementation MLBMovieDetailsViewController {
     NSNumber *tableViewInitHeight;
-    MLBMovieDetails *movieDetails;
     NSArray *infoButtons;
     NSArray *keywordsLabels;
     NSMutableArray <MLBMoviePoster *> *posters;
@@ -75,7 +76,6 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)dealloc {
-    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     [_storyListViewController removeFromParentViewController];
     [_reviewListViewController removeFromParentViewController];
     [_commentListViewController removeFromParentViewController];
@@ -432,13 +432,13 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)updateViews {
-    [_headerView configureViewWithMovieDetails:movieDetails];
+    [_headerView configureViewWithMovieDetails:_movieDetails];
     
-    [_grossView configureViewWithKeywords:[movieDetails.keywords componentsSeparatedByString:@";"]];
-    _castTextView.text = movieDetails.info;
+    [_grossView configureViewWithKeywords:[_movieDetails.keywords componentsSeparatedByString:@";"]];
+    _castTextView.text = _movieDetails.info;
     
-    _scoreHeaderView.hidden = IsStringEmpty(movieDetails.score);
-    _scoreRatioLabel.text = movieDetails.review;
+    _scoreHeaderView.hidden = IsStringEmpty(_movieDetails.score);
+    _scoreRatioLabel.text = _movieDetails.review;
     
     [_storyListViewController configureViewForMovieDetailsWithItemId:_movieListItem.movieId];
     [self addChildViewController:_storyListViewController];
@@ -474,7 +474,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
         }
         case MLBMovieDetailsTypeStills: {
             _infoTypeLabel.text = @"剧照";
-            if (!posters || posters.count != movieDetails.photos.count) {
+            if (!posters || posters.count != _movieDetails.photos.count) {
                 [self configurePhotos];
             }
             [_moviePosterView reloadData];
@@ -490,7 +490,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 - (void)configurePhotos {
     posters = @[].mutableCopy;
     
-    for (NSString *url in movieDetails.photos) {
+    for (NSString *url in _movieDetails.photos) {
         MLBMoviePoster *poster = [[MLBMoviePoster alloc] init];
         poster.imageData = [NSData dataWithContentsOfURL:[url mlb_encodedURL]];
         [posters addObject:poster];
@@ -524,7 +524,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 }
 
 - (void)otherShare {
-    [self showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+    [self mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
         DDLogDebug(@"menuType = %ld", menuType);
     }];
 }
@@ -538,28 +538,39 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 #pragma mark - Network Request
 
 - (void)requestMovieDetails {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMovieDetailsById:_movieListItem.movieId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBMovieDetails *details = [MTLJSONAdapter modelOfClass:[MLBMovieDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                movieDetails = details;
-                [self updateViews];
+				strongSelf.movieDetails = details;
+                [strongSelf updateViews];
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return movieDetails.photos.count;
+    return _movieDetails.photos.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -569,7 +580,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBMoviePosterCCell *)cell configureCellWithPostURL:movieDetails.photos[indexPath.row]];
+    [(MLBMoviePosterCCell *)cell configureCellWithPostURL:_movieDetails.photos[indexPath.row]];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

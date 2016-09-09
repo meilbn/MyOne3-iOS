@@ -230,7 +230,7 @@
 }
 
 - (void)moreButtonClicked {
-    [self showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+    [self mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
         DDLogDebug(@"menuType = %ld", menuType);
     }];
 }
@@ -238,24 +238,35 @@
 #pragma mark - Network Request
 
 - (void)requestHomeMore {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestHomeMoreWithSuccess:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *items = [MTLJSONAdapter modelsOfClass:[MLBHomeItem class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                self.dataSource = items;
+                strongSelf.dataSource = items;
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [NSKeyedArchiver archiveRootObject:_dataSource toFile:MLBCacheHomeItemFilePath];
+                    [NSKeyedArchiver archiveRootObject:strongSelf.dataSource toFile:MLBCacheHomeItemFilePath];
                 });
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 

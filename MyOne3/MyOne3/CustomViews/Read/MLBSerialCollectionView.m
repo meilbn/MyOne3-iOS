@@ -17,14 +17,14 @@
 
 @property (strong, nonatomic) MASConstraint *collectionViewHeightConstraint;
 
+@property (strong, nonatomic) MLBSerialList *serialList;
+
 @end
 
 NSString *kCollectionViewReuseHeaderID = @"MLBCollectionViewReuseHeaderID";
 NSInteger kCollectionViewHeaderHeight = 50;
 
-@implementation MLBSerialCollectionView {
-    MLBSerialList *serialList;
-}
+@implementation MLBSerialCollectionView
 
 #pragma mark - LifeCycle
 
@@ -107,7 +107,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
 }
 
 - (void)updateViews {
-    NSInteger rowNumber = [MLBUtilities rowWithCount:serialList.list.count colNumber:5];
+    NSInteger rowNumber = [MLBUtilities rowWithCount:_serialList.list.count colNumber:5];
     NSInteger height = kCollectionViewHeaderHeight + [MLBSerialCCell cellSize].height * rowNumber + ((UICollectionViewFlowLayout *)_collectionView.collectionViewLayout).minimumLineSpacing * (rowNumber - 1);
     _collectionViewHeightConstraint.equalTo(@(height));
     [_collectionView reloadData];
@@ -136,7 +136,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
         _collectionViewHeightConstraint.equalTo(@(kCollectionViewHeaderHeight));
-        serialList = nil;
+        _serialList = nil;
         if (completedBlock) {
             completedBlock();
         }
@@ -146,13 +146,19 @@ NSInteger kCollectionViewHeaderHeight = 50;
 #pragma mark - Network Request
 
 - (void)requestSerialList {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestSerialListById:_serial.serialId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBSerialList *list = [MTLJSONAdapter modelOfClass:[MLBSerialList class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                serialList = list;
-                [self updateViews];
+				strongSelf.serialList = list;
+                [strongSelf updateViews];
             } else {
                 
             }
@@ -167,7 +173,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return serialList.list.count;
+    return _serialList.list.count;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -196,7 +202,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MLBSerialCCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMLBSerialCCellID forIndexPath:indexPath];
-    MLBReadSerial *serial = serialList.list[indexPath.row];
+    MLBReadSerial *serial = _serialList.list[indexPath.row];
     cell.numberLabel.text = serial.number;
     
     return cell;
@@ -207,7 +213,7 @@ NSInteger kCollectionViewHeaderHeight = 50;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     if (_didSelectedSerial) {
-        _didSelectedSerial(serialList.list[indexPath.row]);
+        _didSelectedSerial(_serialList.list[indexPath.row]);
     }
 }
 

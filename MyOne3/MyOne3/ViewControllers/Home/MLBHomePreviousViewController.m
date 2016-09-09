@@ -16,17 +16,13 @@
 
 @property (strong, nonatomic) UICollectionView *collectionView;
 
+@property (strong, nonatomic) NSArray *dataSource;
+
 @end
 
-@implementation MLBHomePreviousViewController {
-    NSArray *dataSource;
-}
+@implementation MLBHomePreviousViewController
 
 #pragma mark - Lifecycle
-
-- (void)dealloc {
-    DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -82,19 +78,30 @@
 #pragma mark - Network Request
 
 - (void)requestPeriodList {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestHomeByMonthWithPeriod:_period success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *items = [MTLJSONAdapter modelsOfClass:[MLBHomeItem class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                dataSource = items;
-                [_collectionView reloadData];
+                strongSelf.dataSource = items;
+                [strongSelf.collectionView reloadData];
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
@@ -105,7 +112,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -133,20 +140,20 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [MLBHomeCCell cellSizeWithHomeItem:dataSource[indexPath.row]];
+    return [MLBHomeCCell cellSizeWithHomeItem:_dataSource[indexPath.row]];
 }
 
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     MLBHomeCCell *cCell = (MLBHomeCCell *)cell;
-    [cCell configureCellWithHomeItem:dataSource[indexPath.row] atIndexPath:indexPath];
+    [cCell configureCellWithHomeItem:_dataSource[indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MLBSingleHomeViewController *singleHomeViewController = [[MLBSingleHomeViewController alloc] init];
-    singleHomeViewController.homeItem = dataSource[indexPath.row];
+    singleHomeViewController.homeItem = _dataSource[indexPath.row];
     [self.navigationController pushViewController:singleHomeViewController animated:YES];
 }
 

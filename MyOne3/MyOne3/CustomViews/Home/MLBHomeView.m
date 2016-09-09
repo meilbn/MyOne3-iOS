@@ -300,7 +300,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     if (_clickedButton) {
         _clickedButton(MLBActionTypeMore);
     } else if (self.parentViewController) {
-        [self.parentViewController showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [self.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }

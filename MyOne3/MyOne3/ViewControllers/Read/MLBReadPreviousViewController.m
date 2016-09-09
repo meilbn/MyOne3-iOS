@@ -17,11 +17,11 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
+@property (strong, nonatomic) NSArray *dataSource;
+
 @end
 
-@implementation MLBReadPreviousViewController {
-    NSArray *dataSource;
-}
+@implementation MLBReadPreviousViewController
 
 #pragma mark - Lifecycle
 
@@ -82,26 +82,59 @@
 - (void)requestPeriodList {
     switch (_readType) {
         case MLBReadTypeEssay: {
-            [MLBHTTPRequester requestEssayByMonthWithPeriod:_period success:^(id responseObject) {
-                [self processResponseObject:responseObject];
+            __weak typeof(self) weakSelf = self;
+			[MLBHTTPRequester requestEssayByMonthWithPeriod:_period success:^(id responseObject) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self.view showHUDServerError];
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf.view showHUDServerError];
             }];
             break;
         }
         case MLBReadTypeSerial: {
-            [MLBHTTPRequester requestSerialByMonthWithPeriod:_period success:^(id responseObject) {
-                [self processResponseObject:responseObject];
+            __weak typeof(self) weakSelf = self;
+			[MLBHTTPRequester requestSerialByMonthWithPeriod:_period success:^(id responseObject) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self.view showHUDServerError];
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf.view showHUDServerError];
             }];
             break;
         }
         case MLBReadTypeQuestion: {
-            [MLBHTTPRequester requestQuestionByMonthWithPeriod:_period success:^(id responseObject) {
-                [self processResponseObject:responseObject];
+            __weak typeof(self) weakSelf = self;
+			[MLBHTTPRequester requestQuestionByMonthWithPeriod:_period success:^(id responseObject) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self.view showHUDServerError];
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				if (!strongSelf) {
+					return;
+				}
+				
+                [strongSelf.view showHUDServerError];
             }];
             break;
         }
@@ -128,7 +161,7 @@
         }
         
         if (!error) {
-            dataSource = datas;
+            _dataSource = datas;
             [_tableView reloadData];
         } else {
             [self.view showHUDModelTransformFailedWithError:error];
@@ -139,7 +172,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -150,12 +183,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [tableView fd_heightForCellWithIdentifier:kMLBReadPreviousCellID cacheByIndexPath:indexPath configuration:^(MLBReadPreviousCell *cell) {
-        [cell configureViewWithReadModel:dataSource[indexPath.row] type:_readType atIndexPath:indexPath];
+        [cell configureViewWithReadModel:_dataSource[indexPath.row] type:_readType atIndexPath:indexPath];
     }];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBReadPreviousCell *)cell configureViewWithReadModel:dataSource[indexPath.row] type:_readType atIndexPath:indexPath];
+    [(MLBReadPreviousCell *)cell configureViewWithReadModel:_dataSource[indexPath.row] type:_readType atIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

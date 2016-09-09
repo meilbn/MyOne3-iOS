@@ -26,10 +26,11 @@
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UIView *footerView;
 
+@property (strong, nonatomic) NSArray *dataSource;
+
 @end
 
 @implementation MLBTopTenArticalViewController {
-    NSArray *dataSource;
     NSInteger bottomTextLabelHeight;
     NSInteger coverViewHeight;
 }
@@ -153,19 +154,25 @@
 #pragma mark - Network Request
 
 - (void)requestTopTenArtical {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestReadCarouselDetailsById:_carouselItem.itemId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *array = [MTLJSONAdapter modelsOfClass:[MLBTopTenArtical class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                dataSource = array;
-                [_tableView reloadData];
-                _tableView.tableFooterView = _footerView;
+                strongSelf.dataSource = array;
+                [strongSelf.tableView reloadData];
+                strongSelf.tableView.tableFooterView = strongSelf.footerView;
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
         
@@ -187,12 +194,12 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MLBTopTenArticalCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBTopTenArticalCellID forIndexPath:indexPath];
-    [cell configureCellWithTopTenArtical:dataSource[indexPath.row] atIndexPath:indexPath];
+    [cell configureCellWithTopTenArtical:_dataSource[indexPath.row] atIndexPath:indexPath];
     cell.backgroundColor = _tableView.backgroundColor;
     cell.contentView.backgroundColor = _tableView.backgroundColor;
     
@@ -203,13 +210,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [tableView fd_heightForCellWithIdentifier:kMLBTopTenArticalCellID cacheByIndexPath:indexPath configuration:^(MLBTopTenArticalCell *cell) {
-        [cell configureCellWithTopTenArtical:dataSource[indexPath.row] atIndexPath:indexPath];
+        [cell configureCellWithTopTenArtical:_dataSource[indexPath.row] atIndexPath:indexPath];
     }];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MLBTopTenArtical *artical = dataSource[indexPath.row];
+    MLBTopTenArtical *artical = _dataSource[indexPath.row];
     if ([artical.type isEqualToString:@"1"]) {// 短篇
         MLBReadEssay *essay = [[MLBReadEssay alloc] init];
         essay.contentId = artical.itemId;

@@ -14,11 +14,11 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
+@property (strong, nonatomic) NSArray *dataSource;
+
 @end
 
-@implementation MLBMusicPreviousViewController {
-    NSArray *dataSource;
-}
+@implementation MLBMusicPreviousViewController
 
 #pragma mark - Lifecycle
 
@@ -66,10 +66,6 @@
     });
 }
 
-#pragma mark - Public Method
-
-
-
 #pragma mark - Action
 
 
@@ -77,26 +73,37 @@
 #pragma mark - Network Request
 
 - (void)requestPeriodList {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMusicByMonthWithPeriod:_period success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *musics = [MTLJSONAdapter modelsOfClass:[MLBRelatedMusic class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                dataSource = musics;
-                [_tableView reloadData];
+                strongSelf.dataSource = musics;
+                [strongSelf.tableView reloadData];
             } else {
-                [self.view showHUDModelTransformFailedWithError:error];
+                [strongSelf.view showHUDModelTransformFailedWithError:error];
             }
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -110,7 +117,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:dataSource[indexPath.row] atIndexPath:indexPath];
+    [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:_dataSource[indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

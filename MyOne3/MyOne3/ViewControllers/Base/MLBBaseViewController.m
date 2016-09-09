@@ -7,10 +7,6 @@
 //
 
 #import "MLBBaseViewController.h"
-#import <MBProgressHUD/MBProgressHUD.h>
-#import <MJRefresh/MJRefresh.h>
-#import "PopMenu.h"
-#import "MenuButton.h"
 #import "MLBLiginOptsViewController.h"
 #import "MLBMusicControlView.h"
 #import "MLBUserHomeViewController.h"
@@ -19,15 +15,16 @@
 @interface MLBBaseViewController ()
 
 @property (strong, nonatomic) YLImageView *playerView;
-@property (strong, nonatomic) PopMenu *popMenu;
 
 @end
 
-@implementation MLBBaseViewController {
-    MBProgressHUD *HUD;
-}
+@implementation MLBBaseViewController
 
 #pragma mark - Lifecycle
+
+- (void)dealloc {
+	DDLogDebug(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -105,6 +102,7 @@
 - (UIBarButtonItem *)rightPlantItem {
     UIButton *plantButton = [MLBUIFactory buttonWithImageName:@"nav_me_normal" highlightImageName:@"nav_me_highlighted" target:self action:@selector(plantButtonClicked)];
     plantButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
+	
     return [[UIBarButtonItem alloc] initWithCustomView:plantButton];
 }
 
@@ -114,49 +112,8 @@
     _playerView.image = [YLGIFImage imageNamed:@"my_player_stop.gif"];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMusicControlView)];
     [_playerView addGestureRecognizer:tap];
+	
     return [[UIBarButtonItem alloc] initWithCustomView:_playerView];
-}
-
-- (void)endRefreshingScrollView:(UIScrollView *)scrollView hasMoreData:(BOOL)hasMoreData {
-    if (scrollView.mj_header && scrollView.mj_header.isRefreshing) {
-        [scrollView.mj_header endRefreshing];
-        [scrollView.mj_footer resetNoMoreData];
-    }
-    
-    if (hasMoreData) {
-        [scrollView.mj_footer endRefreshing];
-    } else {
-        [scrollView.mj_footer endRefreshingWithNoMoreData];
-    }
-}
-
-- (void)showPopMenuViewWithMenuSelectedBlock:(MenuSelectedBlock)block {
-    if (!_popMenu) {
-        NSArray *imgNames = @[@"more_wechat", @"more_moments", @"more_sina", @"more_qq", @"more_link", @"more_collection"];
-        NSArray *titles = @[@"微信好友", @"朋友圈", @"微博", @"QQ", @"复制链接", @"收藏"];
-        NSArray *colors = @[[UIColor colorWithRGBHex:0x70E08D],
-                            [UIColor colorWithRGBHex:0x70E08D],
-                            [UIColor colorWithRGBHex:0xFF8467],
-                            [UIColor colorWithRGBHex:0x49AFD6],
-                            [UIColor colorWithRGBHex:0x659AD9],
-                            [UIColor colorWithRGBHex:0xF6CC41]];
-        NSMutableArray *items = [NSMutableArray arrayWithCapacity:imgNames.count];
-        for (NSInteger i = 0; i < imgNames.count; i++) {
-            MenuItem *item = [[MenuItem alloc] initWithTitle:titles[i] iconName:imgNames[i] glowColor:colors[i] index:i];
-            [items addObject:item];
-        }
-        
-        _popMenu = [[PopMenu alloc] initWithFrame:kKeyWindow.bounds items:items];
-        _popMenu.menuAnimationType = kPopMenuAnimationTypeSina;
-        _popMenu.perRowItemCount = 1;
-        _popMenu.didSelectedItemCompletion = ^(MenuItem *selectedItem) {
-            if (block) {
-                block((MLBPopMenuType)selectedItem.index);
-            }
-        };
-    }
-    
-    [_popMenu showMenuAtView:kKeyWindow];
 }
 
 #pragma mark - Action

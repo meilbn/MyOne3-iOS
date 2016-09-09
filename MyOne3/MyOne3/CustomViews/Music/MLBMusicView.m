@@ -70,14 +70,15 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 @property (copy, nonatomic) NSString *musicId;
 
+@property (strong, nonatomic) MLBMusicDetails *musicDetails;
+@property (strong, nonatomic) NSArray *relatedMusics;
+
 @end
 
 @implementation MLBMusicView {
     NSArray *typeButtons;
-    MLBMusicDetails *musicDetails;
     NSInteger initStatusContentOffsetY;
     MLBCommentList *commentList;
-    NSArray *relatedMusics;
     NSMutableArray *commentRowsHeight;
     BOOL preparedForReuse;
 }
@@ -536,30 +537,30 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)updateViews {
-    [_coverView mlb_sd_setImageWithURL:musicDetails.cover placeholderImageName:@"music_cover_small" cachePlachoderImage:NO];
-    [_authorAvatarView mlb_sd_setImageWithURL:musicDetails.author.webURL placeholderImageName:@"personal"];
-    _authorNameLabel.text = musicDetails.author.username;
-    _authorDescLabel.text = musicDetails.author.desc;
-    _titleLabel.text = musicDetails.title;
-    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:musicDetails.makeTime];
+    [_coverView mlb_sd_setImageWithURL:_musicDetails.cover placeholderImageName:@"music_cover_small" cachePlachoderImage:NO];
+    [_authorAvatarView mlb_sd_setImageWithURL:_musicDetails.author.webURL placeholderImageName:@"personal"];
+    _authorNameLabel.text = _musicDetails.author.username;
+    _authorDescLabel.text = _musicDetails.author.desc;
+    _titleLabel.text = _musicDetails.title;
+    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:_musicDetails.makeTime];
     _firstPublishView.image = [self firstPublishImage];
     _storyButton.selected = YES;
-    _storyTitleLabel.text = musicDetails.storyTitle;
-    _storyAuthorNameLabel.text = musicDetails.storyAuthor.username;
+    _storyTitleLabel.text = _musicDetails.storyTitle;
+    _storyAuthorNameLabel.text = _musicDetails.storyAuthor.username;
     [self showContentWithType:MLBMusicDetailsTypeStory];
     _chargeEditorHeightConstraint.equalTo(@75);
-    _editorLabel.text = musicDetails.chargeEditor;
-    _likeNumLabel.text = [@(musicDetails.praiseNum) stringValue];
+    _editorLabel.text = _musicDetails.chargeEditor;
+    _likeNumLabel.text = [@(_musicDetails.praiseNum) stringValue];
 }
 
 - (UIImage *)firstPublishImage {
     // isFirst 为0时，platform 为1则为虾米音乐首发，为2则不显示首发平台,
     // isFirst 为1时，platform 为1则为虾米和一个联合首发，为2则为一个独家首发
     NSString *imageName = @"";
-    if ([musicDetails.isFirst isEqualToString:@"0"] && [musicDetails.platform isEqualToString:@"1"]) {
+    if ([_musicDetails.isFirst isEqualToString:@"0"] && [_musicDetails.platform isEqualToString:@"1"]) {
         imageName = @"xiami_music_first";
-    } else if ([musicDetails.isFirst isEqualToString:@"1"]) {
-        imageName = [musicDetails.platform isEqualToString:@"1"] ? @"one_and_xiami_music" : @"one_first";
+    } else if ([_musicDetails.isFirst isEqualToString:@"1"]) {
+        imageName = [_musicDetails.platform isEqualToString:@"1"] ? @"one_and_xiami_music" : @"one_first";
     }
     
     if (IsStringNotEmpty(imageName)) {
@@ -583,19 +584,19 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
         case MLBMusicDetailsTypeStory: {
             _contentTypeLabel.text = @"音乐故事";
             [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:YES];
-            [self updateContentTextViewWithText:musicDetails.story htmlString:YES];
+            [self updateContentTextViewWithText:_musicDetails.story htmlString:YES];
             break;
         }
         case MLBMusicDetailsTypeLyric: {
             _contentTypeLabel.text = @"歌词";
             [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:NO];
-            [self updateContentTextViewWithText:musicDetails.lyric htmlString:NO];
+            [self updateContentTextViewWithText:_musicDetails.lyric htmlString:NO];
             break;
         }
         case MLBMusicDetailsTypeInfo: {
             _contentTypeLabel.text = @"歌曲信息";
             [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:NO];
-            [self updateContentTextViewWithText:musicDetails.info htmlString:NO];
+            [self updateContentTextViewWithText:_musicDetails.info htmlString:NO];
             break;
         }
     }
@@ -631,8 +632,8 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)updateRelatedMusicsTableView {
-    NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * relatedMusics.count + [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow]);
-    _relatedMusicTableViewHeightConstraint.equalTo(@(relatedMusics.count > 0 ? tableViewHeight : 0));
+    NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * _relatedMusics.count + [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow]);
+    _relatedMusicTableViewHeightConstraint.equalTo(@(_relatedMusics.count > 0 ? tableViewHeight : 0));
     [_relatedMusicTableView reloadData];
 }
 
@@ -654,7 +655,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (void)moreButtonClicked {
     if (self.parentViewController) {
-        [self.parentViewController showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
+        [self.parentViewController mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
             DDLogDebug(@"menuType = %ld", menuType);
         }];
     }
@@ -725,13 +726,19 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 #pragma mark - Network Request
 
 - (void)requestMusicDetails {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMusicDetailsById:_musicId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             MLBMusicDetails *details = [MTLJSONAdapter modelOfClass:[MLBMusicDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
-                musicDetails = details;
-                [self updateViews];
+				strongSelf.musicDetails = details;
+                [strongSelf updateViews];
             } else {
                 // callback
             }
@@ -745,13 +752,19 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 // 看返回结果应该最多是3首
 - (void)requestMusicRelatedMusics {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMusicDetailsRelatedMusicsById:_musicId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
             NSError *error;
             NSArray *musics = [MTLJSONAdapter modelsOfClass:[MLBRelatedMusic class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
-                relatedMusics = musics;
-                [self updateRelatedMusicsTableView];
+                strongSelf.relatedMusics = musics;
+                [strongSelf updateRelatedMusicsTableView];
             } else {
                 // callback
             }
@@ -777,7 +790,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return relatedMusics.count;
+    return _relatedMusics.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -815,12 +828,12 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-        [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:relatedMusics[indexPath.row] atIndexPath:indexPath];
+        [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:_relatedMusics[indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MLBRelatedMusic *music = relatedMusics[indexPath.row];
+    MLBRelatedMusic *music = _relatedMusics[indexPath.row];
     MLBMusicRelatedViewController *musicRelatedViewController = [[MLBMusicRelatedViewController alloc] init];
     musicRelatedViewController.relatedMusic = music;
     [self.parentViewController.navigationController pushViewController:musicRelatedViewController animated:YES];

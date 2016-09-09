@@ -17,11 +17,11 @@
 
 @property (strong, nonatomic) GMCPagingScrollView *pagingScrollView;
 
+@property (strong, nonatomic) NSArray *dataSource;
+
 @end
 
-@implementation MLBMusicViewController {
-    NSArray *dataSource;
-}
+@implementation MLBMusicViewController
 
 #pragma mark - Lifecycle
 
@@ -112,7 +112,7 @@
 
 - (void)showPreviousList {
     // 原因同上
-    [_pagingScrollView setCurrentPageIndex:(dataSource.count - 1) reloadData:NO];
+    [_pagingScrollView setCurrentPageIndex:(_dataSource.count - 1) reloadData:NO];
     // 显示往期列表
     MLBPreviousViewController *previousViewController = [[MLBPreviousViewController alloc] init];
     previousViewController.previousType = MLBPreviousTypeMusic;
@@ -122,38 +122,49 @@
 #pragma mark - Network Request
 
 - (void)requestMusicIdList {
+    __weak typeof(self) weakSelf = self;
     [MLBHTTPRequester requestMusicIdListWithSuccess:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
         if ([responseObject[@"res"] integerValue] == 0) {
-            dataSource = responseObject[@"data"];
-            if (dataSource) {
-                if (dataSource.count > 0) {
-                    _pagingScrollView.hidden = NO;
-                    [_pagingScrollView reloadData];
+            strongSelf.dataSource = responseObject[@"data"];
+            if (strongSelf.dataSource) {
+                if (strongSelf.dataSource.count > 0) {
+                    strongSelf.pagingScrollView.hidden = NO;
+                    [strongSelf.pagingScrollView reloadData];
                     // 防止加载出来前用户滑动而跳转到了最后一个
-                    [_pagingScrollView setCurrentPageIndex:0];
+                    [strongSelf.pagingScrollView setCurrentPageIndex:0];
                 }
             } else {
-                [self.view showHUDErrorWithText:@"获取数据失败"];
+                [strongSelf.view showHUDErrorWithText:@"获取数据失败"];
             }
         } else {
-            [self.view showHUDErrorWithText:responseObject[@"msg"]];
+            [strongSelf.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self.view showHUDServerError];
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+        [strongSelf.view showHUDServerError];
     }];
 }
 
 #pragma mark - GMCPagingScrollViewDataSource
 
 - (NSUInteger)numberOfPagesInPagingScrollView:(GMCPagingScrollView *)pagingScrollView {
-    return dataSource.count;
+    return _dataSource.count;
 }
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBMusicView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBMusicViewID];
     [view prepareForReuse];
     if (index == 0) {
-        [view configureViewWithMusicId:dataSource[index] atIndex:index inViewController:self];
+        [view configureViewWithMusicId:_dataSource[index] atIndex:index inViewController:self];
     }
     
     return view;
@@ -171,7 +182,7 @@
 - (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
     if (index != 0 && (!pagingScrollView.scrollView.isTracking || !pagingScrollView.scrollView.isDecelerating)) {
         MLBMusicView *view = [pagingScrollView pageAtIndex:index];
-        [view configureViewWithMusicId:dataSource[index] atIndex:index inViewController:self];
+        [view configureViewWithMusicId:_dataSource[index] atIndex:index inViewController:self];
     }
 }
 
