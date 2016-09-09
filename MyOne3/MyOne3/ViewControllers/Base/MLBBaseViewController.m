@@ -12,7 +12,7 @@
 #import "MLBUserHomeViewController.h"
 #import "MLBSearchViewController.h"
 
-@interface MLBBaseViewController ()
+@interface MLBBaseViewController () <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) YLImageView *playerView;
 
@@ -72,6 +72,16 @@
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+	if (self.navigationController.viewControllers.count == 1) {// 关闭主界面的右滑返回
+		return NO;
+	} else {
+		return YES;
+	}
 }
 
 #pragma mark - Private Method
