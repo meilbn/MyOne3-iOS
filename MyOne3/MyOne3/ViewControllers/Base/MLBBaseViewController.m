@@ -34,6 +34,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (instancetype)init {
+	self = [super init];
+	
+	if (self) {
+		self.hidesBottomBarWhenPushed = YES;
+	}
+	
+	return self;
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad {
@@ -46,13 +56,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    self.navigationController.navigationBar.hidden = _hideNavigationBar;
     self.navigationController.navigationBarHidden = _hideNavigationBar;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    self.hidesBottomBarWhenPushed = YES;
+	
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
@@ -61,9 +70,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    if (self == [self.navigationController.viewControllers firstObject]) {
-        self.hidesBottomBarWhenPushed = NO;
-    }
     
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.delegate = self;

@@ -177,16 +177,10 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y >= CGRectGetMinY(_footerView.frame)) {
         CGFloat diff = scrollView.contentOffset.y - CGRectGetMinY(_footerView.frame);
-        CGFloat scale = 1 + diff / coverViewHeight;
-        CGAffineTransform transform = CGAffineTransformMakeScale(scale, scale);
-        _coverView.y = bottomTextLabelHeight + diff / 2;
-        [UIView animateWithDuration:0.01
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear
-                         animations:^{
-                             _coverView.transform = transform;
-                         }
-                         completion:NULL];
+		CGFloat coverViewNewHeight = coverViewHeight + diff;
+		CGRect frame = _coverView.frame;
+		frame.size.height = coverViewNewHeight;
+		_coverView.frame = frame;
     }
 }
 

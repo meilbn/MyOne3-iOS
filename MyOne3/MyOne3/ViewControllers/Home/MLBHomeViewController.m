@@ -43,6 +43,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (instancetype)init {
+	self = [super init];
+	
+	if (self) {
+		self.hidesBottomBarWhenPushed = NO;
+	}
+	
+	return self;
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad {
