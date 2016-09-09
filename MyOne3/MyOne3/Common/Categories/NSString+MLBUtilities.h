@@ -9,16 +9,22 @@
 #import <Foundation/Foundation.h>
 
 @import UIKit;
+@import CoreGraphics;
 
 @interface NSString (MLBUtilities)
 
 - (NSURL *)mlb_encodedURL;
 
-- (NSString *)trimWhitespace;
+- (NSString *)mlb_trimming;
 
-- (BOOL)isEmpty;
+- (NSString *)mlb_trimWhitespace;
 
-- (NSString *)transformToPinyin;
+- (BOOL)mlb_isEmpty;
+
+- (NSString *)mlb_transformToPinyin;
+
+// 是否是字母
+- (BOOL)matchLetter;
 
 - (BOOL)hasListenChar;
 
@@ -31,6 +37,28 @@
 // 文字高度
 - (CGFloat)mlb_heightWithFont:(UIFont *)font width:(CGFloat)width;
 
+// 文字宽度
+- (CGFloat)mlb_widthWithFont:(UIFont *)font height:(CGFloat)height;
+
 - (NSAttributedString *)htmlAttributedStringForMusicDetails;
+
+/**
+ *  给文字添加行间距
+ *
+ *  @param text        文字
+ *  @param lineSpacing 行间距
+ *  @param font        字体
+ *  @param textColor   颜色
+ *
+ *  @return 带有行间距的文字
+ */
++ (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor;
+
+/**
+ *  判断是否包含特殊字符
+ *
+ *  @return 是否包含特殊字符
+ */
+- (BOOL)mlb_containsSpecialCharacter;
 
 @end

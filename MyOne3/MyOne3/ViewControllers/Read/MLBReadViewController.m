@@ -204,13 +204,13 @@
                     [NSKeyedArchiver archiveRootObject:carousels toFile:MLBCacheReadCarouselFilePath];
                 });
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 
@@ -229,13 +229,13 @@
                     [NSKeyedArchiver archiveRootObject:readIndex toFile:MLBCacheReadIndexFilePath];
                 });
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 

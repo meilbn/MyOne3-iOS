@@ -117,15 +117,15 @@
                 });
                 return;
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
         
         [self endRefreshingScrollView:_collectionView hasMoreData:YES];
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
         [self endRefreshingScrollView:_collectionView hasMoreData:YES];
     }];
 }

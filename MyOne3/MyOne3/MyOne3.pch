@@ -24,6 +24,7 @@
 #import "UIView+Frame.h"
 #import "UIImageView+MLBSDImageLoader.h"
 #import "UIImage+Common.h"
+#import "UIView+MLBShowHUD.h"
 
 #pragma mark - Framework
 

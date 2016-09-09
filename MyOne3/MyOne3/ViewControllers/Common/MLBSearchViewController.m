@@ -183,7 +183,7 @@
     [MLBHTTPRequester searchWithType:[MLBHTTPRequester apiStringForSearchWithSearchType:searchType] keywords:_searchBar.text success:^(id responseObject) {
         [self processWithResponseObject:responseObject];
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 
@@ -231,7 +231,7 @@
             
             [_activityIndicatorView stopAnimating];
         } else {
-            [self modelTransformFailedWithError:error];
+            [self.view showHUDModelTransformFailedWithError:error];
         }
     }
 }

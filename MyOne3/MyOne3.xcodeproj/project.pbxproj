@@ -71,6 +71,7 @@
 		23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AA05D01C78BFE50043ACE7 /* MLBMovieViewController.m */; };
 		23AB7F541C79DE8F00EF21EA /* Bradley Hand Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23AB7F531C79DE8F00EF21EA /* Bradley Hand Bold.ttf */; };
 		23AB7F621C79F12B00EF21EA /* MLBAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB7F611C79F12B00EF21EA /* MLBAuthor.m */; };
+		23ACBCDF1D824C71001F8DB4 /* UIView+MLBShowHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23ACBCDE1D824C71001F8DB4 /* UIView+MLBShowHUD.m */; };
 		23AD5FB81C7FEDE200D80701 /* MLBReadDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */; };
 		23AD5FC31C7FEDF300D80701 /* MLBReadCarouselItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBA1C7FEDF300D80701 /* MLBReadCarouselItem.m */; };
 		23AD5FC41C7FEDF300D80701 /* MLBReadEssay.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AD5FBC1C7FEDF300D80701 /* MLBReadEssay.m */; };
@@ -270,6 +271,8 @@
 		23AB7F531C79DE8F00EF21EA /* Bradley Hand Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bradley Hand Bold.ttf"; sourceTree = "<group>"; };
 		23AB7F601C79F12B00EF21EA /* MLBAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBAuthor.h; sourceTree = "<group>"; };
 		23AB7F611C79F12B00EF21EA /* MLBAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBAuthor.m; sourceTree = "<group>"; };
+		23ACBCDD1D824C71001F8DB4 /* UIView+MLBShowHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MLBShowHUD.h"; sourceTree = "<group>"; };
+		23ACBCDE1D824C71001F8DB4 /* UIView+MLBShowHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MLBShowHUD.m"; sourceTree = "<group>"; };
 		23AD5FB61C7FEDE200D80701 /* MLBReadDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadDetailsViewController.h; sourceTree = "<group>"; };
 		23AD5FB71C7FEDE200D80701 /* MLBReadDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLBReadDetailsViewController.m; sourceTree = "<group>"; };
 		23AD5FB91C7FEDF300D80701 /* MLBReadCarouselItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLBReadCarouselItem.h; sourceTree = "<group>"; };
@@ -595,6 +598,8 @@
 		23AA059A1C78BCC70043ACE7 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				23ACBCDD1D824C71001F8DB4 /* UIView+MLBShowHUD.h */,
+				23ACBCDE1D824C71001F8DB4 /* UIView+MLBShowHUD.m */,
 				23FC0B731C7EABDF0019A16E /* UIImage+Common.h */,
 				23FC0B741C7EABDF0019A16E /* UIImage+Common.m */,
 				23AA05BF1C78BE390043ACE7 /* UIView+Frame.h */,
@@ -1329,6 +1334,7 @@
 				239536A61C7DA77200FFA93C /* MenuItem.m in Sources */,
 				2368863A1CC64E4C00A51301 /* MLBMusicPreviousViewController.m in Sources */,
 				23AA05D11C78BFE50043ACE7 /* MLBMovieViewController.m in Sources */,
+				23ACBCDF1D824C71001F8DB4 /* UIView+MLBShowHUD.m in Sources */,
 				2308604D1C993034007069EC /* MLBUserHomeViewController.m in Sources */,
 				23DA374C1CC7632200B6BFFD /* MLBSingleHomeViewController.m in Sources */,
 				23AD5FD11C7FF87200D80701 /* MLBReadDetailsView.m in Sources */,

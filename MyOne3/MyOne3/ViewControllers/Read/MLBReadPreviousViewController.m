@@ -85,7 +85,7 @@
             [MLBHTTPRequester requestEssayByMonthWithPeriod:_period success:^(id responseObject) {
                 [self processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self showHUDServerError];
+                [self.view showHUDServerError];
             }];
             break;
         }
@@ -93,7 +93,7 @@
             [MLBHTTPRequester requestSerialByMonthWithPeriod:_period success:^(id responseObject) {
                 [self processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self showHUDServerError];
+                [self.view showHUDServerError];
             }];
             break;
         }
@@ -101,7 +101,7 @@
             [MLBHTTPRequester requestQuestionByMonthWithPeriod:_period success:^(id responseObject) {
                 [self processResponseObject:responseObject];
             } fail:^(NSError *error) {
-                [self showHUDServerError];
+                [self.view showHUDServerError];
             }];
             break;
         }
@@ -131,7 +131,7 @@
             dataSource = datas;
             [_tableView reloadData];
         } else {
-            [self modelTransformFailedWithError:error];
+            [self.view showHUDModelTransformFailedWithError:error];
         }
     }
 }

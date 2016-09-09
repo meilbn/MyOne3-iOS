@@ -85,11 +85,11 @@
                 dataSource = musics;
                 [_tableView reloadData];
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 

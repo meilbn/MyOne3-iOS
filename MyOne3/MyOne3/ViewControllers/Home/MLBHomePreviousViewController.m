@@ -90,11 +90,11 @@
                 dataSource = items;
                 [_collectionView reloadData];
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 

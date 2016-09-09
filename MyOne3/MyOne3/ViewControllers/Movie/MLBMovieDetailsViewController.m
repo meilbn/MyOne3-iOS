@@ -546,13 +546,13 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
                 movieDetails = details;
                 [self updateViews];
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 

@@ -133,13 +133,13 @@
                     [_pagingScrollView setCurrentPageIndex:0];
                 }
             } else {
-                [self showHUDErrorWithText:@"获取数据失败"];
+                [self.view showHUDErrorWithText:@"获取数据失败"];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
-        [self showHUDServerError];
+        [self.view showHUDServerError];
     }];
 }
 

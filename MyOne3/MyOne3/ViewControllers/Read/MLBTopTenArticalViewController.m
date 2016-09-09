@@ -162,10 +162,10 @@
                 [_tableView reloadData];
                 _tableView.tableFooterView = _footerView;
             } else {
-                [self modelTransformFailedWithError:error];
+                [self.view showHUDModelTransformFailedWithError:error];
             }
         } else {
-            [self showHUDErrorWithText:responseObject[@"msg"]];
+            [self.view showHUDErrorWithText:responseObject[@"msg"]];
         }
     } fail:^(NSError *error) {
         
