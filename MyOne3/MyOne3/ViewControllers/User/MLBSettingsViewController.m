@@ -35,8 +35,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"其他设置";
-    [self addNavigationBarRightMusicItem];
-    
+//    [self addNavigationBarRightMusicItem];
+	
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:nil];
     

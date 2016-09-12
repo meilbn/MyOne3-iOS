@@ -15,7 +15,7 @@
 #pragma mark - UI
 
 // 右侧盆栽和音乐
-- (void)addNavigationBarRightItems;
+//- (void)addNavigationBarRightItems;
 
 // 左侧搜索按钮
 - (void)addNavigationBarLeftSearchItem;
@@ -24,7 +24,7 @@
 - (void)addNavigationBarRightMeItem;
 
 // 右侧单独一个音乐
-- (void)addNavigationBarRightMusicItem;
+//- (void)addNavigationBarRightMusicItem;
 
 #pragma mark - Action
 

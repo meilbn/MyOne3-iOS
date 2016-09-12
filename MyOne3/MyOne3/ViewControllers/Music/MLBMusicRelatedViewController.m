@@ -30,8 +30,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self addNavigationBarRightMusicItem];
-    
+//    [self addNavigationBarRightMusicItem];
+	
     [self initDatas];
     [self setupViews];
 }

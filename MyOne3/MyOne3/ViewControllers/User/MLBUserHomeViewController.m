@@ -12,8 +12,9 @@
 #import "MLBUserHomeHeaderView.h"
 #import "MLBSettingsSectionHeaderView.h"
 #import "MLBSettingsViewController.h"
+#import "UINavigationController+MLBNavigationShouldPopExtention.h"
 
-@interface MLBUserHomeViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MLBUserHomeViewController () <UITableViewDataSource, UITableViewDelegate, UINavigationControllerShouldPop>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) MLBUserHomeHeaderView *headerView;
@@ -38,13 +39,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.hideNavigationBar = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout = UIRectEdgeAll;
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    
+	
     [self initDatas];
     [self setupViews];
 }
@@ -98,13 +98,23 @@
     });
 }
 
-#pragma mark - Public Method
+#pragma mark - UINavigationControllerShouldPop
 
-
+- (BOOL)navigationControllerShouldPop:(UINavigationController *)navigationController {
+	[self popViewControllerWithAnimation];
+	return NO;
+}
 
 #pragma mark - Action
 
-
+- (void)popViewControllerWithAnimation {
+	[UIView beginAnimations:@"popUserHome" context:nil];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:0.75];
+	[self.navigationController popViewControllerAnimated:NO];
+	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:[UIApplication sharedApplication].keyWindow cache:NO];
+	[UIView commitAnimations];
+}
 
 #pragma mark - Network Request
 

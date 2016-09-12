@@ -98,51 +98,56 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_me_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(pushMeViewController)];
 }
 
-- (void)addNavigationBarRightItems {
-    UIBarButtonItem *plantItem = [self rightPlantItem];
-    UIBarButtonItem *playerItem = [self rightMusicItem];
-    
-    self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
-}
-
-- (void)addNavigationBarRightMusicItem {
-    self.navigationItem.rightBarButtonItem = [self rightMusicItem];
-}
-
-- (UIBarButtonItem *)rightPlantItem {
-    UIButton *plantButton = [MLBUIFactory buttonWithImageName:@"nav_me_normal" highlightImageName:@"nav_me_highlighted" target:self action:@selector(plantButtonClicked)];
-    plantButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
-	
-    return [[UIBarButtonItem alloc] initWithCustomView:plantButton];
-}
-
-- (UIBarButtonItem *)rightMusicItem {
-    _playerView = [[YLImageView alloc] initWithFrame:(CGRect){{0, 0}, CGSizeMake(44, 18)}];
-    _playerView.contentMode = UIViewContentModeScaleAspectFit;
-    _playerView.image = [YLGIFImage imageNamed:@"my_player_stop.gif"];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMusicControlView)];
-    [_playerView addGestureRecognizer:tap];
-	
-    return [[UIBarButtonItem alloc] initWithCustomView:_playerView];
-}
+//- (void)addNavigationBarRightItems {
+//    UIBarButtonItem *plantItem = [self rightPlantItem];
+//    UIBarButtonItem *playerItem = [self rightMusicItem];
+//    
+//    self.navigationItem.rightBarButtonItems = @[plantItem, playerItem];
+//}
+//
+//- (void)addNavigationBarRightMusicItem {
+//    self.navigationItem.rightBarButtonItem = [self rightMusicItem];
+//}
+//
+//- (UIBarButtonItem *)rightPlantItem {
+//    UIButton *plantButton = [MLBUIFactory buttonWithImageName:@"nav_me_normal" highlightImageName:@"nav_me_highlighted" target:self action:@selector(plantButtonClicked)];
+//    plantButton.frame = (CGRect){{0, 0}, CGSizeMake(20, 28)};
+//	
+//    return [[UIBarButtonItem alloc] initWithCustomView:plantButton];
+//}
+//
+//- (UIBarButtonItem *)rightMusicItem {
+//    _playerView = [[YLImageView alloc] initWithFrame:(CGRect){{0, 0}, CGSizeMake(44, 18)}];
+//    _playerView.contentMode = UIViewContentModeScaleAspectFit;
+//    _playerView.image = [YLGIFImage imageNamed:@"my_player_stop.gif"];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMusicControlView)];
+//    [_playerView addGestureRecognizer:tap];
+//	
+//    return [[UIBarButtonItem alloc] initWithCustomView:_playerView];
+//}
 
 #pragma mark - Action
 
 - (void)pushMeViewController {
-    
+	[UIView beginAnimations:@"pushUserHome" context:nil];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:0.75];
+	[self.navigationController pushViewController:[[MLBUserHomeViewController alloc] init] animated:NO];
+	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:[UIApplication sharedApplication].keyWindow cache:NO];
+	[UIView commitAnimations];
 }
 
 - (void)showSearchingViewController {
     [self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:[[MLBSearchViewController alloc] init]] animated:YES completion:NULL];
 }
 
-- (void)plantButtonClicked {
-    [self.navigationController pushViewController:[[MLBUserHomeViewController alloc] init] animated:YES];
-}
-
-- (void)showMusicControlView {
-    [[MLBMusicControlView sharedInstance] show];
-}
+//- (void)plantButtonClicked {
+//	
+//}
+//
+//- (void)showMusicControlView {
+//    [[MLBMusicControlView sharedInstance] show];
+//}
 
 #pragma mark - Public Action
 
