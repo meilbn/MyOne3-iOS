@@ -65,6 +65,7 @@
         label.textAlignment = NSTextAlignmentCenter;
         [self addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.height.equalTo(@21);
             make.top.equalTo(_userAvatarView.mas_bottom).offset(8);
             make.left.right.equalTo(self);
         }];

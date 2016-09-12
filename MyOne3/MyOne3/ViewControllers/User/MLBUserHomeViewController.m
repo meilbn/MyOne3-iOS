@@ -68,6 +68,7 @@
         tableView.delegate = self;
         [tableView registerClass:[MLBUserHomeCell class] forCellReuseIdentifier:kUserHomeCellID];
         [tableView registerClass:[MLBSettingsSectionHeaderView class] forHeaderFooterViewReuseIdentifier:kSettingsSectionHeaderViewID];
+		tableView.sectionFooterHeight = 10;
         tableView.rowHeight = [MLBUserHomeCell cellHeight];
         
         UIImageView *headerImageView = [[UIImageView alloc] initWithImage:[UIImage mlb_imageWithName:@"personalBackgroundImage" cached:NO]];
@@ -155,10 +156,6 @@
     view.titleLabel.text = sectionTitles[section];
     
     return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

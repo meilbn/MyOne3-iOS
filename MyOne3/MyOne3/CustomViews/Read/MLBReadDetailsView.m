@@ -46,6 +46,7 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 @property (strong, nonatomic) MZSelectableLabel *titleLabel;
 @property (strong, nonatomic) UIButton *listenInButton;
 @property (strong, nonatomic) YYTextView *contentTextView;
+//@property (strong, nonatomic) UITextView *contentTextView;
 @property (strong, nonatomic) MLBChargeEditorView *editorView;
 @property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
 @property (strong, nonatomic) UITableView *relatedsTableView;
@@ -289,8 +290,8 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
     _titleLabel = ({
         MZSelectableLabel *label = [MZSelectableLabel new];
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(18);
+        label.textColor = MLBDarkBlackTextColor;
+        label.font = FontWithSize(20);
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByCharWrapping;
         [_contentCenterView addSubview:label];
@@ -319,8 +320,8 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     _contentTextView = ({
         YYTextView *textView = [YYTextView new];
         textView.backgroundColor = MLBViewControllerBGColor;
-        textView.textColor = MLBDarkBlackTextColor;
-        textView.font = FontWithSize(15);
+        textView.textColor = MLBLightBlackTextColor;
+        textView.font = FontWithSize(16);
         textView.editable = NO;
         textView.scrollEnabled = NO;
         textView.showsVerticalScrollIndicator = NO;
@@ -523,17 +524,32 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)updateContentTextViewWithText:(NSString *)text {
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
-                                                                                          options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
-                                                                               documentAttributes:nil
-                                                                                            error:nil];
-    
-    attributedString.yy_font = _contentTextView.font;
-    attributedString.yy_color = _contentTextView.textColor;
-    attributedString.yy_lineSpacing = 10;
-    
-    _contentTextView.attributedText = attributedString;
-    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
+#warning text
+//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
+//                                                                                          options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
+//                                                                               documentAttributes:nil
+//                                                                                            error:nil];
+//    
+//    attributedString.yy_font = _contentTextView.font;
+//    attributedString.yy_color = _contentTextView.textColor;
+//    attributedString.yy_lineSpacing = 10;
+//	
+//    _contentTextView.attributedText = attributedString;
+//    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
+	
+//	DDLogDebug(@"_contentTextView.textLayout.textBoundingSize.height = %lf", _contentTextView.textLayout.textBoundingSize.height);
+	
+//	NSAttributedString *attributedString = [MLBUtilities mlb_attributedStringWithText:text lineSpacing:10 font:_contentTextView.font textColor:_contentTextView.textColor];
+//	NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//	paragraphStyle.lineSpacing = 10;
+//	NSDictionary *attrsDictionary = @{NSFontAttributeName : FontWithSize(16), NSForegroundColorAttributeName : MLBLightBlackTextColor, NSParagraphStyleAttributeName : paragraphStyle};
+//	[attributedString setAttributes:attrsDictionary range:NSMakeRange(0, 3)];
+//	_contentTextView.attributedText = attributedString;
+//	CGRect rect = [attributedString boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 6 * 2 - 8 * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
+//	NSInteger height = ceil(rect.size.height);
+//	_contentTextViewHeightConstraint.equalTo(@(height));
+//	DDLogDebug(@"attributedString.height = %ld", height);
 }
 
 - (void)updateRelatedsTableView {

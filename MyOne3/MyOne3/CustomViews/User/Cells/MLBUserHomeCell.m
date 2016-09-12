@@ -81,7 +81,7 @@ NSString *const kUserHomeCellID = @"MLBUserHomeCellID";
     _titleLabel = ({
         UILabel *label = [UILabel new];
         label.font = FontWithSize(14);
-        label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+        label.textColor = MLBLightBlackTextColor;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView);
