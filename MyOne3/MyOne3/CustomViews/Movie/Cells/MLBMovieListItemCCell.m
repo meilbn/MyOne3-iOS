@@ -25,7 +25,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
 @implementation MLBMovieListItemCCell
 
 + (CGSize)cellSize {
-    return  CGSizeMake(SCREEN_WIDTH, 140);
+    return  CGSizeMake(SCREEN_WIDTH, ceil(SCREEN_WIDTH * 0.434375));
 }
 
 - (void)prepareForReuse {
@@ -55,6 +55,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
         UIImageView *imageView = [UIImageView new];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.backgroundColor = [UIColor whiteColor];
+		imageView.clipsToBounds = YES;
         [self.contentView addSubview:imageView];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
