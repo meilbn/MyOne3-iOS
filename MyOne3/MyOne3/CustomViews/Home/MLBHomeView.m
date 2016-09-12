@@ -318,7 +318,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     _weatherView.image = [UIImage imageNamed:@"light_rain"];
     _temperatureLabel.text = @"6℃";
     _locationLabel.text = @"杭州";
-    _dateLabel.text = [MLBUtilities stringDateFormatWithddMMMyyyyEEEByNormalDateString:homeItem.makeTime];
+    _dateLabel.text = [MLBUtilities stringDateFormatWithEEEddMMMyyyyByNormalDateString:homeItem.makeTime];
     
     _contentTextView.attributedText = [MLBUtilities mlb_attributedStringWithText:homeItem.content lineSpacing:10 font:_contentTextView.font textColor:_contentTextView.textColor];
     

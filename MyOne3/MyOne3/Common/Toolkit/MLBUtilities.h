@@ -14,6 +14,8 @@
 
 + (NSString *)stringDateFormatWithddMMMyyyyEEEByNormalDateString:(NSString *)normalDateString;
 
++ (NSString *)stringDateFormatWithEEEddMMMyyyyByNormalDateString:(NSString *)normalDateString;
+
 + (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString;
 
 + (NSString *)appCurrentVersion;

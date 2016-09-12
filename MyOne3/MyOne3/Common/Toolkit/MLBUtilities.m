@@ -19,13 +19,26 @@ static NSDateFormatter *musicDetailsDateFormatter;
 + (NSString *)stringDateFormatWithddMMMyyyyEEEByNormalDateString:(NSString *)normalDateString {
     if (!myOneDateFormatter) {
         myOneDateFormatter = [NSDateFormatter new];
-        myOneDateFormatter.dateFormat = @"dd MMM,yyyy. EEE.";
+//        myOneDateFormatter.dateFormat = @"dd MMM,yyyy. EEE.";
+		myOneDateFormatter.dateFormat = @"EEE dd MMM. yyyy";
         myOneDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
     }
     
     NSDate *date = [MLBUtilities dateWithString:normalDateString];
     
     return [myOneDateFormatter stringFromDate:date];
+}
+
++ (NSString *)stringDateFormatWithEEEddMMMyyyyByNormalDateString:(NSString *)normalDateString {
+	if (!myOneDateFormatter) {
+		myOneDateFormatter = [NSDateFormatter new];
+		myOneDateFormatter.dateFormat = @"EEE dd MMM. yyyy";
+		myOneDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+	}
+	
+	NSDate *date = [MLBUtilities dateWithString:normalDateString];
+	
+	return [myOneDateFormatter stringFromDate:date];
 }
 
 + (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString {
