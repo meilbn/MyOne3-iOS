@@ -524,18 +524,18 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)updateContentTextViewWithText:(NSString *)text {
-#warning text
-//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
-//                                                                                          options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
-//                                                                               documentAttributes:nil
-//                                                                                            error:nil];
-//    
-//    attributedString.yy_font = _contentTextView.font;
-//    attributedString.yy_color = _contentTextView.textColor;
-//    attributedString.yy_lineSpacing = 10;
-//	
-//    _contentTextView.attributedText = attributedString;
-//    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
+//#warning text
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
+                                                                                          options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
+                                                                               documentAttributes:nil
+                                                                                            error:nil];
+    
+    attributedString.yy_font = _contentTextView.font;
+    attributedString.yy_color = _contentTextView.textColor;
+    attributedString.yy_lineSpacing = 10;
+	
+    _contentTextView.attributedText = attributedString;
+    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
 	
 //	DDLogDebug(@"_contentTextView.textLayout.textBoundingSize.height = %lf", _contentTextView.textLayout.textBoundingSize.height);
 	
