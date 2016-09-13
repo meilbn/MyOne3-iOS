@@ -77,7 +77,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     _comingSoonLabel = ({
         UILabel *label = [UILabel new];
         label.text = @"即将上映";
-        label.textColor = [UIColor colorWithWhite:85 / 255.0 alpha:1];// #555555
+		label.textColor = MLBColor555555;
         label.font = FontWithSize(12);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -90,7 +90,7 @@ NSString *const kMLBMovieListItemCCellID = @"MLBMovieListItemCCellID";
     
     _timerLabel = ({
         MZTimerLabel *label = [[MZTimerLabel alloc] initWithTimerType:MZTimerLabelTypeTimer];
-        label.textColor = [UIColor colorWithWhite:85 / 255.0 alpha:1];// #555555
+		label.textColor = MLBColor555555;
         label.font = FontWithSize(12);
         label.text = @"00:00:00";
         label.timeFormat = @"距离公布分数还剩：HH:mm:ss";

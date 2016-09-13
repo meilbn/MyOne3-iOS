@@ -127,7 +127,7 @@
 - (UILabel *)labelForCommonInit {
     UILabel *label = [UILabel new];
     label.font = FontWithSize(13);
-    label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
+	label.textColor = MLBColor7F7F7F;
     label.textAlignment = NSTextAlignmentCenter;
     
     return label;

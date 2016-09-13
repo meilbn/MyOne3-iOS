@@ -31,11 +31,11 @@ NSString *const kSettingsSectionHeaderViewID = @"MLBSettingsSectionHeaderViewID"
         return;
     }
     
-    self.contentView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
-    
+	self.contentView.backgroundColor = MLBColorFCFDFE;
+	
     _titleLabel = ({
         UILabel *label = [UILabel new];
-        label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
+		label.textColor = MLBColor7F7F7F;
         label.font = FontWithSize(11);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

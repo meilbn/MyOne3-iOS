@@ -89,7 +89,7 @@
     if (!_titleLabel) {
         _titleLabel = ({
             UILabel *label = [UILabel new];
-            label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
+			label.textColor = MLBColor7F7F7F;
             label.font = FontWithSize(16);
             label.text = @"分享 & 收藏";
             label.textAlignment = NSTextAlignmentCenter;

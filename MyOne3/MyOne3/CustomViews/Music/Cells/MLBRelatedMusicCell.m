@@ -84,7 +84,7 @@ NSString *const kMLBRelatedMusicCellID = @"MLBRelatedMusicCellID";
     
     _musicNameLabel = ({
         UILabel *label = [UILabel new];
-        label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+		label.textColor = MLBColor484848;
         label.font = FontWithSize(16);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -155,7 +155,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     _ticketButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"movie_ticket_normal" highlightImageName:@"movie_ticket_highlighted" target:self action:@selector(ticketButtonClicked)];
         [button setTitle:@"购票" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithWhite:170 / 255.0 alpha:1] forState:UIControlStateNormal];
+        [button setTitleColor:MLBColorAAAAAA forState:UIControlStateNormal];
         button.titleLabel.font = FontWithSize(12);
         [_toolView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     });
     
     _scoreShareButton = ({
-        UIButton *button = [MLBUIFactory buttonWithTitle:@"成绩单分享" titleColor:[UIColor colorWithWhite:170 / 255.0 alpha:1] fontSize:12 target:self action:@selector(scoreShare)];
+        UIButton *button = [MLBUIFactory buttonWithTitle:@"成绩单分享" titleColor:MLBColorAAAAAA fontSize:12 target:self action:@selector(scoreShare)];
         [_shareView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@80);
@@ -189,7 +189,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     });
     
     _otherShareButton = ({
-        UIButton *button = [MLBUIFactory buttonWithTitle:@"其他分享" titleColor:[UIColor colorWithWhite:170 / 255.0 alpha:1] fontSize:12 target:self action:@selector(otherShare)];
+        UIButton *button = [MLBUIFactory buttonWithTitle:@"其他分享" titleColor:MLBColorAAAAAA fontSize:12 target:self action:@selector(otherShare)];
         [_shareView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_scoreShareButton.mas_right);
@@ -214,7 +214,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     _gradeButton = ({
         UIButton *button = [MLBUIFactory buttonWithImageName:@"not_score_normal" selectedImageName:@"not_score_highlighted" target:self action:@selector(gradeButtonClicked)];
         [button setTitle:@"评分" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithWhite:170 / 255.0 alpha:1] forState:UIControlStateNormal];
+        [button setTitleColor:MLBColorAAAAAA forState:UIControlStateNormal];
         button.titleLabel.font = FontWithSize(12);
         [_toolView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -320,7 +320,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     _infoTypeLabel = ({
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor whiteColor];
-        label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
+		label.textColor = MLBColor7F7F7F;
         label.font = FontWithSize(12);
         [_infoView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -411,7 +411,7 @@ typedef NS_ENUM(NSUInteger, MLBMovieDetailsType) {
     _scoreRatioLabel = ({
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor whiteColor];
-        label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #F7F7F7
+		label.textColor = MLBColor7F7F7F;
         label.font = FontWithSize(14);
         label.numberOfLines = 0;
         [_contentView addSubview:label];

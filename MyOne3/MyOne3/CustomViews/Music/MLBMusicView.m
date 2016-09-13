@@ -231,7 +231,7 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
     _contentTypeLabel = ({
         UILabel *label = [UILabel new];
         label.text = @"音乐故事";
-        label.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #7F7F7F
+		label.textColor = MLBColor7F7F7F;
         label.font = FontWithSize(12);
         [_storyTitleView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

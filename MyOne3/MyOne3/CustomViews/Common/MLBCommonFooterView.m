@@ -54,7 +54,7 @@
     self.clipsToBounds = YES;
     
     _shadowView = [UIView new];
-    _shadowView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
+	_shadowView.backgroundColor = MLBColorFCFDFE;
     _shadowView.layer.shadowColor = MLBShadowColor.CGColor;
     _shadowView.layer.shadowOpacity = 0.3;
     _shadowView.layer.shadowRadius = 2;
@@ -62,7 +62,7 @@
     [self addSubview:_shadowView];
     
     UIView *lineView = [MLBUIFactory separatorLine];
-    lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
+	lineView.backgroundColor = MLBColor80C6C6C6;
     [_shadowView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@0.5);

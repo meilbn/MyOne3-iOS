@@ -86,7 +86,7 @@
         segmentedControl.frame = CGRectMake(0, 0, SCREEN_WIDTH, 35);
         segmentedControl.showsCount = NO;
         segmentedControl.font = FontWithSize(12);
-        [segmentedControl setTitleColor:[UIColor colorWithWhite:127 / 255.0 alpha:1] forState:UIControlStateNormal];
+        [segmentedControl setTitleColor:MLBColor7F7F7F forState:UIControlStateNormal];
         segmentedControl.tintColor = MLBAppThemeColor;
         segmentedControl.hairlineColor = nil;
         [segmentedControl addTarget:self action:@selector(selectedSegment:) forControlEvents:UIControlEventValueChanged];

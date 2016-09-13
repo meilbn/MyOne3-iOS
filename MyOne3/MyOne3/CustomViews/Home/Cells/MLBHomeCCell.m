@@ -80,7 +80,7 @@ NSString *const kMLBHomeCCellID = @"MLBHomeCCellID";
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.4];
         label.font = FontWithSize(10);
-        label.textColor = [UIColor colorWithWhite:229 / 255.0 alpha:229 / 255.0];
+        label.textColor = MLBColorE5E5E5E5;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.bottom.right.equalTo(_coverView);

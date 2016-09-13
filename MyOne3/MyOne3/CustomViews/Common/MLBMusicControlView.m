@@ -100,7 +100,7 @@
     
     _progressView = ({
         UIProgressView *progressView = [UIProgressView new];
-        progressView.progressTintColor = [UIColor colorWithRed:128 / 255.0 green:172 / 255.0 blue:225 / 255.0 alpha:1];
+        progressView.progressTintColor = MLBColor80ACE1;
         progressView.trackTintColor = [UIColor whiteColor];
         [_contentView addSubview:progressView];
         [progressView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -123,7 +123,7 @@
     _musicTitleLabel = ({
         UILabel *label = [UILabel new];
         label.text = @"one";
-        label.textColor = [UIColor colorWithRed:128 / 255.0 green:172 / 255.0 blue:225 / 255.0 alpha:1];
+        label.textColor = MLBColor80ACE1;
         label.font = FontWithSize(12);
         [bottomView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

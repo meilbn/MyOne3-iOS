@@ -66,7 +66,7 @@
         layout.itemSize = [MLBMovieListItemCCell cellSize];
         layout.minimumLineSpacing = 5;
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
-        collectionView.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];// #E5E5E5
+		collectionView.backgroundColor = MLBSeparatorColor;
         collectionView.dataSource = self;
         collectionView.delegate = self;
         [collectionView registerClass:[MLBMovieListItemCCell class] forCellWithReuseIdentifier:kMLBMovieListItemCCellID];

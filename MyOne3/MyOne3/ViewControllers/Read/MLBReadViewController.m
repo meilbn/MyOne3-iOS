@@ -81,7 +81,7 @@
     
     _carouselView = ({
         SDCycleScrollView *cycleScrollView = [SDCycleScrollView new];
-        cycleScrollView.backgroundColor = [UIColor colorWithWhite:170 / 255.0 alpha:1];// #AAAAAA
+		cycleScrollView.backgroundColor = MLBColorAAAAAA;
         cycleScrollView.placeholderImage = [UIImage imageNamed:@"top10"];
         cycleScrollView.autoScrollTimeInterval = 5;
         cycleScrollView.clickItemOperationBlock = ^(NSInteger currentIndex) {

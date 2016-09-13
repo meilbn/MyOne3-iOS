@@ -67,7 +67,7 @@ NSString *const kSettingsCellIDWithVerison = @"MLBSettingsCellIDWithVersion";
     _titleLabel = ({
         UILabel *label = [UILabel new];
         label.font = FontWithSize(14);
-        label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+		label.textColor = MLBColor484848;
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView);
@@ -103,7 +103,7 @@ NSString *const kSettingsCellIDWithVerison = @"MLBSettingsCellIDWithVersion";
         _versionLabel = ({
             UILabel *label = [UILabel new];
             label.font = FontWithSize(12);
-            label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+			label.textColor = MLBColor484848;
             [self.contentView addSubview:label];
             [label mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
@@ -115,7 +115,7 @@ NSString *const kSettingsCellIDWithVerison = @"MLBSettingsCellIDWithVersion";
     }
     
     UIView *bottomLine = [UIView new];
-    bottomLine.backgroundColor = [UIColor colorWithWhite:223 / 255.0 alpha:1];// #DFDFDF
+	bottomLine.backgroundColor = MLBColorDFDFDF;
     [self.contentView addSubview:bottomLine];
     [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@0.5);

@@ -36,7 +36,7 @@
     // Do any additional setup after loading the view.
     self.title = _period;
     self.edgesForExtendedLayout = UIRectEdgeAll;
-    self.view.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];
+    self.view.backgroundColor = MLBSeparatorColor;
     
     [self initDatas];
     [self setupViews];
@@ -54,7 +54,7 @@
         DDCollectionViewFlowLayout *layout = [[DDCollectionViewFlowLayout alloc] init];
         layout.delegate = self;
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
-        collectionView.backgroundColor = [UIColor colorWithWhite:229 / 255.0 alpha:1];
+        collectionView.backgroundColor = MLBSeparatorColor;
         collectionView.dataSource = self;
         collectionView.delegate = self;
         [collectionView registerClass:[MLBHomeCCell class] forCellWithReuseIdentifier:kMLBHomeCCellID];

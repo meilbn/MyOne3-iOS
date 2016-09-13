@@ -86,7 +86,7 @@
     }
     
     UIView *bgView = [UIView new];
-    bgView.backgroundColor = [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1];// #FCFDFE
+	bgView.backgroundColor = MLBColorFCFDFE;
     bgView.layer.shadowColor = MLBShadowColor.CGColor;
     bgView.layer.shadowOffset = CGSizeZero;
     bgView.layer.shadowRadius = 2;
@@ -97,7 +97,7 @@
     }];
     
     UIView *lineView = [MLBUIFactory separatorLine];
-    lineView.backgroundColor = [UIColor colorWithWhite:198 / 255.0 alpha:0.5];// #80C6C6C6
+	lineView.backgroundColor = MLBColor80C6C6C6;
     [bgView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@0.5);
@@ -106,7 +106,7 @@
     
     _commentsCountLabel = [UILabel new];
     _commentsCountLabel.text = leftText;
-    _commentsCountLabel.textColor = [UIColor colorWithWhite:127 / 255.0 alpha:1];// #F7F7F7
+	_commentsCountLabel.textColor = MLBColor7F7F7F;
     _commentsCountLabel.font = FontWithSize(12);
     [self addSubview:_commentsCountLabel];
     [_commentsCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {

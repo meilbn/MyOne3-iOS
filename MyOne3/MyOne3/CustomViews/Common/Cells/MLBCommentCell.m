@@ -113,7 +113,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
     _dateLabel = ({
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor whiteColor];
-        label.textColor = [UIColor colorWithWhite:184 / 255.0 alpha:1];// #B8B8B8
+		label.textColor = MLBColorB8B8B8;
         label.font = FontWithSize(12);
         [_userView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -180,8 +180,8 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
     
     _replyContentLabel = ({
         UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor colorWithWhite:242 / 255.0 alpha:1];// #F2F2F2
-        label.textColor = [UIColor colorWithWhite:72 / 255.0 alpha:1];// #484848
+		label.backgroundColor = MLBColorF2F2F2;
+		label.textColor = MLBColor484848;
         label.font = FontWithSize(11);
         label.numberOfLines = 0;
         [self.contentView addSubview:label];
@@ -226,7 +226,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
     _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:story.inputDate];
     _praiseNumLabel.text = [@(story.praiseNum) stringValue];
     _replyContentLabel.text = story.title;
-    _replyContentLabel.textColor = [UIColor colorWithWhite:48 / 255.0 alpha:1];
+    _replyContentLabel.textColor = MLBColor303030;
     _replyContentLabel.font = [UIFont boldSystemFontOfSize:14];
     _replyContentLabel.backgroundColor = [UIColor whiteColor];
     _contentLabel.text = story.content;

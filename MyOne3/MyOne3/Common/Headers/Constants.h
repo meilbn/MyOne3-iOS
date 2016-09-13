@@ -34,6 +34,19 @@
 #define MLBSeparatorColor                       [UIColor colorWithWhite:229 / 255.0 alpha:1]// #E5E5E5
 #define MLBShadowColor                          [UIColor colorWithWhite:102 / 255.0 alpha:1]// #666666
 
+#define MLBColorB8B8B8                          [UIColor colorWithWhite:184 / 255.0 alpha:1]// #B8B8B8
+#define MLBColorF2F2F2                          [UIColor colorWithWhite:242 / 255.0 alpha:1]// #F2F2F2
+#define MLBColor484848                          [UIColor colorWithWhite:72 / 255.0 alpha:1]// #484848
+#define MLBColor303030                          [UIColor colorWithWhite:48 / 255.0 alpha:1]// #303030
+#define MLBColorFCFDFE                          [UIColor colorWithRed:252 / 255.0 green:253 / 255.0 blue:254 / 255.0 alpha:1]// #FCFDFE
+#define MLBColor80C6C6C6                        [UIColor colorWithWhite:198 / 255.0 alpha:0.5]// #80C6C6C6
+#define MLBColor7F7F7F                          [UIColor colorWithWhite:127 / 255.0 alpha:1]// #7F7F7F
+#define MLBColor555555                          [UIColor colorWithWhite:85 / 255.0 alpha:1]// #555555
+#define MLBColorAAAAAA                          [UIColor colorWithWhite:170 / 255.0 alpha:1]// #AAAAAA
+#define MLBColorDFDFDF                          [UIColor colorWithWhite:223 / 255.0 alpha:1]// #DFDFDF
+#define MLBColor80ACE1                          [UIColor colorWithRed:128 / 255.0 green:172 / 255.0 blue:225 / 255.0 alpha:1]// #80ACE1
+#define MLBColorE5E5E5E5                        [UIColor colorWithWhite:229 / 255.0 alpha:229 / 255.0]// #E5E5E5E5
+
 #pragma mark - Digital
 
 // HUD
