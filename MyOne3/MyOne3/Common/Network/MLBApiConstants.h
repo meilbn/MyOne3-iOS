@@ -20,6 +20,7 @@
 // 获取评论列表
 #define MLBApiGetPraiseComments                 @"/comment/praise/%@/%@/%@"
 #define MLBApiGetTimeComments                   @"/comment/time/%@/%@/%@"
+#define MLBApiGetPraiseAndTimeComments          @"/comment/praiseandtime/%@/%@/%@"
 
 // 搜索
 #define MLBApiSearching                         @"/search/%@/%@"

@@ -11,21 +11,23 @@
 
 @interface MLBReadEssayDetails : MLBBaseModel
 
-@property (nonatomic, copy) NSString *contentId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *subtitle;
-@property (nonatomic, copy) NSString *authorName;
-@property (nonatomic, copy) NSString *authorDesc;
-@property (nonatomic, copy) NSString *chargeEditor;
-@property (nonatomic, copy) NSString *content;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *wbName;
-@property (nonatomic, copy) NSString *wbImageURL;
-@property (nonatomic, copy) NSString *lastUpdateDate;
-@property (nonatomic, copy) NSString *webURL;
-@property (nonatomic, copy) NSString *guideWord;
-@property (nonatomic, copy) NSString *audioURL;
-@property (nonatomic, copy) NSArray *authors;
+@property (nonatomic, strong) NSString *contentId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, strong) NSString *authorName;
+@property (nonatomic, strong) NSString *authorDesc;
+@property (nonatomic, strong) NSString *chargeEditor;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *wbName;
+@property (nonatomic, strong) NSString *wbImageURL;
+@property (nonatomic, strong) NSString *lastUpdateDate;
+@property (nonatomic, strong) NSString *webURL;
+@property (nonatomic, strong) NSString *guideWord;
+@property (nonatomic, strong) NSString *audioURL;
+@property (nonatomic, strong) NSArray *authors;
 @property (nonatomic, assign) NSInteger praiseNum;
+@property (nonatomic, assign) NSInteger shareNum;
+@property (nonatomic, assign) NSInteger commentNum;
 
 @end

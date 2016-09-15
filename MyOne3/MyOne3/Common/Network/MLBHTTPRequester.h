@@ -32,6 +32,8 @@ typedef void(^FailBlock)(NSError *error);
 
 + (void)requestTimeCommentsWithType:(NSString *)type itemId:(NSString *)itemId firstItemId:(NSString *)firstItemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
++ (void)requestPraiseAndTimeCommentsWithType:(MLBReadType)readType itemId:(NSString *)itemId lastCommentId:(NSString *)lastCommentId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
 + (void)requestRelatedsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;

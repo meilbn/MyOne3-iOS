@@ -21,7 +21,11 @@
              @"chargeEditor" : @"charge_edt",
              @"lastUpdateDate" : @"last_update_date",
              @"webURL" : @"web_url",
-             @"praiseNum" : @"praisenum"};
+             @"praiseNum" : @"praisenum",
+			 @"readNum" : @"read_num",
+			 @"guideWord" : @"guide_word",
+			 @"shareNum" : @"sharenum",
+			 @"commentNum" : @"commentnum"};
 }
 
 @end

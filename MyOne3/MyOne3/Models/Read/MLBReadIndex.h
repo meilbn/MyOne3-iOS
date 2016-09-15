@@ -13,8 +13,8 @@
 
 @interface MLBReadIndex : MLBBaseModel
 
-@property (nonatomic, copy) NSArray *essay;
-@property (nonatomic, copy) NSArray *serial;
-@property (nonatomic, copy) NSArray *question;
+@property (nonatomic, strong) NSArray *essay;
+@property (nonatomic, strong) NSArray *serial;
+@property (nonatomic, strong) NSArray *question;
 
 @end

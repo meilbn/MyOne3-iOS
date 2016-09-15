@@ -69,11 +69,11 @@ NSString *const kMLBReadBaseViewID = @"MLBReadBaseViewID";
         return;
     }
     
-    self.backgroundColor = MLBViewControllerBGColor;
-    
+	self.backgroundColor = [UIColor whiteColor];
+	
     _scrollView = ({
         UIScrollView *scrollView = [UIScrollView new];
-        scrollView.backgroundColor = MLBViewControllerBGColor;
+        scrollView.backgroundColor = [UIColor whiteColor];
         scrollView.showsVerticalScrollIndicator = NO;
         scrollView.showsHorizontalScrollIndicator = NO;
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -184,7 +184,7 @@ NSString *const kMLBReadBaseViewID = @"MLBReadBaseViewID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (_readSelected) {
-        _readSelected(indexPath.row == 0 ? MLBReadTypeEssay : (indexPath.row == 1 ? MLBReadTypeSerial : MLBReadTypeQuestion));
+        _readSelected(indexPath.row == 0 ? MLBReadTypeEssay : (indexPath.row == 1 ? MLBReadTypeSerial : MLBReadTypeQuestion), self.viewIndex);
     }
 }
 

@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign) BOOL hideNavigationBar;
 
+- (CGFloat)navigationBarHeight; // including status bar height
+
 #pragma mark - UI
 
 // 右侧盆栽和音乐

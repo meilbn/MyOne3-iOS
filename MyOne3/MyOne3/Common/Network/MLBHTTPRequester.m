@@ -119,6 +119,10 @@
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetTimeComments, type, itemId, firstItemId] success:successBlock fail:failBlock];
 }
 
++ (void)requestPraiseAndTimeCommentsWithType:(MLBReadType)readType itemId:(NSString *)itemId lastCommentId:(NSString *)lastCommentId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+	[MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetPraiseAndTimeComments, [MLBHTTPRequester apiStringForReadWithReadType:readType], itemId, lastCommentId] success:successBlock fail:failBlock];
+}
+
 + (void)requestReadDetailsWithType:(NSString *)type itemId:(NSString *)itemId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetReadDetails, type, itemId] success:successBlock fail:failBlock];
 }

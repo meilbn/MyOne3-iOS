@@ -11,11 +11,11 @@
 
 @interface MLBRelatedMusic : MLBBaseModel
 
-@property (nonatomic, copy) NSString *musicId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *cover;
-@property (nonatomic, copy) NSString *platform;
-@property (nonatomic, copy) NSString *musicLongId;
-@property (nonatomic, copy) MLBAuthor *author;
+@property (nonatomic, strong) NSString *musicId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *cover;
+@property (nonatomic, strong) NSString *platform;
+@property (nonatomic, strong) NSString *musicLongId;
+@property (nonatomic, strong) MLBAuthor *author;
 
 @end

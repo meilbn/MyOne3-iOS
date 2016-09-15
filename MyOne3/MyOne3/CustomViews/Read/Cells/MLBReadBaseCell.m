@@ -142,6 +142,7 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
         [self configureCellWithReadSerial:(MLBReadSerial *)model];
     } else if ([model isMemberOfClass:[MLBReadQuestion class]]) {
         [self configureCellWithReadQuestion:(MLBReadQuestion *)model];
+		_bottomLine.hidden = NO;
     }
 }
 

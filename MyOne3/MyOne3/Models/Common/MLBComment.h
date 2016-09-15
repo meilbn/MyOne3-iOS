@@ -9,15 +9,25 @@
 #import "MLBBaseModel.h"
 #import "MLBUser.h"
 
+typedef NS_ENUM(NSUInteger, MLBCommentType) {
+	MLBCommentTypeHot, // 热门评论
+	MLBCommentTypeNormal, // 普通评论
+};
+
 @interface MLBComment : MLBBaseModel
 
-@property (nonatomic, copy) NSString *commentId;
-@property (nonatomic, copy) NSString *quote;
-@property (nonatomic, copy) NSString *content;
+@property (nonatomic, strong) NSString *commentId;
+@property (nonatomic, strong) NSString *quote;
+@property (nonatomic, strong) NSString *content;
 @property (nonatomic, assign) NSInteger praiseNum;
-@property (nonatomic, copy) NSString *inputDate;
-@property (nonatomic, copy) MLBUser *user;
-@property (nonatomic, copy) MLBUser *toUser;
-@property (nonatomic, copy) NSString *score;
+@property (nonatomic, strong) NSString *inputDate;
+@property (nonatomic, strong) MLBUser *user;
+@property (nonatomic, strong) MLBUser *toUser;
+@property (nonatomic, assign) MLBCommentType commentType;
+
+@property (nonatomic, assign) NSInteger numberOflines;
+@property (nonatomic, assign, getter=isUnfolded) BOOL unfolded; // 是否已经展开
+
+@property (nonatomic, assign, getter=isLastHotComment) BOOL lastHotComment;
 
 @end

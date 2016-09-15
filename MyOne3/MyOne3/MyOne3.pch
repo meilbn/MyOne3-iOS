@@ -37,6 +37,7 @@
 #import <KMNavigationBarTransition/UIViewController+KMNavigationBarTransition.h>
 #import <GMCPagingScrollView/GMCPagingScrollView.h>
 #import "AAPullToRefresh.h"
+#import <ZYCornerRadius/UIImageView+CornerRadius.h>
 
 #define LOG_LEVEL_DEF ddLogLevel
 #import <CocoaLumberjack/CocoaLumberjack.h>

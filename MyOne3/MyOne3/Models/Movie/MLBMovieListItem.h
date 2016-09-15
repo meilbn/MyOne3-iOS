@@ -10,15 +10,15 @@
 
 @interface MLBMovieListItem : MLBBaseModel
 
-@property (nonatomic, copy) NSString *movieId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *verse;
-@property (nonatomic, copy) NSString *verseEn;
-@property (nonatomic, copy) NSString *score;
-@property (nonatomic, copy) NSString *revisedScore;
-@property (nonatomic, copy) NSString *releaseTime;
-@property (nonatomic, copy) NSString *scoreTime;
-@property (nonatomic, copy) NSString *cover;
+@property (nonatomic, strong) NSString *movieId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *verse;
+@property (nonatomic, strong) NSString *verseEn;
+@property (nonatomic, strong) NSString *score;
+@property (nonatomic, strong) NSString *revisedScore;
+@property (nonatomic, strong) NSString *releaseTime;
+@property (nonatomic, strong) NSString *scoreTime;
+@property (nonatomic, strong) NSString *cover;
 @property (nonatomic, assign) NSTimeInterval serverTime;
 
 @end

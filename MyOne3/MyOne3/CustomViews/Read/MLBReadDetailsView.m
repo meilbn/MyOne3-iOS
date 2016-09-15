@@ -7,77 +7,69 @@
 //
 
 #import "MLBReadDetailsView.h"
-#import "MLBChargeEditorView.h"
+
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
-#import "MLBNoneMessageCell.h"
-#import <YYText/YYText.h>
+#import "MLBReadDetailsAuthorCell.h"
+#import "MLBReadDetailsTitleAndOperationCell.h"
+#import "MLBReadDetailsContentCell.h"
+#import "MLBReadDetailsAuthorInfoCell.h"
+#import "MLBReadBaseCell.h"
 #import "MLBCommentCell.h"
-#import "MLBCommentList.h"
-#import "MZSelectableLabel.h"
-#import "MLBBaseViewController.h"
+#import "MLBReadDetailsQuestionTitleCell.h"
+#import "MLBReadDetailsQuestionAnswerCell.h"
+
+#import "MLBCommonHeaderFooterView.h"
+
 #import "MLBReadEssay.h"
 #import "MLBReadEssayDetails.h"
 #import "MLBReadSerial.h"
 #import "MLBReadSerialDetails.h"
 #import "MLBReadQuestion.h"
 #import "MLBReadQuestionDetails.h"
-#import "MLBReadBaseCell.h"
-#import "MLBCommentListViewController.h"
-#import "MLBSerialCollectionView.h"
-#import "MLBSingleReadDetailsViewController.h"
 
-#define kMLBReadDetailsEditorViewMaxHeight       68
+#import "MLBCommentList.h"
+
+#import "MLBSerialCollectionView.h"
+
+#import <MJRefresh/MJRefresh.h>
+
+#import "MLBSingleReadDetailsViewController.h"
 
 NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 
 @interface MLBReadDetailsView () <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UIView *contentView;
-@property (strong, nonatomic) UIView *questionView;
-@property (strong, nonatomic) UILabel *questionTitleLabel;
-@property (strong, nonatomic) UILabel *questionContentLabel;
-@property (strong, nonatomic) UIView *authorView;
-@property (strong, nonatomic) UIImageView *authorAvatarView;
-@property (strong, nonatomic) UILabel *authorNameLabel;
-@property (strong, nonatomic) UILabel *dateLabel;
-@property (strong, nonatomic) UILabel *authorDescLabel;
-@property (strong, nonatomic) UIView *contentCenterView;
-@property (strong, nonatomic) MZSelectableLabel *titleLabel;
-@property (strong, nonatomic) UIButton *listenInButton;
-@property (strong, nonatomic) YYTextView *contentTextView;
-//@property (strong, nonatomic) UITextView *contentTextView;
-@property (strong, nonatomic) MLBChargeEditorView *editorView;
-@property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
-@property (strong, nonatomic) UITableView *relatedsTableView;
-@property (strong, nonatomic) MLBCommonHeaderView *relatedsHeaderView;
-@property (strong, nonatomic) MLBCommonFooterView *relatedsFooterView;
+@property (strong, nonatomic) UITableView *tableView;
+
+@property (strong, nonatomic) MLBReadDetailsContentCell *contentCell;
+
+@property (strong, nonatomic) UIButton *praiseButton;
+@property (strong, nonatomic) UIButton *commentButton;
+@property (strong, nonatomic) UIButton *shareButton;
+@property (strong, nonatomic) UILabel *praiseCountLabel;
+@property (strong, nonatomic) UIButton *commentCountButton;
+@property (strong, nonatomic) UIToolbar *bottomBar;
 
 @property (strong, nonatomic) MLBSerialCollectionView *serialCollectionView;
 
-@property (strong, nonatomic) MASConstraint *questionViewTopConstraint;
-@property (strong, nonatomic) MASConstraint *contentTextViewHeightConstraint;
-@property (strong, nonatomic) MASConstraint *contentCenterViewTopConstraint;
-@property (strong, nonatomic) MASConstraint *chargeEditorHeightConstraint;
-@property (strong, nonatomic) MASConstraint *commentsTableViewHeightConstraint;
-@property (strong, nonatomic) MASConstraint *relatedsTableViewHeightConstraint;
-
 @property (assign, nonatomic) MLBReadType viewType;
+@property (strong, nonatomic) MLBBaseModel *readModel;
 @property (strong, nonatomic) MLBBaseModel *readDetailsModel;
 @property (strong, nonatomic) NSArray *relatedList;
+
+@property (strong, nonatomic) MASConstraint *bottomBarBottomOffsetConstraint;
+
+@property (strong, nonatomic) MLBCommentList *commentList;
+
+@property (strong, nonatomic) NSOperationQueue *operationQueue;
 
 @end
 
 @implementation MLBReadDetailsView {
-    MLBBaseModel *readModel;
-    NSMutableArray *relatedRowsHeight;
+	BOOL _shownBottomBar;
 }
 
 #pragma mark - LifeCycle
-
-- (void)dealloc {
-    [_commentListViewController removeFromParentViewController];
-}
 
 - (instancetype)init {
     self = [super init];
@@ -109,6 +101,32 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     return self;
 }
 
+#pragma mark - Getter
+
+- (MLBSerialCollectionView *)serialCollectionView {
+	if (!_serialCollectionView) {
+		_serialCollectionView = [[MLBSerialCollectionView alloc] init];
+		__weak typeof(self) weakSelf = self;
+		_serialCollectionView.didSelectedSerial = ^(MLBReadSerial *serial) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[strongSelf.serialCollectionView dismissWithCompleted:^{
+				[strongSelf showSingleReadDetailsWithReadModel:serial];
+			}];
+		};
+	}
+	
+	return _serialCollectionView;
+}
+
+- (NSOperationQueue *)operationQueue {
+	if (!_operationQueue) {
+		_operationQueue = [NSOperationQueue mainQueue];
+		_operationQueue.maxConcurrentOperationCount = 1;
+	}
+	
+	return _operationQueue;
+}
+
 #pragma mark - Private Method
 
 - (void)configure {
@@ -117,457 +135,214 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 }
 
 - (void)initDatas {
-    relatedRowsHeight = @[].mutableCopy;
+	self.viewIndex = -1;
 }
 
 - (void)setupViews {
-    if (_scrollView) {
+    if (_tableView) {
         return;
     }
     
     self.backgroundColor = [UIColor whiteColor];
     
-    _scrollView = ({
-        UIScrollView *scrollView = [UIScrollView new];
-        scrollView.backgroundColor = MLBViewControllerBGColor;
-        [self addSubview:scrollView];
-        [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-        
-        scrollView;
-    });
-    
-    _contentView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = _scrollView.backgroundColor;
-        [_scrollView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_scrollView);
-            make.width.equalTo(@(SCREEN_WIDTH));
-        }];
-        
-        view;
-    });
-    
-    _questionView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = _contentView.backgroundColor;
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(_contentView);
-            _questionViewTopConstraint = make.top.equalTo(_contentView);
-        }];
-        
-        view;
-    });
-    
-    _questionTitleLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = _questionTitleLabel.backgroundColor;
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(18);
-        label.numberOfLines = 0;
-        [_questionView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.right.equalTo(_questionView).insets(UIEdgeInsetsMake(17, 12, 0, 12));
-        }];
-        
-        label;
-    });
-    
-    _questionContentLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = _questionView.backgroundColor;
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(15);
-        label.numberOfLines = 0;
-        [_questionView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(_questionTitleLabel);
-            make.top.equalTo(_questionTitleLabel.mas_bottom).offset(12);
-            make.bottom.equalTo(_questionView).offset(-20);
-        }];
-        
-        label;
-    });
-    
-    UIView *questionViewBottomLine = [MLBUIFactory separatorLine];
-    [_questionView addSubview:questionViewBottomLine];
-    [questionViewBottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@0.5);
-        make.left.bottom.right.equalTo(_questionView).insets(UIEdgeInsetsMake(0, 6, 0, 6));
-    }];
-    
-    _authorView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = _contentView.backgroundColor;
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_questionView.mas_bottom);
-            make.left.right.equalTo(_contentView);
-        }];
-        
-        view;
-    });
-    
-    _authorAvatarView = ({
-        UIImageView *imageView = [UIImageView new];
-        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        imageView.layer.borderWidth = 1;
-        imageView.layer.cornerRadius = 24;
-        imageView.clipsToBounds = YES;
-        imageView.backgroundColor = _authorView.backgroundColor;
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        [_authorView addSubview:imageView];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@48);
-            make.top.equalTo(_authorView).offset(20);
-            make.left.equalTo(_authorView).offset(12);
-            make.bottom.lessThanOrEqualTo(_authorView).offset(-5);
-        }];
-        
-        imageView;
-    });
-    
-    _authorNameLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = _authorView.backgroundColor;
-        label.textColor = MLBAppThemeColor;
-        label.font = FontWithSize(12);
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_authorAvatarView).offset(6);
-            make.left.equalTo(_authorAvatarView.mas_right).offset(12);
-        }];
-        
-        label;
-    });
-    
-    _dateLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = _authorView.backgroundColor;
-        label.textColor = MLBLightGrayTextColor;
-        label.font = FontWithSize(12);
-        label.textAlignment = NSTextAlignmentRight;
-        [label setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_authorNameLabel.mas_right);
-            make.top.equalTo(_authorNameLabel);
-            make.right.equalTo(_authorView).offset(-12);
-        }];
-        
-        label;
-    });
-    
-    _authorDescLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = _authorView.backgroundColor;
-        label.textColor = MLBLightGrayTextColor;
-        label.font = FontWithSize(12);
-        label.numberOfLines = 0;
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(_authorNameLabel);
-            make.top.equalTo(_authorNameLabel.mas_bottom).offset(4);
-            make.bottom.lessThanOrEqualTo(_authorView).offset(-5);
-        }];
-        
-        label;
-    });
-    
-    _contentCenterView = ({
-        UIView *view = [UIView new];
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(_contentView);
-            _contentCenterViewTopConstraint = make.top.equalTo(_authorView.mas_bottom);
-        }];
-        
-        view;
-    });
-    
-    _titleLabel = ({
-        MZSelectableLabel *label = [MZSelectableLabel new];
-        label.textColor = MLBDarkBlackTextColor;
-        label.font = FontWithSize(20);
-        label.numberOfLines = 0;
-        label.lineBreakMode = NSLineBreakByCharWrapping;
-        [_contentCenterView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_contentCenterView).offset(12);
-            make.top.equalTo(_contentCenterView).offset(4);
-        }];
-        
-        label;
-    });
-    
-    _listenInButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"audio_normal" highlightImageName:@"audio_highlighted" target:self action:@selector(listenInButtonClicked)];
-        button.hidden = YES;
-        [_contentCenterView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.centerY.equalTo(_titleLabel);
-            make.left.equalTo(_titleLabel.mas_right).offset(10);
-            make.right.equalTo(_contentCenterView).offset(-6);
-        }];
-        
-        button;
-    });
-    
-    _contentTextView = ({
-        YYTextView *textView = [YYTextView new];
-        textView.backgroundColor = MLBViewControllerBGColor;
-        textView.textColor = MLBLightBlackTextColor;
-        textView.font = FontWithSize(16);
-        textView.editable = NO;
-        textView.scrollEnabled = NO;
-        textView.showsVerticalScrollIndicator = NO;
-        textView.showsHorizontalScrollIndicator = NO;
-        textView.textContainerInset = UIEdgeInsetsMake(8, 8, 8, 8);
-        [_contentCenterView addSubview:textView];
-        [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_titleLabel.mas_bottom).offset(20);
-            make.left.bottom.right.equalTo(_contentCenterView).insets(UIEdgeInsetsMake(0, 6, 0, 6));
-            _contentTextViewHeightConstraint = make.height.equalTo(@0);
-        }];
-        
-        textView;
-    });
-    
-    _editorView = ({
-        MLBChargeEditorView *view = [MLBChargeEditorView new];
-        view.backgroundColor = MLBViewControllerBGColor;
-        view.clipsToBounds = YES;
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            _chargeEditorHeightConstraint = make.height.equalTo(@(kMLBReadDetailsEditorViewMaxHeight));
-            make.top.equalTo(_contentCenterView.mas_bottom);
-            make.left.right.equalTo(_contentView);
-        }];
-        
-        view;
-    });
-    
-    __weak typeof(self) weakSelf = self;
-    _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeReadComments headerViewType:MLBHeaderViewTypeComment footerViewType:MLBFooterViewTypeComment];
-    _commentListViewController.finishedCalculateHeight = ^(CGFloat height) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        strongSelf.commentsTableViewHeightConstraint.equalTo(@(height));
-    };
-    [_contentView addSubview:_commentListViewController.tableView];
-    [_commentListViewController.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_editorView.mas_bottom);
-        make.left.right.equalTo(_contentView);
-        _commentsTableViewHeightConstraint = make.height.equalTo(@0);
-    }];
-    
-    _relatedsTableView = ({
-        UITableView *tableView = [UITableView new];
+    self.tableView = ({
+        UITableView *tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         tableView.backgroundColor = [UIColor whiteColor];
         tableView.dataSource = self;
         tableView.delegate = self;
-        tableView.scrollEnabled = NO;
-        [tableView registerClass:[MLBReadBaseCell class] forCellReuseIdentifier:kMLBReadBaseCellID];
+		[tableView registerClass:[MLBCommonHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+        [tableView registerClass:[MLBReadDetailsAuthorCell class] forCellReuseIdentifier:kMLBReadDetailsAuthorCellID];
+		[tableView registerClass:[MLBReadDetailsTitleAndOperationCell class] forCellReuseIdentifier:kMLBReadDetailsTitleAndOperationCellID];
+		[tableView registerClass:[MLBReadDetailsContentCell class] forCellReuseIdentifier:kMLBReadDetailsContentCellID];
+		[tableView registerClass:[MLBReadDetailsAuthorInfoCell class] forCellReuseIdentifier:kMLBReadDetailsAuthorInfoCellID];
+		[tableView registerClass:[MLBReadBaseCell class] forCellReuseIdentifier:kMLBReadBaseCellID];
+		[tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
+		[tableView registerClass:[MLBReadDetailsQuestionTitleCell class] forCellReuseIdentifier:kMLBReadDetailsQuestionTitleCellID];
+		[tableView registerClass:[MLBReadDetailsQuestionAnswerCell class] forCellReuseIdentifier:kMLBReadDetailsQuestionAnswerCellID];
         tableView.tableFooterView = [UIView new];
-        tableView.separatorInset = UIEdgeInsetsMake(0, 54, 0, 6);
-        tableView.separatorColor = MLBSeparatorColor;
-        [_contentView addSubview:tableView];
+		tableView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
+		tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+		tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 44, 0);
+        [self addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_commentListViewController.tableView.mas_bottom).offset(5);
-            make.left.right.equalTo(_contentView);
-            make.bottom.equalTo(_contentView).offset(-12);
-            _relatedsTableViewHeightConstraint = make.height.equalTo(@0);
+			make.edges.equalTo(self);
         }];
         
         tableView;
     });
+	
+	self.bottomBar = ({
+		UIToolbar *toolbar = [UIToolbar new];
+		[self addSubview:toolbar];
+		[toolbar mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.height.equalTo(@44);
+			make.left.right.equalTo(self);
+			_bottomBarBottomOffsetConstraint = make.bottom.equalTo(self).offset(44);
+		}];
+		
+		toolbar;
+	});
+	
+	self.praiseButton = ({
+		UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" selectedImageName:@"like_selected" target:self action:@selector(praiseButtonSelected)];
+		button.backgroundColor = [UIColor clearColor];
+		[_bottomBar addSubview:button];
+		[button mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.width.equalTo(button.mas_height).multipliedBy(1.0);
+			make.top.left.bottom.equalTo(_bottomBar);
+		}];
+		
+		button;
+	});
+	
+	self.commentButton = ({
+		UIButton *button = [MLBUIFactory buttonWithImageName:@"icon_toolbar_comment" selectedImageName:nil target:self action:@selector(commentButtonClicked)];
+		button.backgroundColor = [UIColor clearColor];
+		[_bottomBar addSubview:button];
+		[button mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.top.bottom.equalTo(_praiseButton);
+			make.width.equalTo(_praiseButton);
+			make.left.equalTo(_praiseButton.mas_right);
+		}];
+		
+		button;
+	});
+	
+	self.shareButton = ({
+		UIButton *button = [MLBUIFactory buttonWithImageName:@"share_image" selectedImageName:nil target:self action:@selector(shareButtonClicked)];
+		button.backgroundColor = [UIColor clearColor];
+		[_bottomBar addSubview:button];
+		[button mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.top.bottom.equalTo(_praiseButton);
+			make.width.equalTo(_praiseButton);
+			make.left.equalTo(_commentButton.mas_right);
+		}];
+		
+		button;
+	});
+	
+	self.praiseCountLabel = ({
+		UILabel *label = [MLBUIFactory labelWithTextColor:MLBDarkGrayTextColor font:FontWithSize(13)];
+		label.backgroundColor = [UIColor clearColor];
+		[_bottomBar addSubview:label];
+		[label mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.top.bottom.equalTo(_bottomBar);
+		}];
+		
+		label;
+	});
+	
+	self.commentCountButton = ({
+		UIButton *button = [MLBUIFactory buttonWithTitle:@"" titleColor:MLBDarkGrayTextColor fontSize:13 target:self action:@selector(commentCountButtonClicked)];
+		button.backgroundColor = [UIColor clearColor];
+		[_bottomBar addSubview:button];
+		[button mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.top.right.bottom.equalTo(_bottomBar).insets(UIEdgeInsetsMake(0, 0, 0, 15));
+			make.left.equalTo(_praiseCountLabel.mas_right);
+		}];
+		
+		button;
+	});
+}
+
+- (void)updatePraiseCount:(NSInteger)praiseCount {
+	_praiseCountLabel.text = [NSString stringWithFormat:@"%ld 赞 ・ ", praiseCount];
+}
+
+- (void)updateCommentCount:(NSInteger)commentCount {
+	[_commentCountButton setTitle:[NSString stringWithFormat:@"%ld 评论", commentCount] forState:UIControlStateNormal];
 }
 
 - (void)preUpdateViews {
-    if (_viewType == MLBReadTypeQuestion) {
-        return;
-    }
-    
-    [_questionView setNeedsLayout];
-    _questionTitleLabel.text = @"ONE";
-    _questionContentLabel.text = @"one";
-    [_questionView layoutIfNeeded];
-    _questionViewTopConstraint.offset((CGRectGetHeight(_questionView.frame) * -1));
-    _questionView.hidden = YES;
-    
-//    [self updateAuthorViews];
-    _titleLabel.text = @"";
-    _authorAvatarView.image = [UIImage imageNamed:@"personal"];
-    _authorNameLabel.text = @"";
-    _authorDescLabel.text = @"";
-    _dateLabel.text = @"";
-    
-    _contentTextViewHeightConstraint.equalTo(@0);
-    _chargeEditorHeightConstraint.equalTo(@0);
-    _commentsTableViewHeightConstraint.equalTo(@0);
-    _relatedsTableViewHeightConstraint.equalTo(@0);
+	[self updatePraiseCount:0];
+	[self updateCommentCount:0];
+	
+	[_tableView reloadData];
 }
 
-- (void)updateAuthorViews {
-    MLBAuthor *author;
-    NSString *dateString;
-    if (_viewType == MLBReadTypeEssay) {
-        MLBReadEssay *essay = (MLBReadEssay *)readModel;
-        author = [essay.authors firstObject];
-        dateString = essay.makeTime;
-        _titleLabel.text = essay.title;
-    } else {
-        MLBReadSerial *serial = (MLBReadSerial *)readModel;
-        author = serial.author;
-        dateString = serial.makeTime;
-        NSString *numberString = [NSString stringWithFormat:@"( %@ )", serial.number];
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]
-                                                       initWithString:[NSString stringWithFormat:@"%@ %@", serial.title, numberString]
-                                                       attributes:@{ NSForegroundColorAttributeName : _titleLabel.textColor,
-                                                                     NSFontAttributeName : _titleLabel.font}];
-        NSRange numberStringRange = [attributedString.string rangeOfString:numberString];
-        [attributedString addAttributes:@{ NSForegroundColorAttributeName : MLBAppThemeColor} range:numberStringRange];
-        [attributedString addAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor]} range:NSMakeRange(0, numberStringRange.location)];
-        _titleLabel.attributedText = attributedString;
-        [_titleLabel.selectableRanges removeAllObjects];
-        [_titleLabel setSelectableRange:numberStringRange hightlightedBackgroundColor:MLBAppThemeColor];
-        __weak typeof(self) weakSelf = self;
-        _titleLabel.selectionHandler = ^(NSRange range, NSString *string) {
-            [weakSelf titleNumberClicked];
-        };
-    }
-    
-    [_authorAvatarView mlb_sd_setImageWithURL:author.webURL placeholderImageName:@"personal"];
-    _authorNameLabel.text = author.username;
-    _authorDescLabel.text = author.desc;
-    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:dateString];
+- (void)updateViewsAfterRequestDetails {
+	[_tableView reloadData];
+	
+	switch (_viewType) {
+		case MLBReadTypeEssay: {
+			[self updatePraiseCount:((MLBReadEssayDetails *)_readDetailsModel).praiseNum];
+			[self updateCommentCount:((MLBReadEssayDetails *)_readDetailsModel).commentNum];
+			break;
+		}
+		case MLBReadTypeSerial: {
+			[self updatePraiseCount:((MLBReadSerialDetails *)_readDetailsModel).praiseNum];
+			[self updateCommentCount:((MLBReadSerialDetails *)_readDetailsModel).commentNum];
+			break;
+		}
+		case MLBReadTypeQuestion: {
+			[self updatePraiseCount:((MLBReadQuestionDetails *)_readDetailsModel).praiseNum];
+			[self updateCommentCount:((MLBReadQuestionDetails *)_readDetailsModel).commentNum];
+			break;
+		}
+	}
+	
+	if (!_shownBottomBar) {
+		_shownBottomBar = YES;
+		
+		_bottomBarBottomOffsetConstraint.offset(0);
+		[_bottomBar setNeedsLayout];
+		[UIView animateWithDuration:0.5 animations:^{
+			[_bottomBar layoutIfNeeded];
+		}];
+	}
+	
+	if (!_tableView.mj_header) {
+		[_tableView mlb_addRefreshingWithTarget:self refreshingAction:nil loadMoreDatasAction:@selector(requestComments)];
+	}
 }
 
 - (NSString *)contentId {
-    return (_viewType == MLBReadTypeEssay ? ((MLBReadEssay *)readModel).contentId : (_viewType == MLBReadTypeSerial ? ((MLBReadSerial *)readModel).contentId : ((MLBReadQuestion *)readModel).questionId));
+    return (_viewType == MLBReadTypeEssay ? ((MLBReadEssay *)_readModel).contentId : (_viewType == MLBReadTypeSerial ? ((MLBReadSerial *)_readModel).contentId : ((MLBReadQuestion *)_readModel).questionId));
 }
 
 - (Class)modelClass {
     return (_viewType == MLBReadTypeEssay ? [MLBReadEssay class] : (_viewType == MLBReadTypeSerial ? [MLBReadSerial class] : [MLBReadQuestion class]));
 }
 
-- (void)updateViews {
-    if (_viewType != MLBReadTypeQuestion) {
-        if (_viewType == MLBReadTypeEssay && IsStringEmpty(((MLBReadEssay *)readModel).title)) {
-            MLBReadEssay *essay = (MLBReadEssay *)readModel;
-            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)_readDetailsModel;
-            essay.title = essayDetails.title;
-            essay.makeTime = essayDetails.makeTime;
-            essay.guideWord = essayDetails.guideWord;
-            essay.authors = essayDetails.authors;
-        } else if (_viewType == MLBReadTypeSerial && IsStringEmpty(((MLBReadSerial *)readModel).title)) {
-            MLBReadSerial *serial = (MLBReadSerial *)readModel;
-            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)_readDetailsModel;
-            serial.title = serialDetails.title;
-            serial.excerpt = serialDetails.excerpt;
-            serial.readNum = serialDetails.readNum;
-            serial.makeTime = serialDetails.makeTime;
-            serial.author = serialDetails.author;
-        }
-        
-        [self updateAuthorViews];
-    }
-    
-    NSString *chargeEditor = @"";
-    NSInteger praiseNum = 0;
-    switch (_viewType) {
-        case MLBReadTypeEssay: {
-            MLBReadEssayDetails *essayDetails = (MLBReadEssayDetails *)_readDetailsModel;
-            [self updateContentTextViewWithText:essayDetails.content];
-            chargeEditor = essayDetails.chargeEditor;
-            praiseNum = essayDetails.praiseNum;
-            break;
-        }
-        case MLBReadTypeSerial: {
-            MLBReadSerialDetails *serialDetails = (MLBReadSerialDetails *)_readDetailsModel;
-            [self updateContentTextViewWithText:serialDetails.content];
-            _listenInButton.hidden = IsStringEmpty(serialDetails.audioURL);
-            chargeEditor = serialDetails.chargeEditor;
-            praiseNum = serialDetails.praiseNum;
-            break;
-        }
-        case MLBReadTypeQuestion: {
-            MLBReadQuestionDetails *questionDetails = (MLBReadQuestionDetails *)_readDetailsModel;
-            _questionTitleLabel.text = questionDetails.questionTitle;
-            _questionContentLabel.text = questionDetails.questionContent;
-            _titleLabel.text = questionDetails.answerTitle;
-            _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:((MLBReadQuestion *)readModel).questionMakeTime];
-            [self updateContentTextViewWithText:questionDetails.answerContent];
-            chargeEditor = questionDetails.chargeEditor;
-            praiseNum = questionDetails.praiseNum;
-            break;
-        }
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    _chargeEditorHeightConstraint.equalTo(@(kMLBReadDetailsEditorViewMaxHeight));
-    [_editorView configureViewWithEditorText:chargeEditor praiseNum:praiseNum praiseClickedBlock:^{
-        DDLogDebug(@"praise");
-    } moreClickedBlock:^{
-        [weakSelf.parentViewController.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
-            DDLogDebug(@"menuType = %ld", menuType);
-        }];
-    }];
-    
-    [_commentListViewController configureViewForReadDetailsWithReadType:_viewType itemId:[self contentId]];
-    [self.parentViewController addChildViewController:_commentListViewController];
-    [_commentListViewController requestDatas];
-    [self requestRelateds];
+- (Class)detailsModelClass {
+	return (_viewType == MLBReadTypeEssay ? [MLBReadEssayDetails class] : (_viewType == MLBReadTypeSerial ? [MLBReadSerialDetails class] : [MLBReadQuestionDetails class]));
 }
 
-- (void)updateContentTextViewWithText:(NSString *)text {
-//#warning text
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
-                                                                                          options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
-                                                                               documentAttributes:nil
-                                                                                            error:nil];
-    
-    attributedString.yy_font = _contentTextView.font;
-    attributedString.yy_color = _contentTextView.textColor;
-    attributedString.yy_lineSpacing = 10;
-	
-    _contentTextView.attributedText = attributedString;
-    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
-	
-//	DDLogDebug(@"_contentTextView.textLayout.textBoundingSize.height = %lf", _contentTextView.textLayout.textBoundingSize.height);
-	
-//	NSAttributedString *attributedString = [MLBUtilities mlb_attributedStringWithText:text lineSpacing:10 font:_contentTextView.font textColor:_contentTextView.textColor];
-//	NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-//	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//	paragraphStyle.lineSpacing = 10;
-//	NSDictionary *attrsDictionary = @{NSFontAttributeName : FontWithSize(16), NSForegroundColorAttributeName : MLBLightBlackTextColor, NSParagraphStyleAttributeName : paragraphStyle};
-//	[attributedString setAttributes:attrsDictionary range:NSMakeRange(0, 3)];
-//	_contentTextView.attributedText = attributedString;
-//	CGRect rect = [attributedString boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 6 * 2 - 8 * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-//	NSInteger height = ceil(rect.size.height);
-//	_contentTextViewHeightConstraint.equalTo(@(height));
-//	DDLogDebug(@"attributedString.height = %ld", height);
+- (BOOL)hasComments {
+	return _commentList && (_commentList.hotComments.count > 0 || _commentList.comments.count > 0);
 }
 
-- (void)updateRelatedsTableView {
-    CGFloat tableViewHeight = 0;
-    if (_relatedList.count > 0) {
-        tableViewHeight = [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow];// headerView + footerView
-        [relatedRowsHeight removeAllObjects];
-        for (MLBBaseModel *model in _relatedList) {
-            CGFloat cellHeight = [_relatedsTableView fd_heightForCellWithIdentifier:kMLBReadBaseCellID configuration:^(MLBReadBaseCell *cell) {
-                [cell configureCellWithBaseModel:model];
-            }];
-            [relatedRowsHeight addObject:@(ceil(cellHeight))];
-            tableViewHeight += ceil(cellHeight);
-        }
-    }
-    
-    _relatedsTableViewHeightConstraint.equalTo(@(ceil(tableViewHeight)));
-    [_relatedsTableView reloadData];
+- (MLBComment *)commentAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 2 && indexPath.row < _commentList.hotComments.count) { // 热门评论
+		return _commentList.hotComments[indexPath.row];
+	} else if (indexPath.section == 3 && indexPath.row < _commentList.comments.count) { // 普通评论
+		return _commentList.comments[indexPath.row];
+	}
+	
+	return nil;
+}
+
+#pragma mark - Public Method
+
+- (void)prepareForReuseWithViewType:(MLBReadType)type {
+	_readDetailsModel = nil;
+	_relatedList = nil;
+	[_commentList.hotComments removeAllObjects];
+	[_commentList.comments removeAllObjects];
+	_commentList = nil;
+	_contentCell = nil;
+	
+	[self preUpdateViews];
+}
+
+- (void)configureViewWithReadModel:(MLBBaseModel *)model type:(MLBReadType)type atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController {
+	self.viewIndex = index;
+	self.parentViewController = parentViewController;
+	_viewType = type;
+	_readModel = model;
+	[self requestDetails];
+	[self requestRelateds];
+	[self requestComments];
 }
 
 #pragma mark - Action
@@ -576,26 +351,52 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
     
 }
 
-- (void)titleNumberClicked {
-    if (!_serialCollectionView) {
-        _serialCollectionView = [[MLBSerialCollectionView alloc] init];
-        __weak typeof(self) weakSelf = self;
-        _serialCollectionView.didSelectedSerial = ^(MLBReadSerial *serial) {
-            [weakSelf.serialCollectionView dismissWithCompleted:^{
-                [weakSelf showSingleReadDetailsWithReadModel:serial];
-            }];
-        };
-    }
-    
-    _serialCollectionView.serial = (MLBReadSerial *)readModel;
-    [_serialCollectionView show];
+- (void)praiseButtonSelected {
+	
+}
+
+- (void)commentButtonClicked {
+	
+}
+
+- (void)shareButtonClicked {
+	
+}
+
+- (void)commentCountButtonClicked {
+	if (_commentList) {
+		if (_commentList.hotComments.count > 0) {
+			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		} else if (_commentList.comments.count > 0) {
+			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
+	}
+}
+
+- (void)commentCellButtonClickedWithType:(MLBCommentCellButtonType)type indexPath:(NSIndexPath *)indexPath {
+	switch (type) {
+		case MLBCommentCellButtonTypeUserAvatar: {
+			break;
+		}
+		case MLBCommentCellButtonTypePraise: {
+			break;
+		}
+		case MLBCommentCellButtonTypeUnfold: {
+			MLBComment *comment = [self commentAtIndexPath:indexPath];
+			if (!comment.isUnfolded) {
+				comment.unfolded = YES;
+				[_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			}
+			break;
+		}
+	}
 }
 
 - (void)showSingleReadDetailsWithReadModel:(MLBBaseModel *)model {
-    MLBSingleReadDetailsViewController *singleReadDetailsViewController = [[MLBSingleReadDetailsViewController alloc] init];
-    singleReadDetailsViewController.readType = _viewType;
-    singleReadDetailsViewController.readModel = model;
-    [self.parentViewController.navigationController pushViewController:singleReadDetailsViewController animated:YES];
+	MLBSingleReadDetailsViewController *singleReadDetailsViewController = [[MLBSingleReadDetailsViewController alloc] init];
+	singleReadDetailsViewController.readType = _viewType;
+	singleReadDetailsViewController.readModel = model;
+	[self.parentViewController.navigationController pushViewController:singleReadDetailsViewController animated:YES];
 }
 
 #pragma mark - Network Request
@@ -608,35 +409,10 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 			return;
 		}
 		
-        if ([responseObject[@"res"] integerValue] == 0) {
-            NSError *error;
-            MLBBaseModel *details;
-            switch (strongSelf.viewType) {
-                case MLBReadTypeEssay: {
-                    details = [MTLJSONAdapter modelOfClass:[MLBReadEssayDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
-                    break;
-                }
-                case MLBReadTypeSerial: {
-                    details = [MTLJSONAdapter modelOfClass:[MLBReadSerialDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
-                    break;
-                }
-                case MLBReadTypeQuestion: {
-                    details = [MTLJSONAdapter modelOfClass:[MLBReadQuestionDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
-                    break;
-                }
-            }
-            
-            if (!error) {
-                strongSelf.readDetailsModel = details;
-                [strongSelf updateViews];
-            } else {
-                // callback
-            }
-        } else {
-            // callback
-        }
+		[strongSelf processingForDetailsWithResponseObject:responseObject];
     } fail:^(NSError *error) {
-        
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf showHUDServerError];
     }];
 }
 
@@ -648,100 +424,455 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 			return;
 		}
 		
-        if ([responseObject[@"res"] integerValue] == 0) {
-            NSError *error;
-            NSArray *relateds = [MTLJSONAdapter modelsOfClass:[strongSelf modelClass] fromJSONArray:responseObject[@"data"] error:&error];
-            if (!error) {
-                strongSelf.relatedList = relateds;
-                [strongSelf updateRelatedsTableView];
-            } else {
-                // callback
-            }
-        } else {
-            // callback
-        }
+		[strongSelf processingForRelatedsWithResponseObject:responseObject];
     } fail:^(NSError *error) {
-        
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf showHUDServerError];
     }];
 }
 
-#pragma mark - Public Method
-
-- (void)prepareForReuseWithViewType:(MLBReadType)type {
-    _listenInButton.hidden = YES;
-    
-    if (type == MLBReadTypeQuestion) {
-        _contentCenterViewTopConstraint.offset(-55);
-    } else {
-        _authorAvatarView.image = [UIImage imageNamed:@"personal"];
-        _authorNameLabel.text = @"";
-        _authorDescLabel.text = @"";
-        _titleLabel.text = @"";
-        _dateLabel.text = @"";
-    }
-    
-    _contentTextViewHeightConstraint.equalTo(@0);
-    _chargeEditorHeightConstraint.equalTo(@0);
-    _commentsTableViewHeightConstraint.equalTo(@0);
-    _relatedsTableViewHeightConstraint.equalTo(@0);
+- (void)requestComments {
+	NSString *commentId = @"0";
+	if (_commentList && _commentList.comments.count > 0) {
+		commentId = ((MLBComment *)[_commentList.comments lastObject]).commentId;
+	}
+	
+	__weak typeof(self) weakSelf = self;
+	[MLBHTTPRequester requestPraiseAndTimeCommentsWithType:_viewType itemId:[self contentId] lastCommentId:commentId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+		[strongSelf processingForCommentsWithResponseObject:responseObject];
+	} fail:^(NSError *error) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf showHUDServerError];
+	}];
 }
 
-- (void)configureViewWithReadModel:(MLBBaseModel *)model type:(MLBReadType)type atIndex:(NSInteger)index inViewController:(MLBBaseViewController *)parentViewController {
-    self.viewIndex = index;
-    self.parentViewController = parentViewController;
-    _viewType = type;
-    readModel = model;
-    [self preUpdateViews];
-    [self requestDetails];
+#pragma mark - Data Processing
+
+- (void)processingForDetailsWithResponseObject:(id)responseObject {
+	if ([responseObject[@"res"] integerValue] == 0) {
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			NSError *error;
+			MLBBaseModel *details = [MTLJSONAdapter modelOfClass:[self detailsModelClass] fromJSONDictionary:responseObject[@"data"] error:&error];
+			
+			if (!error) {
+				self.readDetailsModel = details;
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					DDLogDebug(@"%@ finished, viewIndex = %ld", NSStringFromSelector(_cmd), self.viewIndex);
+					[self updateViewsAfterRequestDetails];
+				});
+			} else {
+				DDLogDebug(@"readDetailsModel error = %@", error);
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self showHUDErrorWithText:@"数据解析失败"];
+				});
+			}
+		});
+	} else {
+		[self showHUDErrorWithText:@"数据获取失败"];
+	}
+}
+
+- (void)processingForRelatedsWithResponseObject:(id)responseObject {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		if ([responseObject[@"res"] integerValue] == 0) {
+			NSArray *data = responseObject[@"data"];
+			if (data && [data isKindOfClass:[NSArray class]] && data.count > 0) {
+				NSError *error;
+				NSArray *relateds = [MTLJSONAdapter modelsOfClass:[self modelClass] fromJSONArray:data error:&error];
+				if (!error) {
+					self.relatedList = relateds;
+					
+					DDLogDebug(@"%@ finished, viewIndex = %ld", NSStringFromSelector(_cmd), self.viewIndex);
+					
+					if (self.readDetailsModel) {
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[self.operationQueue cancelAllOperations];
+							[self.operationQueue addOperationWithBlock:^{
+								[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+							}];
+						});
+					}
+					
+					return;
+				}
+			}
+		}
+	});
+}
+
+- (void)processingForCommentsWithResponseObject:(id)responseObject {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		if ([responseObject[@"res"] integerValue] == 0) {
+			NSError *error;
+			MLBCommentList *cmList = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
+			if (!error) {
+				if (!self.commentList) {
+					self.commentList = [[MLBCommentList alloc] init];
+					self.commentList.count = cmList.count;
+					self.commentList.comments = @[].mutableCopy;
+					self.commentList.hotComments = @[].mutableCopy;
+				}
+				
+				MLBComment *lastHotComment;
+				for (MLBComment *comment in cmList.comments) {
+					if (comment.commentType == MLBCommentTypeHot) {
+						lastHotComment = comment;
+						[self.commentList.hotComments addObject:comment];
+					} else {
+						[self.commentList.comments addObject:comment];
+					}
+				}
+				
+				NSMutableArray *indexPaths;
+				
+				if (lastHotComment) {
+					lastHotComment.lastHotComment = YES;
+				} else {
+					indexPaths = [NSMutableArray arrayWithCapacity:cmList.comments.count];
+					for (NSInteger i = (_commentList.comments.count - cmList.comments.count); i < _commentList.comments.count; i++) {
+						[indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:3]];
+					}
+				}
+				
+				DDLogDebug(@"%@ finished, viewIndex = %ld, tabelView = %p", NSStringFromSelector(_cmd), self.viewIndex, self.tableView);
+				
+				if (self.readDetailsModel) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self.tableView mlb_endRefreshingHasMoreData:(self.commentList.comments.count != self.commentList.count || cmList.comments.count >= 20)];
+						
+						if (cmList.comments.count > 0) {
+							[self.operationQueue cancelAllOperations];
+							[self.operationQueue addOperationWithBlock:^{
+								if (lastHotComment) {
+									[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)] withRowAnimation:UITableViewRowAnimationNone];
+								} else {
+									if (indexPaths && indexPaths.count > 0) {
+										[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+									}
+								}
+							}];
+						}
+					});
+				}
+			}
+		}
+	});
+}
+
+#pragma mark - Configure Cells
+
+- (void)configureAuthorCell:(MLBReadDetailsAuthorCell *)cell {
+	if (_viewType == MLBReadTypeEssay) {
+		[cell configureCellWithEssayDetails:(MLBReadEssayDetails *)_readDetailsModel];
+	} else if (_viewType == MLBReadTypeSerial) {
+		[cell configureCellWithSerialDetails:(MLBReadSerialDetails *)_readDetailsModel];
+	}
+}
+
+- (void)configureTitleCell:(MLBReadDetailsTitleAndOperationCell *)cell {
+	if (_viewType == MLBReadTypeEssay) {
+		cell.titleLabel.text = ((MLBReadEssay *)_readModel).title;
+		cell.serialsButton.hidden = YES;
+	} else if (_viewType == MLBReadTypeSerial) {
+		cell.titleLabel.text = ((MLBReadSerial *)_readModel).title;
+		cell.serialsButton.hidden = NO;
+	}
+}
+
+- (void)configureContentCell:(MLBReadDetailsContentCell *)cell {
+	switch (_viewType) {
+		case MLBReadTypeEssay: {
+			[cell configureCellWithContent:((MLBReadEssayDetails *)_readDetailsModel).content editor:((MLBReadEssayDetails *)_readDetailsModel).chargeEditor];
+			break;
+		}
+		case MLBReadTypeSerial: {
+			[cell configureCellWithContent:((MLBReadSerialDetails *)_readDetailsModel).content editor:((MLBReadSerialDetails *)_readDetailsModel).chargeEditor];
+			break;
+		}
+		case MLBReadTypeQuestion: {
+			[cell configureCellWithContent:((MLBReadQuestionDetails *)_readDetailsModel).answerContent editor:((MLBReadQuestionDetails *)_readDetailsModel).chargeEditor];
+			break;
+		}
+	}
+}
+
+- (void)configureAuthorInfoCell:(MLBReadDetailsAuthorInfoCell *)cell {
+	switch (_viewType) {
+		case MLBReadTypeEssay: {
+			[cell configureCellWithAuthor:[((MLBReadEssayDetails *)_readDetailsModel).authors firstObject]];
+			break;
+		}
+		case MLBReadTypeSerial: {
+			[cell configureCellWithAuthor:((MLBReadSerialDetails *)_readDetailsModel).author];
+			break;
+		}
+		case MLBReadTypeQuestion: {
+			break;
+		}
+	}
 }
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	if (!_readDetailsModel) {
+		return 0;
+	}
+	
+	return 4; // 内容 + 推荐 + 热门评论 + 普通评论
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _relatedList.count;
+	if (section == 0) {
+		switch (_viewType) {
+			case MLBReadTypeEssay:
+			case MLBReadTypeSerial: {
+				return 4; // 作者信息 + 标题 + 内容 + 作者介绍
+			}
+			case MLBReadTypeQuestion: {
+				return 3; // 问题 + 回答作者及时间 + 回答内容
+			}
+		}
+	} else if (section == 1 && _relatedList) {
+		return _relatedList.count;
+	} else if (section == 2 && _commentList) {
+		return _commentList.hotComments.count;
+	} else if (section == 3 && _commentList) {
+		return _commentList.comments.count;
+	}
+	
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView dequeueReusableCellWithIdentifier:kMLBReadBaseCellID forIndexPath:indexPath];
+	switch (_viewType) {
+		case MLBReadTypeEssay:
+		case MLBReadTypeSerial: {
+			if (indexPath.section == 0) {
+				if (indexPath.row == 0) { // 作者信息
+					MLBReadDetailsAuthorCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsAuthorCellID forIndexPath:indexPath];
+					[self configureAuthorCell:cell];
+					
+					return cell;
+				} else if (indexPath.row == 1) { // 标题
+					MLBReadDetailsTitleAndOperationCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsTitleAndOperationCellID forIndexPath:indexPath];
+					[self configureTitleCell:cell];
+					if (!cell.serialsClicked) {
+						__weak typeof(self) weakSelf = self;
+						cell.serialsClicked = ^() {
+							__strong typeof(weakSelf) strongSelf = weakSelf;
+							strongSelf.serialCollectionView.serial = (MLBReadSerial *)strongSelf.readModel;
+							[strongSelf.serialCollectionView show];
+						};
+					}
+					
+					return cell;
+				} else if (indexPath.row == 2) { // 内容
+					if (!_contentCell) {
+						_contentCell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsContentCellID forIndexPath:indexPath];
+						[self configureContentCell:_contentCell];
+					}
+					
+					return _contentCell;
+				} else if (indexPath.row == 3) { // 作者介绍
+					MLBReadDetailsAuthorInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsAuthorInfoCellID forIndexPath:indexPath];
+					[self configureAuthorInfoCell:cell];
+					
+					return cell;
+				}
+			}
+		}
+			break;
+		case MLBReadTypeQuestion: {
+			if (indexPath.section == 0) {
+				if (indexPath.row == 0) { // 问题
+					MLBReadDetailsQuestionTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsQuestionTitleCellID forIndexPath:indexPath];
+					[cell configureCellWithQuestionDetails:(MLBReadQuestionDetails *)_readDetailsModel];
+					
+					return cell;
+				} else if (indexPath.row == 1) { // 回答作者及时间
+					MLBReadDetailsQuestionAnswerCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsQuestionAnswerCellID forIndexPath:indexPath];
+					[cell configureCellWithQuestionDetails:(MLBReadQuestionDetails *)_readDetailsModel];
+					
+					return cell;
+				} else if (indexPath.row == 2) { // 回答内容
+					if (!_contentCell) {
+						_contentCell = [tableView dequeueReusableCellWithIdentifier:kMLBReadDetailsContentCellID forIndexPath:indexPath];
+						[self configureContentCell:_contentCell];
+					}
+					
+					return _contentCell;
+				}
+			}
+		}
+			break;
+	}
+	
+	if (indexPath.section == 1) {
+		MLBReadBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBReadBaseCellID forIndexPath:indexPath];
+		[cell configureCellWithBaseModel:_relatedList[indexPath.row]];
+		
+		return cell;
+	} else if (indexPath.section == 2 || indexPath.section == 3) {
+		MLBCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBCommentCellID forIndexPath:indexPath];
+		[cell configureCellForCommonWithComment:[self commentAtIndexPath:indexPath] atIndexPath:indexPath];
+		if (!cell.cellButtonClicked) {
+			__weak typeof(self) weakSelf = self;
+			cell.cellButtonClicked = ^(MLBCommentCellButtonType type, NSIndexPath *indexPath) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				[strongSelf commentCellButtonClickedWithType:type indexPath:indexPath];
+			};
+		}
+		
+		return cell;
+	}
+	
+    return nil;
 }
 
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [MLBCommonHeaderView headerViewHeight];
+	if (section == 1 && _relatedList && _relatedList.count > 0) { // 相关推荐
+		return [MLBCommonHeaderFooterView viewHeight];
+	} else if (section == 2 && [self hasComments]) { // 评论列表
+		return [MLBCommonHeaderFooterView viewHeight];
+	}
+	
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return [MLBCommonFooterView footerViewHeightForShadow];
+	if (section == 2 && _commentList && _commentList.hotComments.count > 0) { // 以上是热门评论
+		return [MLBCommonHeaderFooterView viewHeight];
+	}
+	
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [relatedRowsHeight[indexPath.row] floatValue];
+	switch (_viewType) {
+		case MLBReadTypeEssay:
+		case MLBReadTypeSerial: {
+			if (indexPath.section == 0) {
+				if (indexPath.row == 0) { // 作者信息
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsAuthorCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsAuthorCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[strongSelf configureAuthorCell:cell];
+					}];
+				} else if (indexPath.row == 1) { // 标题
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsTitleAndOperationCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsTitleAndOperationCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[strongSelf configureTitleCell:cell];
+					}];
+				} else if (indexPath.row == 2) { // 内容
+					if (!_readDetailsModel) {
+						return 0;
+					}
+					
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsContentCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsContentCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[strongSelf configureContentCell:cell];
+					}];
+				} else if (indexPath.row == 3) { // 作者介绍
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsAuthorInfoCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsAuthorInfoCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[strongSelf configureAuthorInfoCell:cell];
+					}];
+				}
+			}
+		}
+			break;
+		case MLBReadTypeQuestion: {
+			if (indexPath.section == 0) {
+				if (indexPath.row == 0) { // 问题
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsQuestionTitleCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsQuestionTitleCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[cell configureCellWithQuestionDetails:(MLBReadQuestionDetails *)strongSelf.readDetailsModel];
+					}];
+				} else if (indexPath.row == 1) { // 回答作者及时间
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsQuestionAnswerCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsQuestionAnswerCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[cell configureCellWithQuestionDetails:(MLBReadQuestionDetails *)strongSelf.readDetailsModel];
+					}];
+				} else if (indexPath.row == 2) { // 回答内容
+					if (!_readDetailsModel) {
+						return 0;
+					}
+					
+					__weak typeof(self) weakSelf = self;
+					return [tableView fd_heightForCellWithIdentifier:kMLBReadDetailsContentCellID cacheByIndexPath:indexPath configuration:^(MLBReadDetailsContentCell *cell) {
+						__strong typeof(weakSelf) strongSelf = weakSelf;
+						[strongSelf configureContentCell:cell];
+					}];
+				}
+			}
+		}
+			break;
+	}
+	
+	if (indexPath.section == 1) {
+		__weak typeof(self) weakSelf = self;
+		return [tableView fd_heightForCellWithIdentifier:kMLBReadBaseCellID cacheByIndexPath:indexPath configuration:^(MLBReadBaseCell *cell) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[cell configureCellWithBaseModel:strongSelf.relatedList[indexPath.row]];
+		}];
+	} else if (indexPath.section == 2 || indexPath.section == 3) {
+		__weak typeof(self) weakSelf = self;
+		return [tableView fd_heightForCellWithIdentifier:kMLBCommentCellID cacheByIndexPath:indexPath configuration:^(MLBCommentCell *cell) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[cell configureCellForCommonWithComment:[strongSelf commentAtIndexPath:indexPath] atIndexPath:indexPath];
+		}];
+	}
+	
+	return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!_relatedsHeaderView) {
-        _relatedsHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedRec];
-    }
-    
-    return _relatedsHeaderView;
+	if (section == 1 && _relatedList && _relatedList.count > 0) { // 相关推荐
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeRelatedRec;
+		
+		return view;
+	} else if (section == 2 && [self hasComments]) { // 评论列表
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeComment;
+		
+		return view;
+	}
+	
+    return nil;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (!_relatedsFooterView) {
-        _relatedsFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
-    }
-    
-    return _relatedsFooterView;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [(MLBReadBaseCell *)cell configureCellWithBaseModel:_relatedList[indexPath.row]];
+	if (section == 2 && _commentList && _commentList.hotComments.count > 0) { // 以上是热门评论
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeAboveIsHotComments;
+		
+		return view;
+	}
+	
+	return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self showSingleReadDetailsWithReadModel:_relatedList[indexPath.row]];
+	
+	if (indexPath.section == 1) { // 相关推荐
+		[self showSingleReadDetailsWithReadModel:_relatedList[indexPath.row]];
+	}
 }
 
 @end

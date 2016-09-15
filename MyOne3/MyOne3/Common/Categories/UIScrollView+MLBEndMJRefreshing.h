@@ -11,6 +11,15 @@
 @interface UIScrollView (MLBEndMJRefreshing)
 
 /**
+ *  添加下拉和上拉刷新
+ *
+ *  @param target              target
+ *  @param refreshingAction    下拉刷新方法
+ *  @param loadMoreDatasAction 上拉刷新方法
+ */
+- (void)mlb_addRefreshingWithTarget:(id)target refreshingAction:(SEL)refreshingAction loadMoreDatasAction:(SEL)loadMoreDatasAction;
+
+/**
  *  结束刷新
  *
  *  @param hasMoreData 是否有更多数据

@@ -10,18 +10,18 @@
 
 @interface MLBHomeItem : MLBBaseModel
 
-@property (nonatomic, copy) NSString *contentId;
-@property (nonatomic, copy) NSString *content;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *imageURL;
-@property (nonatomic, copy) NSString *imageOriginalURL;
-@property (nonatomic, copy) NSString *authorId;
-@property (nonatomic, copy) NSString *authorName;
-@property (nonatomic, copy) NSString *iPadURL;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *lastUpdateDate;
-@property (nonatomic, copy) NSString *webURL;
-@property (nonatomic, copy) NSString *wbImageURL;
+@property (nonatomic, strong) NSString *contentId;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *imageURL;
+@property (nonatomic, strong) NSString *imageOriginalURL;
+@property (nonatomic, strong) NSString *authorId;
+@property (nonatomic, strong) NSString *authorName;
+@property (nonatomic, strong) NSString *iPadURL;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *lastUpdateDate;
+@property (nonatomic, strong) NSString *webURL;
+@property (nonatomic, strong) NSString *wbImageURL;
 @property (nonatomic, assign) NSInteger praiseNum;
 @property (nonatomic, assign) NSInteger shareNum;
 @property (nonatomic, assign) NSInteger commentNum;

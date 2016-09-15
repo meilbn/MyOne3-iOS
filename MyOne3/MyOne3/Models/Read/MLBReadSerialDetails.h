@@ -11,21 +11,23 @@
 
 @interface MLBReadSerialDetails : MLBBaseModel
 
-@property (nonatomic, copy) NSString *contentId;
-@property (nonatomic, copy) NSString *serialId;
-@property (nonatomic, copy) NSString *number;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *excerpt;
-@property (nonatomic, copy) NSString *content;
-@property (nonatomic, copy) NSString *chargeEditor;
-@property (nonatomic, copy) NSString *readNum;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *lastUpdateDate;
-@property (nonatomic, copy) NSString *audioURL;
-@property (nonatomic, copy) NSString *webURL;
-@property (nonatomic, copy) NSString *inputName;
-@property (nonatomic, copy) NSString *lastUpdateName;
+@property (nonatomic, strong) NSString *contentId;
+@property (nonatomic, strong) NSString *serialId;
+@property (nonatomic, strong) NSString *number;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *excerpt;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *chargeEditor;
+@property (nonatomic, strong) NSString *readNum;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *lastUpdateDate;
+@property (nonatomic, strong) NSString *audioURL;
+@property (nonatomic, strong) NSString *webURL;
+@property (nonatomic, strong) NSString *inputName;
+@property (nonatomic, strong) NSString *lastUpdateName;
 @property (nonatomic, strong) MLBAuthor *author;
 @property (nonatomic, assign) NSInteger praiseNum;
+@property (nonatomic, assign) NSInteger commentNum;
+@property (nonatomic, assign) NSInteger shareNum;
 
 @end

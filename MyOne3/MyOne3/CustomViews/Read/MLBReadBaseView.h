@@ -16,7 +16,7 @@ FOUNDATION_EXPORT NSString *const kMLBReadBaseViewID;
 
 @interface MLBReadBaseView : MLBBaseView
 
-@property (nonatomic, copy) void (^readSelected)(MLBReadType type);
+@property (nonatomic, copy) void (^readSelected)(MLBReadType type, NSInteger index);
 
 - (void)configureViewWithReadEssay:(MLBReadEssay *)readEssay readSerial:(MLBReadSerial *)readSerial readQuestion:(MLBReadQuestion *)readQuestion atIndex:(NSInteger)index;
 

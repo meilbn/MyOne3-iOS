@@ -46,7 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = MLBViewControllerBGColor;
+    self.view.backgroundColor = [UIColor whiteColor];
     // 设置标题栏不能覆盖下面 ViewController 的内容
     self.edgesForExtendedLayout = UIRectEdgeNone;
 }
@@ -84,9 +84,11 @@
 	}
 }
 
-#pragma mark - Private Method
+#pragma mark - Public Methods
 
-
+- (CGFloat)navigationBarHeight {
+	return CGRectGetHeight(self.navigationController.navigationBar.bounds) + CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+}
 
 #pragma mark - UI
 

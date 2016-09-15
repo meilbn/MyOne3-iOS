@@ -18,7 +18,7 @@
              @"inputDate" : @"input_date",
              @"user" : @"user",
              @"toUser" : @"touser",
-             @"score" : @"score"};
+			 @"commentType" : @"type"};
 }
 
 + (NSValueTransformer *)userJSONTransformer {
@@ -27,6 +27,14 @@
 
 + (NSValueTransformer *)toUserJSONTransformer {
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[MLBUser class]];
+}
+
+- (instancetype)init {
+	if (self = [super init]) {
+		_numberOflines = 0;
+	}
+	
+	return self;
 }
 
 @end

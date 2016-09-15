@@ -11,11 +11,11 @@
 
 @interface MLBReadEssay : MLBBaseModel
 
-@property (nonatomic, copy) NSString *contentId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *guideWord;
-@property (nonatomic, copy) NSArray *authors;
+@property (nonatomic, strong) NSString *contentId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *guideWord;
+@property (nonatomic, strong) NSArray *authors;
 @property (nonatomic, assign) BOOL hasAudio;
 
 @end

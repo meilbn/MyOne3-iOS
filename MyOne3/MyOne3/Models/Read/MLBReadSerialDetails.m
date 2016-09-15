@@ -26,7 +26,9 @@
              @"readNum" : @"read_num",
              @"makeTime" : @"maketime",
              @"author" : @"author",
-             @"praiseNum" : @"praisenum"};
+             @"praiseNum" : @"praisenum",
+			 @"commentNum" : @"commentnum",
+			 @"shareNum" : @"sharenum"};
 }
 
 + (NSValueTransformer *)authorJSONTransformer {

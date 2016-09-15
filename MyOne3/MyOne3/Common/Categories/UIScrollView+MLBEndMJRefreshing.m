@@ -12,6 +12,29 @@
 @implementation UIScrollView (MLBEndMJRefreshing)
 
 /**
+ *  添加下拉和上拉刷新
+ *
+ *  @param target              target
+ *  @param refreshingAction    下拉刷新方法
+ *  @param loadMoreDatasAction 上拉刷新方法
+ */
+- (void)mlb_addRefreshingWithTarget:(id)target refreshingAction:(SEL)refreshingAction loadMoreDatasAction:(SEL)loadMoreDatasAction {
+	if (!target) {
+		return;
+	}
+	
+	if (refreshingAction) {
+		MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:target refreshingAction:refreshingAction];
+		self.mj_header = header;
+	}
+	
+	if (loadMoreDatasAction) {
+		MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:target refreshingAction:loadMoreDatasAction];
+		self.mj_footer = footer;
+	}
+}
+
+/**
  *  结束刷新
  *
  *  @param hasMoreData 是否有更多数据

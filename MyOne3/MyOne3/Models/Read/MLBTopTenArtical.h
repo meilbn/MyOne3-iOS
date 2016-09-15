@@ -10,12 +10,12 @@
 
 @interface MLBTopTenArtical : MLBBaseModel
 
-@property (nonatomic, copy) NSString *itemId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *introduction;
-@property (nonatomic, copy) NSString *authorName;
-@property (nonatomic, copy) NSString *webURL;
+@property (nonatomic, strong) NSString *itemId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *introduction;
+@property (nonatomic, strong) NSString *authorName;
+@property (nonatomic, strong) NSString *webURL;
 @property (nonatomic, assign) NSInteger number;
-@property (nonatomic, copy) NSString *type;
+@property (nonatomic, strong) NSString *type;
 
 @end

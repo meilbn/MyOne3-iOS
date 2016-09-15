@@ -16,13 +16,19 @@
 
 + (NSString *)stringDateFormatWithEEEddMMMyyyyByNormalDateString:(NSString *)normalDateString;
 
++ (NSString *)stringDateForReadDetailsDateString:(NSString *)normalDateString;
+
 + (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString;
+
++ (NSString *)stringDateForCommentDateString:(NSString *)normalDateString;
 
 + (NSString *)appCurrentVersion;
 
 + (NSString *)appCurrentBuild;
 
 + (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor;
+
++ (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor lineBreakMode:(NSLineBreakMode)lineBreakMode;
 
 + (CGRect)mlb_rectWithAttributedString:(NSAttributedString *)attributedString size:(CGSize)size;
 

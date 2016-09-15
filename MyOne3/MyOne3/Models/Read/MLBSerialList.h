@@ -11,9 +11,9 @@
 
 @interface MLBSerialList : MLBBaseModel
 
-@property (nonatomic, copy) NSString *serialId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *finished;
-@property (nonatomic, copy) NSArray *list;
+@property (nonatomic, strong) NSString *serialId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *finished;
+@property (nonatomic, strong) NSArray *list;
 
 @end

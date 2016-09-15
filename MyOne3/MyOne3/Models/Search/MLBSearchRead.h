@@ -10,9 +10,9 @@
 
 @interface MLBSearchRead : MLBBaseModel
 
-@property (nonatomic, copy) NSString *readId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *type;
+@property (nonatomic, strong) NSString *readId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *type;
 @property (nonatomic, assign) NSInteger number;
 
 @end

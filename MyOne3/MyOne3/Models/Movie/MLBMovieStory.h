@@ -11,15 +11,15 @@
 
 @interface MLBMovieStory : MLBBaseModel
 
-@property (nonatomic, copy) NSString *storyId;
-@property (nonatomic, copy) NSString *movieId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *content;
-@property (nonatomic, copy) NSString *userId;
-@property (nonatomic, copy) NSString *sort;
+@property (nonatomic, strong) NSString *storyId;
+@property (nonatomic, strong) NSString *movieId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *sort;
 @property (nonatomic, assign) NSInteger praiseNum;
-@property (nonatomic, copy) NSString *inputDate;
-@property (nonatomic, copy) NSString *storyType;
-@property (nonatomic, copy) MLBUser *user;
+@property (nonatomic, strong) NSString *inputDate;
+@property (nonatomic, strong) NSString *storyType;
+@property (nonatomic, strong) MLBUser *user;
 
 @end

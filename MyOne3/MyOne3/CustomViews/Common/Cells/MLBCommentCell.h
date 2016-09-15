@@ -8,6 +8,12 @@
 
 #import "MLBBaseCell.h"
 
+typedef NS_ENUM(NSUInteger, MLBCommentCellButtonType) {
+	MLBCommentCellButtonTypeUserAvatar, // 点击头像
+	MLBCommentCellButtonTypePraise,		// 点赞
+	MLBCommentCellButtonTypeUnfold,		// 展开
+};
+
 FOUNDATION_EXPORT NSString *const kMLBCommentCellID;
 
 @class MLBMovieStory;
@@ -15,6 +21,10 @@ FOUNDATION_EXPORT NSString *const kMLBCommentCellID;
 @class MLBComment;
 
 @interface MLBCommentCell : MLBBaseCell
+
+@property (nonatomic, assign, getter=isLastHotComment) BOOL lastHotComment;
+
+@property (nonatomic, copy) void (^cellButtonClicked)(MLBCommentCellButtonType type, NSIndexPath *indexPath);
 
 - (void)configureCellForMovieWithStory:(MLBMovieStory *)story atIndexPath:(NSIndexPath *)indexPath;
 

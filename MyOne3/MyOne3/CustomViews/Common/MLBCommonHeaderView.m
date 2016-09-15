@@ -20,7 +20,7 @@
 }
 
 + (CGFloat)headerViewHeight {
-    return 44;
+    return 40;
 }
 
 #pragma mark - LifeCycle
@@ -43,7 +43,7 @@
         return;
     }
     
-    self.backgroundColor = MLBViewControllerBGColor;
+    self.backgroundColor = MLBColorF5F5F5;
     self.clipsToBounds = YES;
     
     NSString *leftText;
@@ -53,7 +53,7 @@
             break;
         case MLBHeaderViewTypeComment: {
             leftText = @"评论列表";
-            rightButtonImageNamePrefix = @"review";
+//            rightButtonImageNamePrefix = @"review";
             break;
         }
         case MLBHeaderViewTypeRelatedRec: {
@@ -85,45 +85,27 @@
         }
     }
     
-    UIView *bgView = [UIView new];
-	bgView.backgroundColor = MLBColorFCFDFE;
-    bgView.layer.shadowColor = MLBShadowColor.CGColor;
-    bgView.layer.shadowOffset = CGSizeZero;
-    bgView.layer.shadowRadius = 2;
-    bgView.layer.shadowOpacity = 0.1;
-    [self addSubview:bgView];
-    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(3, 0, -3, 0));
-    }];
-    
-    UIView *lineView = [MLBUIFactory separatorLine];
-	lineView.backgroundColor = MLBColor80C6C6C6;
-    [bgView addSubview:lineView];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@0.5);
-        make.left.top.right.equalTo(bgView);
-    }];
-    
-    _commentsCountLabel = [UILabel new];
-    _commentsCountLabel.text = leftText;
-	_commentsCountLabel.textColor = MLBColor7F7F7F;
-    _commentsCountLabel.font = FontWithSize(12);
+    _commentsCountLabel = [MLBUIFactory labelWithTextColor:MLBColor7F7F7F font:FontWithSize(12)];
+    _commentsCountLabel.backgroundColor = MLBColorF5F5F5;
+	_commentsCountLabel.text = leftText;
     [self addSubview:_commentsCountLabel];
     [_commentsCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 12, 0, 0));
+		make.centerY.equalTo(self);
+		make.left.equalTo(self).offset(12);
     }];
-    
-    _rightButton = [MLBUIFactory buttonWithImageName:rightButtonImageNamePrefix ? [NSString stringWithFormat:@"%@_normal", rightButtonImageNamePrefix] : nil
-                                  highlightImageName:rightButtonImageNamePrefix ? [NSString stringWithFormat:@"%@_highlighted", rightButtonImageNamePrefix] : nil
-                                              target:self
-                                              action:@selector(rightButtonClicked)];
-    _rightButton.userInteractionEnabled = rightButtonImageNamePrefix;
-    [self addSubview:_rightButton];
-    [_rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@44);
-        make.right.equalTo(self).offset(-8);
-        make.centerY.equalTo(self);
-    }];
+	
+	if (IsStringNotEmpty(rightButtonImageNamePrefix)) {
+		_rightButton = [MLBUIFactory buttonWithImageName:rightButtonImageNamePrefix ? [NSString stringWithFormat:@"%@_normal", rightButtonImageNamePrefix] : nil
+									  highlightImageName:rightButtonImageNamePrefix ? [NSString stringWithFormat:@"%@_highlighted", rightButtonImageNamePrefix] : nil
+												  target:self
+												  action:@selector(rightButtonClicked)];
+		[self addSubview:_rightButton];
+		[_rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.width.height.equalTo(@40);
+			make.centerY.equalTo(self);
+			make.right.equalTo(self).offset(-8);
+		}];
+	}
 }
 
 #pragma mark - Action

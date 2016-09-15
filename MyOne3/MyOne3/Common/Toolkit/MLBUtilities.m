@@ -10,7 +10,9 @@
 
 static NSDateFormatter *myOneDateFormatter;
 static NSDateFormatter *longDateFormatter;
+static NSDateFormatter *readDetailsDateFormatter;
 static NSDateFormatter *musicDetailsDateFormatter;
+static NSDateFormatter *commentDateFormatter;
 
 @implementation MLBUtilities
 
@@ -41,6 +43,18 @@ static NSDateFormatter *musicDetailsDateFormatter;
 	return [myOneDateFormatter stringFromDate:date];
 }
 
++ (NSString *)stringDateForReadDetailsDateString:(NSString *)normalDateString {
+	if (!readDetailsDateFormatter) {
+		readDetailsDateFormatter = [NSDateFormatter new];
+		readDetailsDateFormatter.dateFormat = @"MMM. dd,yyyy";
+		readDetailsDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+	}
+	
+	NSDate *date = [MLBUtilities dateWithString:normalDateString];
+	
+	return [readDetailsDateFormatter stringFromDate:date];
+}
+
 + (NSString *)stringDateForMusicDetailsDateString:(NSString *)normalDateString {
     if (!musicDetailsDateFormatter) {
         musicDetailsDateFormatter = [NSDateFormatter new];
@@ -53,6 +67,18 @@ static NSDateFormatter *musicDetailsDateFormatter;
     return [musicDetailsDateFormatter stringFromDate:date];
 }
 
++ (NSString *)stringDateForCommentDateString:(NSString *)normalDateString {
+	if (!commentDateFormatter) {
+		commentDateFormatter = [NSDateFormatter new];
+		commentDateFormatter.dateFormat = @"yyyy.MM.dd";
+		commentDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+	}
+	
+	NSDate *date = [MLBUtilities dateWithString:normalDateString];
+	
+	return [commentDateFormatter stringFromDate:date];
+}
+
 + (NSString *)appCurrentVersion {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
@@ -62,13 +88,18 @@ static NSDateFormatter *musicDetailsDateFormatter;
 }
 
 + (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = lineSpacing;
-    
-    NSDictionary *attrsDictionary = @{NSFontAttributeName : font, NSForegroundColorAttributeName : textColor, NSParagraphStyleAttributeName : paragraphStyle};
-    NSAttributedString *attributedString =  [[NSAttributedString alloc] initWithString:text attributes:attrsDictionary];
-    
-    return attributedString;
+    return [MLBUtilities mlb_attributedStringWithText:text lineSpacing:lineSpacing font:font textColor:textColor lineBreakMode:NSLineBreakByWordWrapping];
+}
+
++ (NSAttributedString *)mlb_attributedStringWithText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font textColor:(UIColor *)textColor lineBreakMode:(NSLineBreakMode)lineBreakMode {
+	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+	paragraphStyle.lineSpacing = lineSpacing;
+	paragraphStyle.lineBreakMode = lineBreakMode;
+	
+	NSDictionary *attrsDictionary = @{NSFontAttributeName : font, NSForegroundColorAttributeName : textColor, NSParagraphStyleAttributeName : paragraphStyle};
+	NSAttributedString *attributedString =  [[NSAttributedString alloc] initWithString:text attributes:attrsDictionary];
+	
+	return attributedString;
 }
 
 + (CGRect)mlb_rectWithAttributedString:(NSAttributedString *)attributedString size:(CGSize)size {

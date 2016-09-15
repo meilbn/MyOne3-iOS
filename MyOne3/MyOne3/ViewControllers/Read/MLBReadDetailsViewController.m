@@ -60,14 +60,16 @@
         
         [self initDatas];
         [self setupViews];
-        [_pagingScrollView setCurrentPageIndex:0 reloadData:YES];
+        [_pagingScrollView setCurrentPageIndex:self.index reloadData:YES];
     }
 }
 
 #pragma mark - Private Method
 
 - (void)initDatas {
-    
+	if (!(self.index >= 0 && self.index < self.dataSource.count)) {
+		self.index = 0;
+	}
 }
 
 - (void)setupViews {
@@ -79,8 +81,10 @@
         [pagingScrollView registerClass:[MLBReadDetailsView class] forReuseIdentifier:kMLBReadDetailsViewID];
         pagingScrollView.dataSource = self;
         pagingScrollView.delegate = self;
-        pagingScrollView.pageInsets = UIEdgeInsetsZero;
         pagingScrollView.interpageSpacing = 0;
+		pagingScrollView.scrollView.alwaysBounceVertical = NO;
+		pagingScrollView.numberOfPreloadedPagesOnEachSide = 1;
+		
         pullToRefreshLeft = [pagingScrollView.scrollView addPullToRefreshPosition:AAPullToRefreshPositionLeft actionHandler:^(AAPullToRefresh *v) {
             [weakSelf refresh];
             [v performSelector:@selector(stopIndicatorAnimation) withObject:nil afterDelay:1];
@@ -131,11 +135,14 @@
 
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBReadDetailsView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBReadDetailsViewID];
-    [view prepareForReuseWithViewType:readType];
-    if (index == 0) {
-        [view configureViewWithReadModel:_dataSource[index] type:readType atIndex:index inViewController:self];
-    }
-    
+	
+	if (view.viewIndex != index) {
+		[view prepareForReuseWithViewType:readType];
+		if (index == self.index) {
+			[view configureViewWithReadModel:_dataSource[index] type:readType atIndex:index inViewController:self];
+		}
+	}
+	
     return view;
 }
 
@@ -149,10 +156,18 @@
 }
 
 - (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didScrollToPageAtIndex:(NSUInteger)index {
-    if (index != 0 && (!pagingScrollView.scrollView.isTracking || !pagingScrollView.scrollView.isDecelerating)) {
+    if (index != self.index && (!pagingScrollView.scrollView.isTracking || !pagingScrollView.scrollView.isDecelerating)) {
         MLBReadDetailsView *view = [pagingScrollView pageAtIndex:index];
-        [view configureViewWithReadModel:_dataSource[index] type:readType atIndex:index inViewController:self];
+		if (view.viewIndex != index) {
+			[view configureViewWithReadModel:_dataSource[index] type:readType atIndex:index inViewController:self];
+		}
     }
+}
+
+- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didEndDisplayingPage:(UIView *)page atIndex:(NSUInteger)index {
+	if (page && [page isKindOfClass:[MLBReadDetailsView class]]) {
+		((MLBReadDetailsView *)page).viewIndex = -1;
+	}
 }
 
 @end

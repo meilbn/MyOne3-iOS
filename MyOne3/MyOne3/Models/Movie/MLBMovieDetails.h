@@ -10,29 +10,29 @@
 
 @interface MLBMovieDetails : MLBBaseModel
 
-@property (nonatomic, copy) NSString *movieId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *indexCover;
-@property (nonatomic, copy) NSString *detailCover;
-@property (nonatomic, copy) NSString *videoURL;
-@property (nonatomic, copy) NSString *review;
-@property (nonatomic, copy) NSString *keywords;
-@property (nonatomic, copy) NSString *movieLongId;
-@property (nonatomic, copy) NSString *info;
-@property (nonatomic, copy) NSString *officialStory;
-@property (nonatomic, copy) NSString *chargeEditor;
-@property (nonatomic, copy) NSString *webURL;
-@property (nonatomic, copy) NSString *sort;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *lastUpdateDate;
-@property (nonatomic, copy) NSString *verse;
-@property (nonatomic, copy) NSString *verseEn;
-@property (nonatomic, copy) NSString *score;
-@property (nonatomic, copy) NSString *revisedScore;
-@property (nonatomic, copy) NSString *releaseTime;
-@property (nonatomic, copy) NSString *scoreTime;
+@property (nonatomic, strong) NSString *movieId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *indexCover;
+@property (nonatomic, strong) NSString *detailCover;
+@property (nonatomic, strong) NSString *videoURL;
+@property (nonatomic, strong) NSString *review;
+@property (nonatomic, strong) NSString *keywords;
+@property (nonatomic, strong) NSString *movieLongId;
+@property (nonatomic, strong) NSString *info;
+@property (nonatomic, strong) NSString *officialStory;
+@property (nonatomic, strong) NSString *chargeEditor;
+@property (nonatomic, strong) NSString *webURL;
+@property (nonatomic, strong) NSString *sort;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *lastUpdateDate;
+@property (nonatomic, strong) NSString *verse;
+@property (nonatomic, strong) NSString *verseEn;
+@property (nonatomic, strong) NSString *score;
+@property (nonatomic, strong) NSString *revisedScore;
+@property (nonatomic, strong) NSString *releaseTime;
+@property (nonatomic, strong) NSString *scoreTime;
 @property (nonatomic, assign) NSInteger praiseNum;
-@property (nonatomic, copy) NSArray *photos;
+@property (nonatomic, strong) NSArray *photos;
 @property (nonatomic, assign) NSTimeInterval serverTime;
 
 @end

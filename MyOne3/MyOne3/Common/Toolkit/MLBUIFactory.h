@@ -32,4 +32,10 @@
 
 + (void)myOne_addMJRefreshTo:(UIScrollView *)scrollView target:(id)target refreshAction:(SEL)refreshAction loadMoreAction:(SEL)loadMoreAction;
 
+#pragma mark - UILabel
+
++ (UILabel *)labelWithTextColor:(UIColor *)textColor font:(UIFont *)font;
+
++ (UILabel *)labelWithTextColor:(UIColor *)textColor font:(UIFont *)font numberOfLine:(NSInteger)numberOfLine;
+
 @end

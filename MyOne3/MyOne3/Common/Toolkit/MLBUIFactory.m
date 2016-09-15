@@ -69,6 +69,10 @@
     }
     
     button.titleLabel.font = FontWithSize(fontSize);
+	
+	if (target) {
+		[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+	}
     
     return button;
 }
@@ -111,6 +115,22 @@
         [footer setTitle:@"没有更多啦" forState:MJRefreshStateNoMoreData];
         scrollView.mj_footer = footer;
     }
+}
+
+#pragma mark - UILabel
+
++ (UILabel *)labelWithTextColor:(UIColor *)textColor font:(UIFont *)font {
+	return [MLBUIFactory labelWithTextColor:textColor font:font numberOfLine:1];
+}
+
++ (UILabel *)labelWithTextColor:(UIColor *)textColor font:(UIFont *)font numberOfLine:(NSInteger)numberOfLine {
+	UILabel *label = [UILabel new];
+	label.backgroundColor = [UIColor whiteColor];
+	label.textColor = textColor;
+	label.font = font;
+	label.numberOfLines = numberOfLine;
+	
+	return label;
 }
 
 @end

@@ -11,13 +11,13 @@
 
 @interface MLBReadSerial : MLBBaseModel
 
-@property (nonatomic, copy) NSString *contentId;
-@property (nonatomic, copy) NSString *serialId;
-@property (nonatomic, copy) NSString *number;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *excerpt;
-@property (nonatomic, copy) NSString *readNum;
-@property (nonatomic, copy) NSString *makeTime;
+@property (nonatomic, strong) NSString *contentId;
+@property (nonatomic, strong) NSString *serialId;
+@property (nonatomic, strong) NSString *number;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *excerpt;
+@property (nonatomic, strong) NSString *readNum;
+@property (nonatomic, strong) NSString *makeTime;
 @property (nonatomic, strong) MLBAuthor *author;
 @property (nonatomic, assign) BOOL hasAudio;
 

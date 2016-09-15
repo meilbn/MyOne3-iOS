@@ -10,6 +10,7 @@
 
 @interface MLBReadDetailsViewController : MLBBaseViewController
 
-@property (nonatomic, copy) NSArray *dataSource;
+@property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, assign) NSInteger index;
 
 @end

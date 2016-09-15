@@ -11,24 +11,24 @@
 
 @interface MLBMusicDetails : MLBBaseModel
 
-@property (nonatomic, copy) NSString *musicId;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *cover;
-@property (nonatomic, copy) NSString *isFirst;
-@property (nonatomic, copy) NSString *storyTitle;
-@property (nonatomic, copy) NSString *story;
-@property (nonatomic, copy) NSString *lyric;
-@property (nonatomic, copy) NSString *info;
-@property (nonatomic, copy) NSString *platform;
-@property (nonatomic, copy) NSString *musicURL;
-@property (nonatomic, copy) NSString *chargeEditor;
-@property (nonatomic, copy) NSString *relatedTo;
-@property (nonatomic, copy) NSString *webURL;
+@property (nonatomic, strong) NSString *musicId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *cover;
+@property (nonatomic, strong) NSString *isFirst;
+@property (nonatomic, strong) NSString *storyTitle;
+@property (nonatomic, strong) NSString *story;
+@property (nonatomic, strong) NSString *lyric;
+@property (nonatomic, strong) NSString *info;
+@property (nonatomic, strong) NSString *platform;
+@property (nonatomic, strong) NSString *musicURL;
+@property (nonatomic, strong) NSString *chargeEditor;
+@property (nonatomic, strong) NSString *relatedTo;
+@property (nonatomic, strong) NSString *webURL;
 @property (nonatomic, assign) NSInteger praiseNum;
-@property (nonatomic, copy) NSString *sort;
-@property (nonatomic, copy) NSString *makeTime;
-@property (nonatomic, copy) NSString *lastUpdateDate;
-@property (nonatomic, copy) MLBAuthor *author;
-@property (nonatomic, copy) MLBAuthor *storyAuthor;
+@property (nonatomic, strong) NSString *sort;
+@property (nonatomic, strong) NSString *makeTime;
+@property (nonatomic, strong) NSString *lastUpdateDate;
+@property (nonatomic, strong) MLBAuthor *author;
+@property (nonatomic, strong) MLBAuthor *storyAuthor;
 
 @end

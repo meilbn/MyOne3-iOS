@@ -184,9 +184,10 @@
     [self.navigationController pushViewController:previousViewController animated:YES];
 }
 
-- (void)openReadDetailsViewControllerWithReadType:(MLBReadType)type {
+- (void)openReadDetailsViewControllerWithReadType:(MLBReadType)type index:(NSInteger)index {
     MLBReadDetailsViewController *readDetailsViewController = [[MLBReadDetailsViewController alloc] init];
     readDetailsViewController.dataSource = type == MLBReadTypeEssay ? _readIndex.essay : (type == MLBReadTypeSerial ? _readIndex.serial : _readIndex.question);
+	readDetailsViewController.index = index;
     [self.navigationController pushViewController:readDetailsViewController animated:YES];
 }
 
@@ -271,12 +272,14 @@
 - (UIView *)pagingScrollView:(GMCPagingScrollView *)pagingScrollView pageForIndex:(NSUInteger)index {
     MLBReadBaseView *view = [pagingScrollView dequeueReusablePageWithIdentifier:kMLBReadBaseViewID];
     [view configureViewWithReadEssay:_readIndex.essay[index] readSerial:_readIndex.serial[index] readQuestion:_readIndex.question[index] atIndex:index inViewController:self];
-    __weak typeof(self) weakSelf = self;
-    view.readSelected = ^(MLBReadType type) {
-		__strong typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf openReadDetailsViewControllerWithReadType:type];
-    };
-    
+	if (!view.readSelected) {
+		__weak typeof(self) weakSelf = self;
+		view.readSelected = ^(MLBReadType type, NSInteger index) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[strongSelf openReadDetailsViewControllerWithReadType:type index:index];
+		};
+	}
+	
     return view;
 }
 

@@ -57,8 +57,6 @@
 #define FontWithSize(size)              [UIFont systemFontOfSize:size]
 #define ScoreFontWithSize(fontSize)     [UIFont fontWithName:@"Bradley Hand" size:fontSize]
 #define BoldFontWithSize(size)          [UIFont boldSystemFontOfSize:size]
-#define BoldSystemFont(size)            [UIFont boldSystemFontOfSize:size]
-#define systemFont(size)                [UIFont systemFontOfSize:size]
 
 #pragma mark - GCD
 // 单例

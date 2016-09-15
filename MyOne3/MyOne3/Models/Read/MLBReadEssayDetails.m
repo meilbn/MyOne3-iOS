@@ -26,7 +26,9 @@
              @"guideWord" : @"guide_word",
              @"audioURL" : @"audio",
              @"authors" : @"author",
-             @"praiseNum" : @"praisenum"};
+             @"praiseNum" : @"praisenum",
+			 @"shareNum" : @"sharenum",
+			 @"commentNum" : @"commentnum"};
 }
 
 + (NSValueTransformer *)authorsJSONTransformer {
