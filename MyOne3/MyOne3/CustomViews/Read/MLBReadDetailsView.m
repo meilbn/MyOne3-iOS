@@ -294,6 +294,9 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 	if (!_tableView.mj_header) {
 		[_tableView mlb_addRefreshingWithTarget:self refreshingAction:nil loadMoreDatasAction:@selector(requestComments)];
 	}
+	
+	[self requestRelateds];
+	[self requestComments];
 }
 
 - (NSString *)contentId {
@@ -341,8 +344,6 @@ NSString *const kMLBReadDetailsViewID = @"MLBReadDetailsViewID";
 	_viewType = type;
 	_readModel = model;
 	[self requestDetails];
-	[self requestRelateds];
-	[self requestComments];
 }
 
 #pragma mark - Action

@@ -98,6 +98,9 @@ typedef void(^FailBlock)(NSError *error);
 // 指定月份的音乐列表
 + (void)requestMusicByMonthWithPeriod:(NSString *)period success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
 
+// 获取音乐的评论列表
++ (void)requestMusicPraiseAndTimeCommentsWithItemId:(NSString *)itemId lastCommentId:(NSString *)lastCommentId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock;
+
 #pragma mark - Movie
 
 // 获取电影列表

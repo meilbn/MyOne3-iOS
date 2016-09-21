@@ -277,7 +277,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
 		
 		NSString *name = [NSString stringWithFormat:@"%@:", [comment.toUser.username mlb_trimming]];
 		NSString *string = [NSString stringWithFormat:@"%@\n%@", name, comment.quote];
-		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[MLBUtilities mlb_attributedStringWithText:string lineSpacing:10 font:FontWithSize(13) textColor:MLBColor626262 lineBreakMode:NSLineBreakByTruncatingTail]];
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[MLBUtilities mlb_attributedStringWithText:string lineSpacing:MLBLineSpacing font:FontWithSize(13) textColor:MLBColor626262 lineBreakMode:NSLineBreakByTruncatingTail]];
 		[attributedString addAttributes:@{ NSFontAttributeName : BoldFontWithSize(13),
 										   NSForegroundColorAttributeName : MLBColor484848 } range:[attributedString.string rangeOfString:name]];
 		
@@ -287,7 +287,7 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
 		_replyContentLabel.attributedText = nil;
 	}
 	
-    _contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:comment.content lineSpacing:10 font:_contentLabel.font textColor:_contentLabel.textColor lineBreakMode:NSLineBreakByTruncatingTail];
+    _contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:comment.content lineSpacing:MLBLineSpacing font:_contentLabel.font textColor:_contentLabel.textColor lineBreakMode:NSLineBreakByTruncatingTail];
 	
 	if (comment.numberOflines <= 0) {
 		_contentLabel.numberOfLines = 0;

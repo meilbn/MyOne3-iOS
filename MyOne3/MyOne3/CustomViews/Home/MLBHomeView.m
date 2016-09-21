@@ -320,7 +320,7 @@ NSString *const kMLBHomeViewID = @"MLBHomeViewID";
     _locationLabel.text = @"杭州";
     _dateLabel.text = [MLBUtilities stringDateFormatWithEEEddMMMyyyyByNormalDateString:homeItem.makeTime];
     
-    _contentTextView.attributedText = [MLBUtilities mlb_attributedStringWithText:homeItem.content lineSpacing:10 font:_contentTextView.font textColor:_contentTextView.textColor];
+    _contentTextView.attributedText = [MLBUtilities mlb_attributedStringWithText:homeItem.content lineSpacing:MLBLineSpacing font:_contentTextView.font textColor:_contentTextView.textColor];
     
     _textViewHeightConstraint.equalTo(@(ceilf([MLBUtilities mlb_rectWithAttributedString:_contentTextView.attributedText size:CGSizeMake((SCREEN_WIDTH - 24 - 12), CGFLOAT_MAX)].size.height) + 50));
     

@@ -65,7 +65,7 @@ NSString *const kMLBReadDetailsQuestionAnswerCellID = @"MLBReadDetailsQuestionAn
 #pragma mark - Public Methods
 
 - (void)configureCellWithQuestionDetails:(MLBReadQuestionDetails *)questionDetails {
-	_contentLabel.text = questionDetails.answerTitle;// [MLBUtilities mlb_attributedStringWithText:questionDetails.answerTitle lineSpacing:10 font:_contentLabel.font textColor:_contentLabel.textColor];
+	_contentLabel.text = questionDetails.answerTitle;// [MLBUtilities mlb_attributedStringWithText:questionDetails.answerTitle lineSpacing:MLBLineSpacing font:_contentLabel.font textColor:_contentLabel.textColor];
 	_dateLabel.text = [MLBUtilities stringDateForReadDetailsDateString:questionDetails.questionMakeTime];
 }
 

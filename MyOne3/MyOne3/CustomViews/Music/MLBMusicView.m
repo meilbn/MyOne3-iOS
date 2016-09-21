@@ -7,87 +7,39 @@
 //
 
 #import "MLBMusicView.h"
+
 #import "MLBMusicDetails.h"
 #import "MLBCommentList.h"
 #import "MLBRelatedMusic.h"
-#import <YYText/YYText.h>
+
+#import "MLBMusicContentCell.h"
+#import "MLBRelatedMusicCollectionCell.h"
 #import "MLBCommentCell.h"
 #import "MLBNoneMessageCell.h"
-#import "MLBRelatedMusicCell.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
-#import "MLBBaseViewController.h"
-#import "MLBCommentListViewController.h"
-#import "MLBMusicRelatedViewController.h"
+#import "MLBCommonHeaderFooterView.h"
 
 NSString *const kMLBMusicViewID = @"MLBMusicViewID";
 
-typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
-    MLBMusicDetailsTypeNone,
-    MLBMusicDetailsTypeStory,
-    MLBMusicDetailsTypeLyric,
-    MLBMusicDetailsTypeInfo,
-};
-
 @interface MLBMusicView () <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UIView *contentView;
-@property (strong, nonatomic) UIImageView *coverView;
-@property (strong, nonatomic) UIView *storyTitleView;
-@property (strong, nonatomic) UIView *authorView;
-@property (strong, nonatomic) UIImageView *authorAvatarView;
-@property (strong, nonatomic) UILabel *authorNameLabel;
-@property (strong, nonatomic) UIImageView *firstPublishView;
-@property (strong, nonatomic) UILabel *authorDescLabel;
-@property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UILabel *dateLabel;
-@property (strong, nonatomic) UIButton *musicControlButton;
-@property (strong, nonatomic) UILabel *contentTypeLabel;
-@property (strong, nonatomic) UIButton *storyButton;
-@property (strong, nonatomic) UIButton *lyricButton;
-@property (strong, nonatomic) UIButton *aboutButton;
-@property (strong, nonatomic) UIView *bottomLineView;
-@property (strong, nonatomic) UILabel *storyTitleLabel;
-@property (strong, nonatomic) UILabel *storyAuthorNameLabel;
-@property (strong, nonatomic) YYTextView *contentTextView;
-@property (strong, nonatomic) UIView *chargeEditorView;
-@property (strong, nonatomic) UILabel *editorLabel;
-@property (strong, nonatomic) UIButton *likeButton;
-@property (strong, nonatomic) UILabel *likeNumLabel;
-@property (strong, nonatomic) UIButton *moreButton;
-@property (strong, nonatomic) MLBCommentListViewController *commentListViewController;
-@property (strong, nonatomic) UITableView *relatedMusicTableView;
-@property (strong, nonatomic) MLBCommonHeaderView *relatedMusicHeaderView;
-@property (strong, nonatomic) MLBCommonFooterView *relatedMusicFooterView;
+@property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) MASConstraint *authorViewTopConstraint;
-@property (strong, nonatomic) MASConstraint *contentTextViewHeightConstraint;
-@property (strong, nonatomic) MASConstraint *contentTextViewTopToAuthorNameLabelBottomConstraint;
-@property (strong, nonatomic) MASConstraint *contentTextViewTopToStoryTitleViewBottomConstraint;
-@property (strong, nonatomic) MASConstraint *chargeEditorHeightConstraint;
-@property (strong, nonatomic) MASConstraint *commentsTableViewHeightConstraint;
-@property (strong, nonatomic) MASConstraint *relatedMusicTableViewHeightConstraint;
-
-@property (copy, nonatomic) NSString *musicId;
-
+@property (strong, nonatomic) NSString *musicId;
 @property (strong, nonatomic) MLBMusicDetails *musicDetails;
+@property (strong, nonatomic) MLBCommentList *commentList;
 @property (strong, nonatomic) NSArray *relatedMusics;
+
+@property (strong, nonatomic) MLBMusicContentCell *contentCell;
+@property (strong, nonatomic) MLBRelatedMusicCollectionCell *collectionCell;
 
 @end
 
 @implementation MLBMusicView {
-    NSArray *typeButtons;
     NSInteger initStatusContentOffsetY;
-    MLBCommentList *commentList;
-    NSMutableArray *commentRowsHeight;
-    BOOL preparedForReuse;
 }
 
 #pragma mark - LifeCycle
-
-- (void)dealloc {
-    [_commentListViewController removeFromParentViewController];
-}
 
 - (instancetype)init {
     self = [super init];
@@ -128,582 +80,79 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
 
 - (void)initDatas {
     initStatusContentOffsetY = [@(ceil(SCREEN_WIDTH * 0.6)) integerValue];
-    commentRowsHeight = @[].mutableCopy;
-    preparedForReuse = NO;
 }
 
 - (void)setupViews {
-    if (_scrollView) {
+    if (_tableView) {
         return;
     }
     
     self.backgroundColor = [UIColor whiteColor];
     
-    _scrollView = ({
-        UIScrollView *scrollView = [UIScrollView new];
-        scrollView.backgroundColor = MLBViewControllerBGColor;
-        scrollView.showsVerticalScrollIndicator = NO;
-        scrollView.delegate = self;
-        [self addSubview:scrollView];
-        [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-        
-        scrollView;
-    });
-    
-    _contentView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = _scrollView.backgroundColor;
-        [_scrollView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_scrollView);
-            make.width.equalTo(@(SCREEN_WIDTH));
-        }];
-        
-        view;
-    });
-    
-    _coverView = ({
-        UIImageView *imageView = [UIImageView new];
-        [_contentView addSubview:imageView];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.right.equalTo(_contentView);
-            make.height.equalTo(imageView.mas_width).multipliedBy(1);
-        }];
-        
-        imageView;
-    });
-    
-    _storyTitleView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = MLBViewControllerBGColor;
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_coverView.mas_bottom);
-            make.left.right.equalTo(_contentView);
-        }];
-        
-        view;
-    });
-    
-    _aboutButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"music_about_normal" selectedImageName:@"music_about_selected" target:self action:@selector(typeButtonClicked:)];
-        button.tag = MLBMusicDetailsTypeInfo;
-        [_storyTitleView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.sizeOffset(CGSizeMake(44, 44));
-            make.right.equalTo(_storyTitleView);
-            make.bottom.equalTo(_storyTitleView).offset(4);
-        }];
-        
-        button;
-    });
-    
-    _lyricButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"music_lyric_normal" selectedImageName:@"music_lyric_selected" target:self action:@selector(typeButtonClicked:)];
-        button.tag = MLBMusicDetailsTypeLyric;
-        [_storyTitleView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.equalTo(_aboutButton);
-            make.right.equalTo(_aboutButton.mas_left).offset(-20);
-            make.bottom.equalTo(_aboutButton);
-        }];
-        
-        button;
-    });
-    
-    _storyButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"music_story_normal" selectedImageName:@"music_story_selected" target:self action:@selector(typeButtonClicked:)];
-        button.tag = MLBMusicDetailsTypeStory;
-        [_storyTitleView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.equalTo(_aboutButton);
-            make.right.equalTo(_lyricButton.mas_left).offset(-20);
-            make.bottom.equalTo(_aboutButton);
-        }];
-        
-        button;
-    });
-    
-    typeButtons = @[_storyButton, _lyricButton, _aboutButton];
-    
-    _contentTypeLabel = ({
-        UILabel *label = [UILabel new];
-        label.text = @"音乐故事";
-		label.textColor = MLBColor7F7F7F;
-        label.font = FontWithSize(12);
-        [_storyTitleView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_storyTitleView).offset(12);
-            make.bottom.equalTo(_storyTitleView).offset(-8);
-        }];
-        
-        label;
-    });
-    
-    _bottomLineView = ({
-        UIView *view = [MLBUIFactory separatorLine];
-        [_storyTitleView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0.5);
-            make.left.bottom.right.equalTo(_storyTitleView).insets(UIEdgeInsetsMake(0, 6, 0, 6));
-        }];
-        
-        view;
-    });
-    
-    _authorView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = [UIColor whiteColor];
-        view.layer.shadowColor = MLBShadowColor.CGColor;
-        view.layer.shadowOffset = CGSizeZero;
-        view.layer.shadowRadius = 2;
-        view.layer.shadowOpacity = 0.5;
-        view.layer.cornerRadius = 2;
-        [_storyTitleView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_storyTitleView).offset(12);
-            make.right.equalTo(_storyTitleView).offset(-12);
-            make.height.equalTo(_storyTitleView).multipliedBy(0.7746);
-            _authorViewTopConstraint = make.top.equalTo(_storyTitleView).offset(-12);
-        }];
-        
-        view;
-    });
-    
-    _authorAvatarView = ({
-        UIImageView *imageView = [UIImageView new];
-        imageView.backgroundColor = [UIColor whiteColor];
-        imageView.layer.cornerRadius = 24;
-        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        imageView.layer.borderWidth = 1;
-        imageView.clipsToBounds = YES;
-        [_authorView addSubview:imageView];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.equalTo(_authorView).offset(12);
-            make.width.height.equalTo(@48);
-        }];
-        
-        imageView;
-    });
-    
-    _firstPublishView = ({
-        UIImageView *imageView = [UIImageView new];
-        imageView.backgroundColor = [UIColor whiteColor];
-        [_authorView addSubview:imageView];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_authorAvatarView);
-            make.right.equalTo(_authorView).offset(-8);
-        }];
-        
-        imageView;
-    });
-    
-    _authorNameLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBAppThemeColor;
-        label.font = FontWithSize(12);
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_authorAvatarView).offset(6);
-            make.left.equalTo(_authorAvatarView.mas_right).offset(12);
-            
-        }];
-        
-        label;
-    });
-    
-    _authorDescLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBLightGrayTextColor;
-        label.font = FontWithSize(12);
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_authorNameLabel.mas_bottom).offset(4);
-            make.left.equalTo(_authorNameLabel);
-        }];
-        
-        label;
-    });
-    
-    _titleLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(20);
-        label.numberOfLines = 0;
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_authorAvatarView);
-            make.top.equalTo(_authorAvatarView.mas_bottom).offset(20);
-            make.bottom.equalTo(_authorView).offset(-18);
-        }];
-        
-        label;
-    });
-    
-    _dateLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBLightGrayTextColor;
-        label.font = FontWithSize(12);
-        [label setContentCompressionResistancePriority:251 forAxis:UILayoutConstraintAxisHorizontal];
-        [_authorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.bottom.equalTo(_authorView).offset(-8);
-            make.left.greaterThanOrEqualTo(_titleLabel.mas_right).offset(8);
-        }];
-        
-        label;
-    });
-    
-    _musicControlButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"play_normal" highlightImageName:@"play_highlighted" target:self action:@selector(controlStoryMusicPlay)];
-        [_authorView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.right.equalTo(_authorView).offset(-10);
-            make.bottom.equalTo(_dateLabel.mas_top).offset(-8);
-        }];
-        
-        button;
-    });
-    
-    _storyTitleLabel = ({
-        UILabel *label = [UILabel new];
-        label.textColor = MLBLightBlackTextColor;
-        label.font = FontWithSize(18);
-        label.numberOfLines = 0;
-        [_contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_contentView).offset(12);
-            make.right.lessThanOrEqualTo(_contentView).offset(-12);
-            make.top.equalTo(_storyTitleView.mas_bottom).offset(20);
-        }];
-        
-        label;
-    });
-    
-    _storyAuthorNameLabel = ({
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor whiteColor];
-        label.textColor = MLBAppThemeColor;
-        label.font = FontWithSize(12);
-        [_contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_storyTitleLabel.mas_bottom).offset(12);
-            make.left.equalTo(_storyTitleLabel);
-            make.right.lessThanOrEqualTo(_contentView).offset(-12);
-        }];
-        
-        label;
-    });
-    
-    _contentTextView = ({
-        YYTextView *textView = [YYTextView new];
-        textView.backgroundColor = MLBViewControllerBGColor;
-        textView.textColor = MLBDarkBlackTextColor;
-        textView.font = FontWithSize(15);
-        textView.editable = NO;
-        textView.scrollEnabled = NO;
-        textView.showsVerticalScrollIndicator = NO;
-        textView.showsHorizontalScrollIndicator = NO;
-        [_contentView addSubview:textView];
-        [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            _contentTextViewTopToAuthorNameLabelBottomConstraint = make.top.equalTo(_storyAuthorNameLabel.mas_bottom).offset(10);
-            _contentTextViewTopToStoryTitleViewBottomConstraint = make.top.equalTo(_storyTitleView.mas_bottom).offset(10).priority(999);
-            make.left.equalTo(_contentView).offset(6);
-            make.right.equalTo(_contentView).offset(-6);
-            _contentTextViewHeightConstraint = make.height.equalTo(@0);
-        }];
-        
-        textView;
-    });
-    
-    _chargeEditorView = ({
-        UIView *view = [UIView new];
-        view.backgroundColor = MLBViewControllerBGColor;
-        view.clipsToBounds = YES;
-        [_contentView addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            _chargeEditorHeightConstraint = make.height.equalTo(@75);
-            make.top.equalTo(_contentTextView.mas_bottom);
-            make.left.right.equalTo(_contentView);
-        }];
-        
-        view;
-    });
-    
-    _moreButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"more_normal" highlightImageName:@"more_highlighted" target:self action:@selector(moreButtonClicked)];
-        [_chargeEditorView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.right.equalTo(_chargeEditorView).offset(-8);
-            make.centerY.equalTo(_chargeEditorView);
-        }];
-        
-        button;
-    });
-    
-    _likeNumLabel = ({
-        UILabel *label = [UILabel new];
-        label.textColor = MLBDarkGrayTextColor;
-        label.font = FontWithSize(12);
-        [label setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
-        [_chargeEditorView insertSubview:label atIndex:2];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(_moreButton.mas_left).offset(-10);
-            make.centerY.equalTo(_chargeEditorView);
-        }];
-        
-        label;
-    });
-    
-    _likeButton = ({
-        UIButton *button = [MLBUIFactory buttonWithImageName:@"like_normal" selectedImageName:@"like_selected" target:self action:@selector(likeButtonClicked)];
-        [_chargeEditorView insertSubview:button atIndex:3];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.right.equalTo(_likeNumLabel.mas_left);
-            make.centerY.equalTo(_chargeEditorView);
-        }];
-        
-        button;
-    });
-    
-    _editorLabel = ({
-        UILabel *label = [UILabel new];
-        label.textColor = MLBDarkGrayTextColor;
-        label.font = FontWithSize(12);
-        label.numberOfLines = 0;
-        [_chargeEditorView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_chargeEditorView).offset(12);
-            make.right.lessThanOrEqualTo(_likeButton.mas_left).offset(8);
-            make.centerY.equalTo(_chargeEditorView);
-        }];
-        
-        label;
-    });
-    
-    __weak typeof(self) weakSelf = self;
-    _commentListViewController = [[MLBCommentListViewController alloc] initWithCommentListType:MLBCommentListTypeMusicComments headerViewType:MLBHeaderViewTypeComment footerViewType:MLBFooterViewTypeComment];
-    _commentListViewController.finishedCalculateHeight = ^(CGFloat height) {
-        weakSelf.commentsTableViewHeightConstraint.equalTo(@(height));
-    };
-    [_contentView addSubview:_commentListViewController.tableView];
-    [_commentListViewController.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_chargeEditorView.mas_bottom);
-        make.left.right.equalTo(_contentView);
-        _commentsTableViewHeightConstraint = make.height.equalTo(@0);
-    }];
-    
-    _relatedMusicTableView = ({
-        UITableView *tableView = [UITableView new];
+    _tableView = ({
+        UITableView *tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         tableView.backgroundColor = [UIColor whiteColor];
         tableView.dataSource = self;
         tableView.delegate = self;
-        tableView.scrollEnabled = NO;
-        [tableView registerClass:[MLBRelatedMusicCell class] forCellReuseIdentifier:kMLBRelatedMusicCellID];
+		[tableView registerClass:[MLBCommonHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		[tableView registerClass:[MLBMusicContentCell class] forCellReuseIdentifier:kMLBMusicContentCellID];
+		[tableView registerClass:[MLBRelatedMusicCollectionCell class] forCellReuseIdentifier:kMLBRelatedMusicCollectionCellID];
+		[tableView registerClass:[MLBNoneMessageCell class] forCellReuseIdentifier:kMLBNoneMessageCellID];
+        [tableView registerClass:[MLBCommentCell class] forCellReuseIdentifier:kMLBCommentCellID];
         tableView.tableFooterView = [UIView new];
-        tableView.separatorInset = UIEdgeInsetsMake(0, 65, 0, 0);
-        tableView.separatorColor = MLBSeparatorColor;
-        [_contentView addSubview:tableView];
+		tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+		[tableView mlb_addRefreshingWithTarget:self refreshingAction:nil loadMoreDatasAction:@selector(requestMusicComments)];
+        [self addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_commentListViewController.tableView.mas_bottom).offset(5);
-            make.left.right.equalTo(_contentView);
-            make.bottom.equalTo(_contentView).offset(-12);
-            _relatedMusicTableViewHeightConstraint = make.height.equalTo(@0);
+            make.edges.equalTo(self);
         }];
         
         tableView;
     });
-    
-//        MASAttachKeys(_scrollView, _contentView, _coverView, _storyTitleView, _authorView, _authorAvatarView, _authorNameLabel, _firstPublishView, _authorDescLabel, _titleLabel, _dateLabel, _musicControlButton, _contentTypeLabel, _storyButton, _lyricButton, _aboutButton, _bottomLineView, _storyAuthorNameLabel, _contentTextView, _chargeEditorView, _editorLabel, _likeButton, _likeNumLabel, _moreButton, _commentsTableView, _relatedMusicTableView);
 }
 
-- (void)resetMusicPlay {
-    [_musicControlButton setImage:[UIImage imageNamed:@"play_normal"] forState:UIControlStateNormal];
-    [_musicControlButton setImage:[UIImage imageNamed:@"play_highlighted"] forState:UIControlStateHighlighted];
+- (BOOL)hasComments {
+	return _commentList && (_commentList.hotComments.count > 0 || _commentList.comments.count > 0);
 }
 
-- (void)resetMusicListControlButtonWithPlaying:(BOOL)playing {
-//    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_normal" : @"music_list_play_normal"] forState:UIControlStateNormal];
-//    [_relatedMusicControlButton setImage:[UIImage imageNamed:playing ? @"music_list_pause_highlighted" : @"music_list_play_highlighted"] forState:UIControlStateHighlighted];
-}
-
-- (void)updateViews {
-    [_coverView mlb_sd_setImageWithURL:_musicDetails.cover placeholderImageName:@"music_cover_small" cachePlachoderImage:NO];
-    [_authorAvatarView mlb_sd_setImageWithURL:_musicDetails.author.webURL placeholderImageName:@"personal"];
-    _authorNameLabel.text = _musicDetails.author.username;
-    _authorDescLabel.text = _musicDetails.author.desc;
-    _titleLabel.text = _musicDetails.title;
-    _dateLabel.text = [MLBUtilities stringDateForMusicDetailsDateString:_musicDetails.makeTime];
-    _firstPublishView.image = [self firstPublishImage];
-    _storyButton.selected = YES;
-    _storyTitleLabel.text = _musicDetails.storyTitle;
-    _storyAuthorNameLabel.text = _musicDetails.storyAuthor.username;
-    [self showContentWithType:MLBMusicDetailsTypeStory];
-    _chargeEditorHeightConstraint.equalTo(@75);
-    _editorLabel.text = _musicDetails.chargeEditor;
-    _likeNumLabel.text = [@(_musicDetails.praiseNum) stringValue];
-}
-
-- (UIImage *)firstPublishImage {
-    // isFirst 为0时，platform 为1则为虾米音乐首发，为2则不显示首发平台,
-    // isFirst 为1时，platform 为1则为虾米和一个联合首发，为2则为一个独家首发
-    NSString *imageName = @"";
-    if ([_musicDetails.isFirst isEqualToString:@"0"] && [_musicDetails.platform isEqualToString:@"1"]) {
-        imageName = @"xiami_music_first";
-    } else if ([_musicDetails.isFirst isEqualToString:@"1"]) {
-        imageName = [_musicDetails.platform isEqualToString:@"1"] ? @"one_and_xiami_music" : @"one_first";
-    }
-    
-    if (IsStringNotEmpty(imageName)) {
-        return [UIImage imageNamed:imageName];
-    } else {
-        return nil;
-    }
-}
-
-- (void)showContentWithType:(MLBMusicDetailsType)type {
-    for (UIButton *button in typeButtons) {
-        button.selected = button.tag == type;
-    }
-    
-    switch (type) {
-        case MLBMusicDetailsTypeNone: {
-            _contentTypeLabel.text = @"音乐故事";
-            [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:NO];
-            break;
-        }
-        case MLBMusicDetailsTypeStory: {
-            _contentTypeLabel.text = @"音乐故事";
-            [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:YES];
-            [self updateContentTextViewWithText:_musicDetails.story htmlString:YES];
-            break;
-        }
-        case MLBMusicDetailsTypeLyric: {
-            _contentTypeLabel.text = @"歌词";
-            [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:NO];
-            [self updateContentTextViewWithText:_musicDetails.lyric htmlString:NO];
-            break;
-        }
-        case MLBMusicDetailsTypeInfo: {
-            _contentTypeLabel.text = @"歌曲信息";
-            [self updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:NO];
-            [self updateContentTextViewWithText:_musicDetails.info htmlString:NO];
-            break;
-        }
-    }
-}
-
-- (void)updateContentTextViewWithText:(NSString *)text htmlString:(BOOL)isHTML {
-    NSMutableAttributedString *attributedString;
-    if (isHTML) {
-        attributedString = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUnicodeStringEncoding]
-                                                                     options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType }
-                                                          documentAttributes:nil
-                                                                       error:nil];
-    } else {
-        attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-    }
-    
-    attributedString.yy_font = _contentTextView.font;
-    attributedString.yy_color = _contentTextView.textColor;
-    attributedString.yy_lineSpacing = 10;
-    
-    _contentTextView.attributedText = attributedString;
-    _contentTextViewHeightConstraint.equalTo(@(_contentTextView.textLayout.textBoundingSize.height));
-}
-
-- (void)updateContentTextViewTopCpnstraintWithShowStoryTitleAndAuthor:(BOOL)show {
-    if (show) {
-        [_contentTextViewTopToStoryTitleViewBottomConstraint uninstall];
-        [_contentTextViewTopToAuthorNameLabelBottomConstraint install];
-    } else {
-        [_contentTextViewTopToStoryTitleViewBottomConstraint install];
-        [_contentTextViewTopToAuthorNameLabelBottomConstraint uninstall];
-    }
-}
-
-- (void)updateRelatedMusicsTableView {
-    NSInteger tableViewHeight = ceil([MLBRelatedMusicCell cellHeight] * _relatedMusics.count + [MLBCommonHeaderView headerViewHeight] + [MLBCommonFooterView footerViewHeightForShadow]);
-    _relatedMusicTableViewHeightConstraint.equalTo(@(_relatedMusics.count > 0 ? tableViewHeight : 0));
-    [_relatedMusicTableView reloadData];
+- (MLBComment *)commentAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 2 && indexPath.row < _commentList.hotComments.count) { // 热门评论
+		return _commentList.hotComments[indexPath.row];
+	} else if (indexPath.section == 3 && indexPath.row < _commentList.comments.count) { // 普通评论
+		return _commentList.comments[indexPath.row];
+	}
+	
+	return nil;
 }
 
 #pragma mark - Action
 
-- (void)controlStoryMusicPlay {
-    
-}
-
-- (void)controlRelatedMusicPlay {
-    
-}
-
-- (void)typeButtonClicked:(UIButton *)sender {
-    if (!sender.selected) {
-        [self showContentWithType:(MLBMusicDetailsType)sender.tag];
-    }
-}
-
-- (void)moreButtonClicked {
-    if (self.parentViewController) {
-        [self.parentViewController.view mlb_showPopMenuViewWithMenuSelectedBlock:^(MLBPopMenuType menuType) {
-            DDLogDebug(@"menuType = %ld", menuType);
-        }];
-    }
-}
-
-- (void)likeButtonClicked {
-    
-}
-
-- (void)addNewComment {
-    
-}
-
-- (void)allComments {
-    
+- (void)commentCellButtonClickedWithType:(MLBCommentCellButtonType)type indexPath:(NSIndexPath *)indexPath {
+	switch (type) {
+		case MLBCommentCellButtonTypeUserAvatar: {
+			break;
+		}
+		case MLBCommentCellButtonTypePraise: {
+			break;
+		}
+		case MLBCommentCellButtonTypeUnfold: {
+			MLBComment *comment = [self commentAtIndexPath:indexPath];
+			if (!comment.isUnfolded) {
+				comment.unfolded = YES;
+				[_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			}
+			break;
+		}
+	}
 }
 
 #pragma mark - Public Method
 
 - (void)prepareForReuse {
-    if (preparedForReuse) {
-        return;
-    }
-    
-    _coverView.image = [UIImage mlb_imageWithName:@"music_cover" cached:NO];
-    _authorAvatarView.image = [UIImage imageNamed:@"personal"];
-    _authorNameLabel.text = @"";
-    _authorDescLabel.text = @"";
-    _titleLabel.text = @" ";
-    _dateLabel.text = @"";
-    _firstPublishView.image = nil;
-    [self resetMusicPlay];
-    [self showContentWithType:MLBMusicDetailsTypeNone];
-    _storyTitleLabel.text = @"";
-    _storyAuthorNameLabel.text = @"";
-    _contentTextView.text = @"";
-    _contentTextView.attributedText = nil;
-    _contentTextViewHeightConstraint.equalTo(@(SCREEN_HEIGHT * 0.6));
-    _chargeEditorHeightConstraint.equalTo(@0);
-    if (_scrollView.contentSize.width == 0 && _scrollView.contentSize.height == 0) {
-        // MusicView 初始化之后，_scrollView.contentSize 为 CGSizeZero, 设置 contentOffset 无效，所以先设置一个初始状态的 contentSize，使下面设置 contentOffset 生效
-        _scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT * 1.5);
-    }
-    _scrollView.contentOffset = CGPointMake(0, initStatusContentOffsetY);
-    _commentsTableViewHeightConstraint.equalTo(@0);
-    _relatedMusicTableViewHeightConstraint.equalTo(@0);
-    
-    preparedForReuse = YES;
+	_musicDetails = nil;
+	_relatedMusics = nil;
+	_commentList = nil;
+	[_tableView reloadData];
 }
 
 - (void)configureViewWithMusicId:(NSString *)musicId atIndex:(NSInteger)index {
@@ -714,13 +163,9 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
     self.viewIndex = index;
     _musicId = musicId;
     self.parentViewController = parentViewController;
+	
+	self.tableView.contentOffset = (CGPoint){0, initStatusContentOffsetY};
     [self requestMusicDetails];
-    [_commentListViewController configureViewForMusicDetailsWithItemId:_musicId];
-    [self.parentViewController addChildViewController:_commentListViewController];
-    [_commentListViewController requestDatas];
-    
-    [self requestMusicRelatedMusics];
-    preparedForReuse = NO;
 }
 
 #pragma mark - Network Request
@@ -738,7 +183,9 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
             MLBMusicDetails *details = [MTLJSONAdapter modelOfClass:[MLBMusicDetails class] fromJSONDictionary:responseObject[@"data"] error:&error];
             if (!error) {
 				strongSelf.musicDetails = details;
-                [strongSelf updateViews];
+				[strongSelf.tableView reloadData];
+				[strongSelf requestMusicRelatedMusics];
+				[strongSelf requestMusicComments];
             } else {
                 // callback
             }
@@ -764,7 +211,10 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
             NSArray *musics = [MTLJSONAdapter modelsOfClass:[MLBRelatedMusic class] fromJSONArray:responseObject[@"data"] error:&error];
             if (!error) {
                 strongSelf.relatedMusics = musics;
-                [strongSelf updateRelatedMusicsTableView];
+				DDLogDebug(@"%@ finished", NSStringFromSelector(_cmd));
+				if (strongSelf.musicDetails) {
+					[strongSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+				}
             } else {
                 // callback
             }
@@ -776,67 +226,236 @@ typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
     }];
 }
 
+- (void)requestMusicComments {
+	NSString *commentId = @"0";
+	if (_commentList && _commentList.comments.count > 0) {
+		commentId = ((MLBComment *)[_commentList.comments lastObject]).commentId;
+	}
+	
+	__weak typeof(self) weakSelf = self;
+	[MLBHTTPRequester requestMusicPraiseAndTimeCommentsWithItemId:_musicId lastCommentId:commentId success:^(id responseObject) {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+		[strongSelf processingForCommentsWithResponseObject:responseObject];
+	} fail:^(NSError *error) {
+		
+	}];
+}
+
+#pragma mark - Data Processing
+
+- (void)processingForCommentsWithResponseObject:(id)responseObject {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		if ([responseObject[@"res"] integerValue] == 0) {
+			NSError *error;
+			MLBCommentList *cmList = [MTLJSONAdapter modelOfClass:[MLBCommentList class] fromJSONDictionary:responseObject[@"data"] error:&error];
+			if (!error) {
+				if (!self.commentList) {
+					self.commentList = [[MLBCommentList alloc] init];
+					self.commentList.count = cmList.count;
+					self.commentList.comments = @[].mutableCopy;
+					self.commentList.hotComments = @[].mutableCopy;
+				}
+				
+				MLBComment *lastHotComment;
+				for (MLBComment *comment in cmList.comments) {
+					if (comment.commentType == MLBCommentTypeHot) {
+						lastHotComment = comment;
+						[self.commentList.hotComments addObject:comment];
+					} else {
+						[self.commentList.comments addObject:comment];
+					}
+				}
+				
+				NSMutableArray *indexPaths;
+				
+				if (lastHotComment) {
+					lastHotComment.lastHotComment = YES;
+				} else {
+					indexPaths = [NSMutableArray arrayWithCapacity:cmList.comments.count];
+					for (NSInteger i = (_commentList.comments.count - cmList.comments.count); i < _commentList.comments.count; i++) {
+						[indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:3]];
+					}
+				}
+				
+				DDLogDebug(@"%@ finished, viewIndex = %ld, tabelView = %p", NSStringFromSelector(_cmd), self.viewIndex, self.tableView);
+				
+				if (self.musicDetails) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self.tableView mlb_endRefreshingHasMoreData:(self.commentList.comments.count != self.commentList.count || cmList.comments.count >= 20)];
+						
+						if (cmList.comments.count > 0) {
+//							[self.operationQueue cancelAllOperations];
+//							[self.operationQueue addOperationWithBlock:^{
+								if (lastHotComment) {
+									[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)] withRowAnimation:UITableViewRowAnimationNone];
+								} else {
+									if (indexPaths && indexPaths.count > 0) {
+										[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+									}
+								}
+//							}];
+						}
+					});
+				}
+			}
+		}
+	});
+}
+
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGPoint contentOffset = scrollView.contentOffset;
-    if (contentOffset.y >= 0 && contentOffset.y <= initStatusContentOffsetY) {
-        CGFloat distanceRatio = contentOffset.y / initStatusContentOffsetY;
-        CGFloat topOffset = (distanceRatio * -(12 + 12)) + 12;
-        _authorViewTopConstraint.offset(topOffset);
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    CGPoint contentOffset = scrollView.contentOffset;
+//    if (contentOffset.y >= 0 && contentOffset.y <= initStatusContentOffsetY) {
+//        CGFloat distanceRatio = contentOffset.y / initStatusContentOffsetY;
+//        CGFloat topOffset = (distanceRatio * -(12 + 12)) + 12;
+//        _authorViewTopConstraint.offset(topOffset);
+//    }
+//}
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 4; // 内容 + 相似歌曲 + 热门评论 + 普通评论
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _relatedMusics.count;
+	if (section == 0) {
+		return 1;
+	} else if (section == 1) {
+		return _relatedMusics && _relatedMusics.count > 0 ? 1 : 0;
+	} else if (section == 2) { // 热门评论
+		return _commentList ? _commentList.hotComments.count : 0;
+	} else if (section == 3) {
+		return _commentList ? _commentList.comments.count : 1; // no comment cell
+	}
+	
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView dequeueReusableCellWithIdentifier:kMLBRelatedMusicCellID forIndexPath:indexPath];
+	if (indexPath.section == 0) {
+		if (!_contentCell) {
+			_contentCell = [tableView dequeueReusableCellWithIdentifier:kMLBMusicContentCellID forIndexPath:indexPath];
+		}
+		
+		[_contentCell configureCellWithMusicDetails:_musicDetails];
+		
+		if (!_contentCell.contentTypeButtonSelected) {
+			__weak typeof(self) weakSelf = self;
+			_contentCell.contentTypeButtonSelected = ^(MLBMusicDetailsType type) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				[strongSelf.tableView reloadData];
+			};
+		}
+		
+		return _contentCell;
+	} else if (indexPath.section == 1) {
+		if (!_collectionCell) {
+			_collectionCell = [tableView dequeueReusableCellWithIdentifier:kMLBRelatedMusicCollectionCellID forIndexPath:indexPath];
+		}
+		
+		[_collectionCell configureCellWithRelatedMusics:_relatedMusics];
+		
+		return _collectionCell;
+	} else if (indexPath.section == 2 || indexPath.section == 3) {
+		if (indexPath.section == 3 && (!_commentList || _commentList.comments.count <= 0)) {
+			return [tableView dequeueReusableCellWithIdentifier:kMLBNoneMessageCellID forIndexPath:indexPath];
+		}
+		
+		MLBCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kMLBCommentCellID forIndexPath:indexPath];
+		[cell configureCellForCommonWithComment:[self commentAtIndexPath:indexPath] atIndexPath:indexPath];
+		if (!cell.cellButtonClicked) {
+			__weak typeof(self) weakSelf = self;
+			cell.cellButtonClicked = ^(MLBCommentCellButtonType type, NSIndexPath *indexPath) {
+				__strong typeof(weakSelf) strongSelf = weakSelf;
+				[strongSelf commentCellButtonClickedWithType:type indexPath:indexPath];
+			};
+		}
+		
+		return cell;
+	}
+	
+	return nil;
 }
 
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [MLBCommonHeaderView headerViewHeight];
+	if (section == 1 && _relatedMusics && _relatedMusics.count > 0) { // 相似歌曲
+		return [MLBCommonHeaderFooterView viewHeight];
+	} else if (section == 2) { // 评论列表		// && [self hasComments]
+		return [MLBCommonHeaderFooterView viewHeight];
+	}
+	
+	return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return [MLBCommonFooterView footerViewHeightForShadow];
+	if (section == 2 && _commentList && _commentList.hotComments.count > 0) { // 以上是热门评论
+		return [MLBCommonHeaderFooterView viewHeight];
+	}
+	
+	return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [MLBRelatedMusicCell cellHeight];
+	if (indexPath.section == 0) {
+		__weak typeof(self) weakSelf = self;
+		return [tableView fd_heightForCellWithIdentifier:kMLBMusicContentCellID cacheByIndexPath:indexPath configuration:^(MLBMusicContentCell *cell) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[cell configureCellWithMusicDetails:strongSelf.musicDetails];
+		}];
+	} else if (indexPath.section == 1) {
+		return [MLBRelatedMusicCollectionCell cellHeight];
+	} else if (indexPath.section == 2 || indexPath.section == 3) {
+		if (indexPath.section == 3 && (!_commentList || _commentList.comments.count <= 0)) {
+			return [MLBNoneMessageCell cellHeight];
+		}
+		
+		__weak typeof(self) weakSelf = self;
+		return [tableView fd_heightForCellWithIdentifier:kMLBCommentCellID cacheByIndexPath:indexPath configuration:^(MLBCommentCell *cell) {
+			__strong typeof(weakSelf) strongSelf = weakSelf;
+			[cell configureCellForCommonWithComment:[strongSelf commentAtIndexPath:indexPath] atIndexPath:indexPath];
+		}];
+	}
+	
+	return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!_relatedMusicHeaderView) {
-        _relatedMusicHeaderView = [[MLBCommonHeaderView alloc] initWithHeaderViewType:MLBHeaderViewTypeRelatedMusic];
-    }
-    
-    return _relatedMusicHeaderView;
+	if (section == 1 && _relatedMusics && _relatedMusics.count > 0) { // 相似歌曲
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeRelatedMusic;
+		
+		return view;
+	} else if (section == 2) { // 评论列表	// && [self hasComments]
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeComment;
+		
+		return view;
+	}
+	
+	return nil;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (!_relatedMusicFooterView) {
-        _relatedMusicFooterView = [[MLBCommonFooterView alloc] initWithFooterViewType:MLBFooterViewTypeShadow];
-    }
-    
-    return _relatedMusicFooterView;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-        [(MLBRelatedMusicCell *)cell configureCellWithRelatedMusic:_relatedMusics[indexPath.row] atIndexPath:indexPath];
+	if (section == 2 && _commentList && _commentList.hotComments.count > 0) { // 以上是热门评论
+		MLBCommonHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMLBCommonHeaderFooterViewIDForTypeHeader];
+		view.viewType = MLBCommonHeaderFooterViewTypeAboveIsHotComments;
+		
+		return view;
+	}
+	
+	return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MLBRelatedMusic *music = _relatedMusics[indexPath.row];
-    MLBMusicRelatedViewController *musicRelatedViewController = [[MLBMusicRelatedViewController alloc] init];
-    musicRelatedViewController.relatedMusic = music;
-    [self.parentViewController.navigationController pushViewController:musicRelatedViewController animated:YES];
 }
 
 @end

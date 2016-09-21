@@ -186,4 +186,8 @@
     }
 }
 
+- (void)pagingScrollView:(GMCPagingScrollView *)pagingScrollView didEndDisplayingPage:(UIView *)page atIndex:(NSUInteger)index {
+	
+}
+
 @end

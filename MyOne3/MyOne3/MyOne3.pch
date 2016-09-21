@@ -72,6 +72,13 @@ typedef NS_ENUM(NSUInteger, MLBSearchType) {
     MLBSearchTypeAuthor,
 };
 
+typedef NS_ENUM(NSUInteger, MLBMusicDetailsType) {
+	MLBMusicDetailsTypeNone,
+	MLBMusicDetailsTypeStory,
+	MLBMusicDetailsTypeLyric,
+	MLBMusicDetailsTypeInfo,
+};
+
 #pragma mark - Block
 
 typedef void(^CommonActionBlock)(void);

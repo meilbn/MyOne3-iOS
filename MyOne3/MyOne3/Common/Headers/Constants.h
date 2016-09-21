@@ -58,6 +58,7 @@
 #define MLBColor8FBFF9                          [UIColor colorWithRed:143 / 255.0 green:191 / 255.0 blue:249 / 255.0 alpha:1]// #8FBFF9
 #define MLBColorCC8FBFF9                        [UIColor colorWithRed:143 / 255.0 green:191 / 255.0 blue:249 / 255.0 alpha:0.8]// #CC8FBFF9
 #define MLBColor626262                          [UIColor colorWithWhite:98 / 255.0 alpha:1]// #626262
+#define MLBColor6A6A6A                          [UIColor colorWithWhite:106 / 255.0 alpha:1]// #6A6A6A
 
 #pragma mark - Digital
 
@@ -65,6 +66,8 @@
 #define HUD_DELAY                               1.5
 
 #define MLBPullToRefreshBorderWidth             4
+
+#define MLBLineSpacing							8
 
 #pragma mark - Path
 

@@ -30,5 +30,10 @@
 @property (nonatomic, strong) NSString *lastUpdateDate;
 @property (nonatomic, strong) MLBAuthor *author;
 @property (nonatomic, strong) MLBAuthor *storyAuthor;
+@property (nonatomic, assign) NSInteger commentNum;
+@property (nonatomic, strong) NSString *readNum;
+@property (nonatomic, assign) NSInteger shareNum;
+
+@property (nonatomic, assign) MLBMusicDetailsType contentType;
 
 @end

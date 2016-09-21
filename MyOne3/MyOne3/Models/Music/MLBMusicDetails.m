@@ -29,7 +29,10 @@
              @"makeTime" : @"maketime",
              @"lastUpdateDate" : @"last_update_date",
              @"author" : @"author",
-             @"storyAuthor" : @"story_author"};
+             @"storyAuthor" : @"story_author",
+			 @"commentNum" : @"commentnum",
+			 @"readNum" : @"read_num",
+			 @"shareNum" : @"sharenum"};
 }
 
 + (NSValueTransformer *)authorJSONTransformer {

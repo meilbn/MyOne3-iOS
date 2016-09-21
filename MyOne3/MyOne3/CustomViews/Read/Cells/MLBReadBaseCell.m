@@ -182,7 +182,7 @@ NSString *const kMLBReadBaseCellID = @"MLBReadBaseCellID";
         return;
     }
 
-    _contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:content lineSpacing:10 font:_contentLabel.font textColor:_contentLabel.textColor];
+    _contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:content lineSpacing:MLBLineSpacing font:_contentLabel.font textColor:_contentLabel.textColor];
 }
 
 @end

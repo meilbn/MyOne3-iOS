@@ -70,8 +70,8 @@ NSString *const kMLBReadDetailsQuestionTitleCellID = @"MLBReadDetailsQuestionTit
 #pragma mark - Public Methods
 
 - (void)configureCellWithQuestionDetails:(MLBReadQuestionDetails *)questionDetails {
-	_titleLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:questionDetails.questionTitle lineSpacing:10 font:_titleLabel.font textColor:_titleLabel.textColor];
-	_contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:questionDetails.questionContent lineSpacing:10 font:_contentLabel.font textColor:_contentLabel.textColor];
+	_titleLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:questionDetails.questionTitle lineSpacing:MLBLineSpacing font:_titleLabel.font textColor:_titleLabel.textColor];
+	_contentLabel.attributedText = [MLBUtilities mlb_attributedStringWithText:questionDetails.questionContent lineSpacing:MLBLineSpacing font:_contentLabel.font textColor:_contentLabel.textColor];
 }
 
 @end

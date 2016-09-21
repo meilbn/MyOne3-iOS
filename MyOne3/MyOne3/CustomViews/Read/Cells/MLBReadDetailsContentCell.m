@@ -72,7 +72,7 @@ NSString *const kMLBReadDetailsContentCellID = @"MLBReadDetailsContentCellID";
 	_contentTextView.width = self.width;
 	
 	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-	paragraphStyle.lineSpacing = 10;
+	paragraphStyle.lineSpacing = MLBLineSpacing;
 	
 	NSDictionary *attributes = @{ NSFontAttributeName : FontWithSize(16),
 								  NSForegroundColorAttributeName : MLBLightBlackTextColor,
@@ -88,9 +88,9 @@ NSString *const kMLBReadDetailsContentCellID = @"MLBReadDetailsContentCellID";
 	
 	NSRange editorRange = [attributedString.string rangeOfString:editor];
 	
-	[attributedString addAttributes:attributes range:NSMakeRange(0, attributedString.string.length - editorRange.length)];
+	[attributedString setAttributes:attributes range:NSMakeRange(0, attributedString.string.length - editorRange.length)];
 	
-	[attributedString addAttributes:@{ NSFontAttributeName : FontWithSize(12),
+	[attributedString setAttributes:@{ NSFontAttributeName : FontWithSize(12),
 									   NSForegroundColorAttributeName : MLBLightBlackTextColor,
 									   NSParagraphStyleAttributeName : paragraphStyle } range:editorRange];
 	

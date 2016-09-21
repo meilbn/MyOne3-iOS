@@ -103,8 +103,8 @@ NSString *const kMLBCommonHeaderFooterViewIDForTypeHeader = @"kMLBCommonTypeHead
 			break;
 		}
 		case MLBCommonHeaderFooterViewTypeRelatedMusic: {
-			title = @"";
-			rightButtonImageNamePrefix = @"";
+			title = @"相似歌曲";
+			rightButtonImageNamePrefix = @"music_list_play";
 			break;
 		}
 		case MLBCommonHeaderFooterViewTypeMovieStory: {

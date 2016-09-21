@@ -225,6 +225,11 @@
     [MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiMusicByMonth, period] success:successBlock fail:failBlock];
 }
 
+// 获取音乐的评论列表
++ (void)requestMusicPraiseAndTimeCommentsWithItemId:(NSString *)itemId lastCommentId:(NSString *)lastCommentId success:(SuccessBlock)successBlock fail:(FailBlock)failBlock {
+	[MLBHTTPRequester getWithURI:[NSString stringWithFormat:MLBApiGetPraiseAndTimeComments, MLBApiMusic, itemId, lastCommentId] success:successBlock fail:failBlock];
+}
+
 #pragma mark - Movie
 
 // 获取电影列表
