@@ -62,7 +62,7 @@ NSString *const kMLBRelatedMusicCCellID = @"MLBRelatedMusicCCellID";
 	self.coverView.clipsToBounds = YES;
 	[self.contentView addSubview:self.coverView];
 	[self.coverView mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(_coverBGView).insets(UIEdgeInsetsMake(4, 8, 8, 10));
+		make.edges.equalTo(_coverBGView).insets(UIEdgeInsetsMake(4, 9, 11, 15));
 	}];
 	
 	self.musicNameLabel = [MLBUIFactory labelWithTextColor:MLBColor6A6A6A font:FontWithSize(14)];

@@ -60,7 +60,6 @@ NSString *const kMLBCommentCellID = @"MLBCommentCellID";
         return;
     }
 	
-	self.backgroundColor = MLBColorF8F8F8;
 	self.contentView.backgroundColor = MLBColorF8F8F8;
     
     _mainView = ({
